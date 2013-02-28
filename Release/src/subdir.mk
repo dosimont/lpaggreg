@@ -4,19 +4,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../src/LPAggregationAlgorithm.cpp \
-../src/ScalarLPAggregationAlgorithm.cpp \
-../src/VectorLPAggregationAlgorithm.cpp 
+../src/LPAggreg.cpp \
+../src/ScalarLPAggreg.cpp \
+../src/VectorLPAggreg.cpp 
 
 OBJS += \
-./src/LPAggregationAlgorithm.o \
-./src/ScalarLPAggregationAlgorithm.o \
-./src/VectorLPAggregationAlgorithm.o 
+./src/LPAggreg.o \
+./src/ScalarLPAggreg.o \
+./src/VectorLPAggreg.o 
 
 CPP_DEPS += \
-./src/LPAggregationAlgorithm.d \
-./src/ScalarLPAggregationAlgorithm.d \
-./src/VectorLPAggregationAlgorithm.d 
+./src/LPAggreg.d \
+./src/ScalarLPAggreg.d \
+./src/VectorLPAggreg.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
