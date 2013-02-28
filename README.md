@@ -1,4 +1,4 @@
-lpalgo
+lpaggreg
 ======
 
 __License__
