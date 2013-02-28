@@ -135,3 +135,9 @@ void ScalarLPAggreg::computeQualities() {
 	delete[] entValues;
 }
 
+ScalarLPAggreg::ScalarLPAggreg(float parameter, bool normalization) : LPAggreg(parameter, normalization), values(vector <float>()){
+}
+
+void ScalarLPAggreg::setValues(const vector<float>& values) {
+	this->values = values;
+}

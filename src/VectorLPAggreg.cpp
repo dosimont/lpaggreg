@@ -81,12 +81,20 @@ VectorLPAggreg::VectorLPAggreg(vector< vector<float> > values, float parameter,
 		bool normalization):
 	LPAggreg(parameter, normalization), values(values) {
 		setSize(this->values.size());
-	// TODO Auto-generated constructor stub
-	
+}
+
+void VectorLPAggreg::setValues(const vector<vector<float> >& values) {
+	this->values = values;
+	setSize(this->values.size());
+}
+
+VectorLPAggreg::VectorLPAggreg(float parameter,
+		bool normalization):
+	LPAggreg(parameter, normalization), values(0) {
+		setSize(this->values.size());
 }
 
 VectorLPAggreg::~VectorLPAggreg() {
-	// TODO Auto-generated destructor stub
 }
 
 void VectorLPAggreg::computeQualities() {

@@ -96,8 +96,6 @@ LPAggreg::~LPAggreg() {
 	bestPartitions.clear();
 }
 
-void LPAggreg::computeQualities() {
-}
 
 inline float LPAggreg::entropy(float value) {
 	return value * log(value) / log(2);

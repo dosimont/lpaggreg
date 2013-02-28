@@ -6,17 +6,20 @@
 CPP_SRCS += \
 ../src/LPAggreg.cpp \
 ../src/ScalarLPAggreg.cpp \
-../src/VectorLPAggreg.cpp 
+../src/VectorLPAggreg.cpp \
+../src/VectorWrapper.cpp 
 
 OBJS += \
 ./src/LPAggreg.o \
 ./src/ScalarLPAggreg.o \
-./src/VectorLPAggreg.o 
+./src/VectorLPAggreg.o \
+./src/VectorWrapper.o 
 
 CPP_DEPS += \
 ./src/LPAggreg.d \
 ./src/ScalarLPAggreg.d \
-./src/VectorLPAggreg.d 
+./src/VectorLPAggreg.d \
+./src/VectorWrapper.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

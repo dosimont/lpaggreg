@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright or © or Copr. Damien Dosimont (February 28th 2013)
- * 
- * Damien Dosimont <damien.dosimont@imag.fr> 
- * 
- * This software is a C++ implementation of an algorithm designed by Robin 
- * Lamarche-Perrin available under the form of a shared library. This algorithm 
- * allows to aggregate sets of scalar or vector data, according aggregation 
+ *
+ * Damien Dosimont <damien.dosimont@imag.fr>
+ *
+ * This software is a C++ implementation of an algorithm designed by Robin
+ * Lamarche-Perrin available under the form of a shared library. This algorithm
+ * allows to aggregate sets of scalar or vector data, according aggregation
  * gain and information loss parameters.
- * More information in "R. Lamarche-Perrin & al. - The Best-partitions Problem: 
+ * More information in "R. Lamarche-Perrin & al. - The Best-partitions Problem:
  * How to Build Meaningful Aggregations? in ..."
  *
  * This software is governed by the CeCILL-C license under French law and
@@ -15,12 +15,12 @@
  * and/ or redistribute the software under the terms of the CeCILL-C license as
  * circulated by CEA, CNRS and INRIA at the following URL
  * "http://www.cecill.info".
- * 
+ *
  * As a counterpart to the access to the source code and rights to copy, modify
  * and redistribute granted by the license, users are provided only with a
  * limited warranty and the software's author, the holder of the economic
  * rights, and the successive licensors have only limited liability.
- * 
+ *
  * In this respect, the user's attention is drawn to the risks associated with
  * loading, using, modifying and/or developing or reproducing the software by
  * the user in light of its specific status of free software, that may mean that
@@ -30,22 +30,22 @@
  * software's suitability as regards their requirements in conditions enabling
  * the security of their systems and/or data to be ensured and, more generally,
  * to use and operate it in the same conditions as regards security.
- * 
+ *
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
- * 
- * 
+ *
+ *
  * Copyright ou © ou Copr. Damien Dosimont (28 Février 2013)
- * 
- * Damien Dosimont <damien.dosimont@imag.fr> 
- * 
+ *
+ * Damien Dosimont <damien.dosimont@imag.fr>
+ *
  * Ce programme est une implémentation en C++ d'un algorithme conçu par Robin
  * Lamarche-Perrin et disponible sous la forme d'une bibliothèque partagée.
  * Cet algorithme permet d'agréger un échantillon de données numériques (scalaires
  * ou vectorielles) en fonction du gain apporté par l'agrégation ainsi que la perte
  * d'information.
  * Plus d"information dans la publication :
- * "R. Lamarche-Perrin & al. - The Best-partitions Problem:  * How to Build 
+ * "R. Lamarche-Perrin & al. - The Best-partitions Problem:  * How to Build
  * Meaningful Aggregations? in ..."
  *
  * Ce logiciel est régi par la licence CeCILL-C soumise au droit français et
@@ -53,13 +53,13 @@
  * utiliser, modifier et/ou redistribuer ce programme sous les conditions de la
  * licence CeCILL-C telle que diffusée par le CEA, le CNRS et l'INRIA sur le
  * site "http://www.cecill.info".
- * 
+ *
  * En contrepartie de l'accessibilité au code source et des droits de copie, de
  * modification et de redistribution accordés par cette licence, il n'est offert
  * aux utilisateurs qu'une garantie limitée. Pour les mêmes raisons, seule une
  * responsabilité restreinte pèse sur l'auteur du programme, le titulaire des
  * droits patrimoniaux et les concédants successifs.
- * 
+ *
  * A cet égard l'attention de l'utilisateur est attirée sur les risques associés
  * au chargement, à l'utilisation, à la modification et/ou au développement et à
  * la reproduction du logiciel par l'utilisateur étant donné sa spécificité de
@@ -70,32 +70,65 @@
  * conditions permettant d'assurer la sécurité de leurs systèmes et ou de leurs
  * données et, plus généralement, à l'utiliser et l'exploiter dans les mêmes
  * conditions de sécurité.
- * 
+ *
  * Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris
  * connaissance de la licence CeCILL-C, et que vous en avez accepté les termes.
  ******************************************************************************/
 
-#ifndef SCALARLPAGGREG_H_
-#define SCALARLPAGGREG_H_
+#include "VectorWrapper.h"
 
-#include <vector>
-#include "LPAggreg.h"
-#include <iostream>
 
-using namespace std;
+VectorWrapper::VectorWrapper(float parameter, bool normalization) :
+parameter(parameter), normalization(normalization), aggregator(VectorLPAggreg(parameter, normalization)), values(vector< vector<float> >()), parts(vector<float>()){
+}
 
-class ScalarLPAggreg: public LPAggreg {
-	private:
-		vector<float> values;
-	protected:
-		void computeQualities();
-	public:
-		ScalarLPAggreg(vector<float> values, float parameter,
-				bool normalization);
-		ScalarLPAggreg(float parameter,
-				bool normalization);
-		virtual ~ScalarLPAggreg();
-		void setValues(const vector<float>& values);
-};
+VectorWrapper::~VectorWrapper() {
+	for (int i=0; i<getVectorsNumber(); i++)
+		values[i].clear();
+	values.clear();
+	parts.clear();
+}
 
-#endif /* SCALARLPAGGREG_H_ */
+void VectorWrapper::newVector() {
+	values.push_back(vector<float>());
+}
+
+void VectorWrapper::addToVector(float element) {
+	values[values.size()-1].push_back(element);
+}
+
+void VectorWrapper::addToVector(float element, unsigned int index) {
+	if (index<values.size())
+	values[index].push_back(element);
+}
+
+float* VectorWrapper::getParts() {
+	float *pparts=new float[getPartsNumber()];
+	for (int i=0; i<getPartsNumber(); i++)
+		pparts[i]=parts[i];
+	return pparts;
+}
+
+int VectorWrapper::getVectorsNumber() {
+	return (int)values.size();
+}
+
+int VectorWrapper::getVectorSize() {
+	for (int i=0; (i<getVectorsNumber()-1) && (getVectorsNumber()>1) ; i++){
+		if (values[i].size()!=values[i+1].size())
+			return -1;
+	}
+	if (getVectorsNumber()>0)
+		return values[0].size();
+	else
+		return -1;
+}
+
+void VectorWrapper::computeParts() {
+	aggregator.setValues(values);
+	parts=aggregator.process();
+}
+
+int VectorWrapper::getPartsNumber() {
+	return (int)parts.size();
+}

@@ -84,7 +84,7 @@
 
 using namespace std;
 
-class LPAggreg {
+class LPAggreg{ //ABC
 	private:
 		float parameter;
 		bool normalization;
@@ -94,25 +94,26 @@ class LPAggreg {
 		float ** gain;
 		float ** bestCuts;
 		vector<float> bestPartitions;
-
+	protected:
+		virtual void computeQualities()=0;
+		inline float entropy(float value);
+		float entropyReduction(float value, float ent);
+		float divergence(int size, float value, float ent);
+		void computeBestCuts();
+		void computeBestPartitions();
+		int fillPartition(int i, int j, int p);
+		void setSize(int size);
 	public:
 		LPAggreg(float parameter, bool normalization);
 		LPAggreg();
 		virtual ~LPAggreg();
 		float getParameter();
-		void setParameter(float gainLossRatio);
-		virtual void computeQualities();
-		inline float entropy(float value);
-		float entropyReduction(float value, float ent);
-		float divergence(int size, float value, float ent);
+		void setParameter(float parameter);
 		bool isNormalization() const;
 		void setNormalization(bool normalization);
 		int getSize() const;
-		void setSize(int size);
-		void computeBestCuts();
-		void computeBestPartitions();
 		vector<float> process();
-		int fillPartition(int i, int j, int p);
+
 };
 
 #endif /* LPAGGREG_H_ */
