@@ -1,6 +1,4 @@
 
-<!-- saved from url=(0058)http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.txt -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">
 CeCILL-C FREE SOFTWARE LICENSE AGREEMENT
 
 
@@ -21,7 +19,7 @@ the two main principles guiding its drafting:
 The authors of the CeCILL-C (for Ce[a] C[nrs] I[nria] L[ogiciel] L[ibre])
 license are:
 
-Commissariat à l'Energie Atomique - CEA, a public scientific, technical
+Commissariat ï¿½ l'Energie Atomique - CEA, a public scientific, technical
 and industrial research establishment, having its principal place of
 business at 25 rue Leblanc, immeuble Le Ponant D, 75015 Paris, France.
 
@@ -340,7 +338,7 @@ The Licensee expressly undertakes:
 
 The Licensee undertakes not to directly or indirectly infringe the
 intellectual property rights of the Holder and/or Contributors on the
-Software and to take, where applicable, vis-à-vis its staff, any and all
+Software and to take, where applicable, vis-ï¿½-vis its staff, any and all
 measures required to ensure respect of said intellectual property rights
 of the Holder and/or Contributors.
 
