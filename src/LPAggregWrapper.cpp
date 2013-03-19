@@ -75,45 +75,45 @@
  * connaissance de la licence CeCILL-C, et que vous en avez accepté les termes.
  ******************************************************************************/
 
-#include "VectorWrapper.h"
+#include "LPAggregWrapper.h"
 
 
-VectorWrapper::VectorWrapper(float parameter, bool normalization) :
-parameter(parameter), normalization(normalization), aggregator(VectorLPAggreg(parameter, normalization)), values(vector< vector<float> >()), parts(vector<float>()){
+LPAggregWrapper::LPAggregWrapper(bool normalization) :
+normalization(normalization), aggregator(VectorLPAggreg(normalization)), values(vector< vector<float> >()), parts(vector<float>()){
 }
 
-VectorWrapper::~VectorWrapper() {
+LPAggregWrapper::~LPAggregWrapper() {
 	for (int i=0; i<getVectorsNumber(); i++)
 		values[i].clear();
 	values.clear();
 	parts.clear();
 }
 
-void VectorWrapper::newVector() {
+void LPAggregWrapper::newVector() {
 	values.push_back(vector<float>());
 }
 
-void VectorWrapper::addToVector(float element) {
+void LPAggregWrapper::addToVector(float element) {
 	values[values.size()-1].push_back(element);
 }
 
-void VectorWrapper::addToVector(float element, unsigned int index) {
+void LPAggregWrapper::addToVector(float element, unsigned int index) {
 	if (index<values.size())
 	values[index].push_back(element);
 }
 
-float* VectorWrapper::getParts() {
+float* LPAggregWrapper::getParts() {
 	float *pparts=new float[getPartsNumber()];
 	for (int i=0; i<getPartsNumber(); i++)
 		pparts[i]=parts[i];
 	return pparts;
 }
 
-int VectorWrapper::getVectorsNumber() {
+int LPAggregWrapper::getVectorsNumber() {
 	return (int)values.size();
 }
 
-int VectorWrapper::getVectorSize() {
+int LPAggregWrapper::getVectorSize() {
 	for (int i=0; (i<getVectorsNumber()-1) && (getVectorsNumber()>1) ; i++){
 		if (values[i].size()!=values[i+1].size())
 			return -1;
@@ -124,11 +124,15 @@ int VectorWrapper::getVectorSize() {
 		return -1;
 }
 
-void VectorWrapper::computeParts() {
-	aggregator.setValues(values);
-	parts=aggregator.process();
+void LPAggregWrapper::computeParts(float parameter) {
+	parts=aggregator.process(parameter);
 }
 
-int VectorWrapper::getPartsNumber() {
+void LPAggregWrapper::computeQualities() {
+	aggregator.setValues(values);
+	aggregator.init();
+}
+
+int LPAggregWrapper::getPartsNumber() {
 	return (int)parts.size();
 }

@@ -80,8 +80,8 @@
 
 using namespace std;
 ScalarLPAggreg::ScalarLPAggreg(
-		vector<float> values, float parameter, bool normalization) :
-		LPAggreg(parameter, normalization), values(values) {
+		vector<float> values, bool normalization) :
+		LPAggreg(normalization), values(values) {
 	setSize(this->values.size());
 }
 
@@ -135,7 +135,7 @@ void ScalarLPAggreg::computeQualities() {
 	delete[] entValues;
 }
 
-ScalarLPAggreg::ScalarLPAggreg(float parameter, bool normalization) : LPAggreg(parameter, normalization), values(vector <float>()){
+ScalarLPAggreg::ScalarLPAggreg(bool normalization) : LPAggreg(normalization), values(vector <float>()){
 }
 
 void ScalarLPAggreg::setValues(const vector<float>& values) {

@@ -8,4 +8,5 @@ Debug
 Debug/*
 .settings
 .settings/*
-
+swig
+swig/*

@@ -77,41 +77,30 @@
 
 #include "LPAggreg.h"
 
-LPAggreg::LPAggreg(float parameter,
-		bool normalization) :
-		parameter(parameter), normalization(normalization), size(0), loss(0), gain(
-				0), bestCuts(0), bestPartitions(0) {
+LPAggreg::LPAggreg(bool normalization) :
+		normalization(normalization), size(0), loss(0), gain(0), bestCuts(0), bestPartitions(
+				0) {
 	
 }
 
-float LPAggreg::getParameter() {
-	return parameter;
-}
-
-void LPAggreg::setParameter(float parameter) {
-	this->parameter = parameter;
-}
-
 LPAggreg::~LPAggreg() {
-	bestPartitions.clear();
+	deleteQualities();
+	deleteBestPartitions();
 }
-
 
 inline float LPAggreg::entropy(float value) {
 	return value * log(value) / log(2);
 	
 }
 
-float LPAggreg::entropyReduction(float value,
-		float ent) {
+float LPAggreg::entropyReduction(float value, float ent) {
 	if (value > 0)
 		return entropy(value) - ent;
 	else
 		return 0;
 }
 
-float LPAggreg::divergence(int size, float value,
-		float ent) {
+float LPAggreg::divergence(int size, float value, float ent) {
 	return value * log(size) / log(2) - entropyReduction(value, ent);
 	
 }
@@ -132,7 +121,7 @@ void LPAggreg::setSize(int size) {
 	this->size = size;
 }
 
-void LPAggreg::computeBestCuts() {
+void LPAggreg::computeBestCuts(float parameter) {
 	int n = getSize();
 	bestCuts = new float*[n];
 	float ** bestQuality = new float*[n];
@@ -147,8 +136,8 @@ void LPAggreg::computeBestCuts() {
 	for (int i = 1; i < n; i++) {
 		for (int j = 0; j < n - i; j++) {
 			float currentCut = 0;
-			float currentQuality = getParameter() * gain[i][j]
-					- (1 - getParameter()) * loss[i][j];
+			float currentQuality = parameter * gain[i][j]
+					- (1 - parameter) * loss[i][j];
 			for (int k = 1; k < i + 1; k++) {
 				float quality = bestQuality[k - 1][j]
 						+ bestQuality[i - k][j + k];
@@ -158,19 +147,13 @@ void LPAggreg::computeBestCuts() {
 				}
 				bestCuts[i][j] = currentCut;
 				bestQuality[i][j] = currentQuality;
-				
 			}
 		}
 	}
 	for (int i = 0; i < n; i++) {
 		delete[] bestQuality[i];
-		delete[] gain[i];
-		delete[] loss[i];
 	}
 	delete[] bestQuality;
-	delete[] gain;
-	delete[] loss;
-	
 }
 
 void LPAggreg::computeBestPartitions() {
@@ -178,10 +161,7 @@ void LPAggreg::computeBestPartitions() {
 	for (int i = 0; i < n; i++)
 		bestPartitions.push_back(-1);
 	fillPartition(n - 1, 0, 0);
-	for (int i = 0; i < n; i++) {
-		delete[] bestCuts[i];
-	}
-	delete[] bestCuts;
+	
 }
 
 int LPAggreg::fillPartition(int i, int j, int p) {
@@ -199,13 +179,41 @@ int LPAggreg::fillPartition(int i, int j, int p) {
 	}
 }
 
-vector<float> LPAggreg::process() {
+void LPAggreg::init() {
 	computeQualities();
-	computeBestCuts();
+}
+
+vector<float> LPAggreg::process(float parameter) {
+	deleteBestPartitions();
+	computeBestCuts(parameter);
 	computeBestPartitions();
+	deleteBestCuts();
 	return bestPartitions;
 }
 
-LPAggreg::LPAggreg() :parameter(0), normalization(false), size(0), loss(0), gain(
-		0), bestCuts(0), bestPartitions(0){
+LPAggreg::LPAggreg() :
+		normalization(false), size(0), loss(0), gain(0), bestCuts(0), bestPartitions(
+				0) {
+}
+
+void LPAggreg::deleteBestCuts() {
+	int n = getSize();
+	for (int i = 0; i < n; i++) {
+		delete[] bestCuts[i];
+	}
+	delete[] bestCuts;
+}
+
+void LPAggreg::deleteQualities() {
+	int n = getSize();
+	for (int i = 0; i < n; i++) {
+		delete[] gain[i];
+		delete[] loss[i];
+	}
+	delete[] gain;
+	delete[] loss;
+}
+
+void LPAggreg::deleteBestPartitions() {
+	bestPartitions.clear();
 }

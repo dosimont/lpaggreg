@@ -81,9 +81,8 @@
 #include "VectorLPAggreg.h"
 #include <vector>
 
-class VectorWrapper {
+class LPAggregWrapper {
 	private:
-		float parameter;
 		bool normalization;
 		VectorLPAggreg aggregator;
 		vector< vector<float> > values;
@@ -92,13 +91,13 @@ class VectorWrapper {
 
 
 	public:
-		VectorWrapper(float parameter, bool normalization);
-		virtual ~VectorWrapper();
-		void setVector(float ** elements);
+		LPAggregWrapper(bool normalization);
+		virtual ~LPAggregWrapper();
 		void newVector();
 		void addToVector(float element);
 		void addToVector(float element, unsigned int index);
-		void computeParts();
+		void computeQualities();
+		void computeParts(float parameter);
 		float * getParts();
 		int getVectorsNumber();
 		int getVectorSize();

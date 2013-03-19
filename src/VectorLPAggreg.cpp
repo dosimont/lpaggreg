@@ -77,9 +77,8 @@
 
 #include "VectorLPAggreg.h"
 
-VectorLPAggreg::VectorLPAggreg(vector< vector<float> > values, float parameter,
-		bool normalization):
-	LPAggreg(parameter, normalization), values(values) {
+VectorLPAggreg::VectorLPAggreg(vector< vector<float> > values, bool normalization):
+	LPAggreg(normalization), values(values) {
 		setSize(this->values.size());
 }
 
@@ -88,9 +87,8 @@ void VectorLPAggreg::setValues(const vector<vector<float> >& values) {
 	setSize(this->values.size());
 }
 
-VectorLPAggreg::VectorLPAggreg(float parameter,
-		bool normalization):
-	LPAggreg(parameter, normalization), values(0) {
+VectorLPAggreg::VectorLPAggreg(bool normalization):
+	LPAggreg(normalization), values(0) {
 		setSize(this->values.size());
 }
 
