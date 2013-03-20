@@ -90,16 +90,16 @@ class LPAggreg { //ABC
 		bool normalization;
 		int size;
 	protected:
-		float ** loss;
-		float ** gain;
-		float ** bestCuts;
-		vector<float> bestPartitions;
+		double ** loss;
+		double ** gain;
+		int ** bestCuts;
+		vector<int> bestPartitions;
 	protected:
 		virtual void computeQualities()=0;
 		void deleteQualities();
-		inline float entropy(float value);
-		float entropyReduction(float value, float ent);
-		float divergence(int size, float value, float ent);
+		inline double entropy(double value);
+		double entropyReduction(double value, double ent);
+		double divergence(int size, double value, double ent);
 		void computeBestCuts(float parameter);
 		void deleteBestCuts();
 		void computeBestPartitions();
@@ -114,7 +114,7 @@ class LPAggreg { //ABC
 		void setNormalization(bool normalization);
 		int getSize() const;
 		void init();
-		vector<float> process(float parameter);
+		vector<int> process(float parameter);
 		
 };
 

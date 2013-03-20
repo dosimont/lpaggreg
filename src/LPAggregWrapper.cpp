@@ -79,7 +79,7 @@
 
 
 LPAggregWrapper::LPAggregWrapper(bool normalization) :
-normalization(normalization), aggregator(VectorLPAggreg(normalization)), values(vector< vector<float> >()), parts(vector<float>()){
+normalization(normalization), aggregator(VectorLPAggreg(normalization)), values(vector< vector<double> >()), parts(vector<int>()){
 }
 
 LPAggregWrapper::~LPAggregWrapper() {
@@ -90,20 +90,20 @@ LPAggregWrapper::~LPAggregWrapper() {
 }
 
 void LPAggregWrapper::newVector() {
-	values.push_back(vector<float>());
+	values.push_back(vector<double>());
 }
 
-void LPAggregWrapper::addToVector(float element) {
+void LPAggregWrapper::addToVector(double element) {
 	values[values.size()-1].push_back(element);
 }
 
-void LPAggregWrapper::addToVector(float element, unsigned int index) {
-	if (index<values.size())
+void LPAggregWrapper::addToVector(double element, int index) {
+	if (index<(int)values.size())
 	values[index].push_back(element);
 }
 
-float* LPAggregWrapper::getParts() {
-	float *pparts=new float[getPartsNumber()];
+int* LPAggregWrapper::getParts() {
+	int *pparts=new int[getPartsNumber()];
 	for (int i=0; i<getPartsNumber(); i++)
 		pparts[i]=parts[i];
 	return pparts;
@@ -131,6 +131,12 @@ void LPAggregWrapper::computeParts(float parameter) {
 void LPAggregWrapper::computeQualities() {
 	aggregator.setValues(values);
 	aggregator.init();
+}
+
+int LPAggregWrapper::getPart(int index) {
+	if (index < getPartsNumber())
+		return parts[index];
+	return -1;
 }
 
 int LPAggregWrapper::getPartsNumber() {

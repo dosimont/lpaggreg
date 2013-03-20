@@ -88,19 +88,19 @@ LPAggreg::~LPAggreg() {
 	deleteBestPartitions();
 }
 
-inline float LPAggreg::entropy(float value) {
+inline double LPAggreg::entropy(double value) {
 	return value * log(value) / log(2);
 	
 }
 
-float LPAggreg::entropyReduction(float value, float ent) {
+double LPAggreg::entropyReduction(double value, double ent) {
 	if (value > 0)
 		return entropy(value) - ent;
 	else
 		return 0;
 }
 
-float LPAggreg::divergence(int size, float value, float ent) {
+double LPAggreg::divergence(int size, double value, double ent) {
 	return value * log(size) / log(2) - entropyReduction(value, ent);
 	
 }
@@ -123,11 +123,11 @@ void LPAggreg::setSize(int size) {
 
 void LPAggreg::computeBestCuts(float parameter) {
 	int n = getSize();
-	bestCuts = new float*[n];
-	float ** bestQuality = new float*[n];
+	bestCuts = new int*[n];
+	double ** bestQuality = new double*[n];
 	for (int i = 0; i < n; i++) {
-		bestCuts[i] = new float[n];
-		bestQuality[i] = new float[n];
+		bestCuts[i] = new int[n];
+		bestQuality[i] = new double[n];
 	}
 	for (int j = 0; j < n; j++) {
 		bestCuts[0][j] = 0;
@@ -135,11 +135,11 @@ void LPAggreg::computeBestCuts(float parameter) {
 	}
 	for (int i = 1; i < n; i++) {
 		for (int j = 0; j < n - i; j++) {
-			float currentCut = 0;
-			float currentQuality = parameter * gain[i][j]
+			long currentCut = 0;
+			double currentQuality = parameter * gain[i][j]
 					- (1 - parameter) * loss[i][j];
 			for (int k = 1; k < i + 1; k++) {
-				float quality = bestQuality[k - 1][j]
+				double quality = bestQuality[k - 1][j]
 						+ bestQuality[i - k][j + k];
 				if (quality >= currentQuality) {
 					currentCut = k;
@@ -183,7 +183,7 @@ void LPAggreg::init() {
 	computeQualities();
 }
 
-vector<float> LPAggreg::process(float parameter) {
+vector<int> LPAggreg::process(float parameter) {
 	deleteBestPartitions();
 	computeBestCuts(parameter);
 	computeBestPartitions();

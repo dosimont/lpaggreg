@@ -84,14 +84,14 @@
 
 class VectorLPAggreg: public LPAggreg{
 	private:
-		vector< vector<float> > values;
+		vector< vector<double> > values;
 	protected:
 		void computeQualities();
 	public:
-		VectorLPAggreg(vector< vector<float> > values, bool normalization);
+		VectorLPAggreg(vector< vector<double> > values, bool normalization);
 		VectorLPAggreg(bool normalization);
 		virtual ~VectorLPAggreg();
-		void setValues(const vector<vector<float> >& values);
+		void setValues(const vector<vector<double> >& values);
 };
 
 #endif /* VECTORLPAGGREG_H_ */

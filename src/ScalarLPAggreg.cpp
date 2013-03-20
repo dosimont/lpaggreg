@@ -80,7 +80,7 @@
 
 using namespace std;
 ScalarLPAggreg::ScalarLPAggreg(
-		vector<float> values, bool normalization) :
+		vector<double> values, bool normalization) :
 		LPAggreg(normalization), values(values) {
 	setSize(this->values.size());
 }
@@ -91,15 +91,15 @@ ScalarLPAggreg::~ScalarLPAggreg() {
 void ScalarLPAggreg::computeQualities() {
 	//Init and allocation
 	int n = getSize();
-	float ** sumValues = new float*[n];
-	float ** entValues = new float*[n];
-	gain = new float*[n];
-	loss = new float*[n];
+	double ** sumValues = new double*[n];
+	double ** entValues = new double*[n];
+	gain = new double*[n];
+	loss = new double*[n];
 	for (int i = 0; i < n; i++) {
-		sumValues[i] = new float[n];
-		entValues[i] = new float[n];
-		gain[i] = new float[n];
-		loss[i] = new float[n];
+		sumValues[i] = new double[n];
+		entValues[i] = new double[n];
+		gain[i] = new double[n];
+		loss[i] = new double[n];
 	}
 	//Microscopic level
 	for (int j = 0; j < n; j++) {
@@ -118,8 +118,8 @@ void ScalarLPAggreg::computeQualities() {
 		}
 	}
 	if (isNormalization()) {
-		float maxGain = gain[n - 1][0];
-		float maxLoss = gain[n - 1][0];
+		double maxGain = gain[n - 1][0];
+		double maxLoss = gain[n - 1][0];
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n - i; j++) {
 				gain[i][j] /= maxGain;
@@ -135,9 +135,9 @@ void ScalarLPAggreg::computeQualities() {
 	delete[] entValues;
 }
 
-ScalarLPAggreg::ScalarLPAggreg(bool normalization) : LPAggreg(normalization), values(vector <float>()){
+ScalarLPAggreg::ScalarLPAggreg(bool normalization) : LPAggreg(normalization), values(vector <double>()){
 }
 
-void ScalarLPAggreg::setValues(const vector<float>& values) {
+void ScalarLPAggreg::setValues(const vector<double>& values) {
 	this->values = values;
 }

@@ -77,12 +77,12 @@
 
 #include "VectorLPAggreg.h"
 
-VectorLPAggreg::VectorLPAggreg(vector< vector<float> > values, bool normalization):
+VectorLPAggreg::VectorLPAggreg(vector< vector<double> > values, bool normalization):
 	LPAggreg(normalization), values(values) {
 		setSize(this->values.size());
 }
 
-void VectorLPAggreg::setValues(const vector<vector<float> >& values) {
+void VectorLPAggreg::setValues(const vector<vector<double> >& values) {
 	this->values = values;
 	setSize(this->values.size());
 }
@@ -99,18 +99,18 @@ void VectorLPAggreg::computeQualities() {
 	//Init and allocation
 	int n = getSize();
 	int m = values[0].size();
-	float *** sumValues = new float**[n];
-	float *** entValues = new float**[n];
-	gain = new float*[n];
-	loss = new float*[n];
+	double *** sumValues = new double**[n];
+	double *** entValues = new double**[n];
+	gain = new double*[n];
+	loss = new double*[n];
 	for (int i = 0; i < n; i++) {
-		sumValues[i] = new float*[n];
-		entValues[i] = new float*[n];
-		gain[i] = new float[n];
-		loss[i] = new float[n];
+		sumValues[i] = new double*[n];
+		entValues[i] = new double*[n];
+		gain[i] = new double[n];
+		loss[i] = new double[n];
 		for (int j = 0; j<n; j++){
-			sumValues[i][j] = new float[m];
-			entValues[i][j] = new float[m];
+			sumValues[i][j] = new double[m];
+			entValues[i][j] = new double[m];
 		}
 	}
 	//Microscopic level
@@ -136,8 +136,8 @@ void VectorLPAggreg::computeQualities() {
 		}
 	}
 	if (isNormalization()) {
-		float maxGain = gain[n - 1][0];
-		float maxLoss = gain[n - 1][0];
+		double maxGain = gain[n - 1][0];
+		double maxLoss = gain[n - 1][0];
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n - i; j++) {
 				gain[i][j] /= maxGain;

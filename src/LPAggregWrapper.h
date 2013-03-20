@@ -85,8 +85,8 @@ class LPAggregWrapper {
 	private:
 		bool normalization;
 		VectorLPAggreg aggregator;
-		vector< vector<float> > values;
-		vector<float> parts;
+		vector< vector<double> > values;
+		vector<int> parts;
 
 
 
@@ -94,11 +94,12 @@ class LPAggregWrapper {
 		LPAggregWrapper(bool normalization);
 		virtual ~LPAggregWrapper();
 		void newVector();
-		void addToVector(float element);
-		void addToVector(float element, unsigned int index);
+		void addToVector(double element);
+		void addToVector(double element, int index);
 		void computeQualities();
 		void computeParts(float parameter);
-		float * getParts();
+		int * getParts();
+		int getPart(int index);
 		int getVectorsNumber();
 		int getVectorSize();
 		int getPartsNumber();
