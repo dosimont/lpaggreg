@@ -141,7 +141,7 @@ void LPAggreg::computeBestCuts(float parameter) {
 			for (int k = 1; k < i + 1; k++) {
 				double quality = bestQuality[k - 1][j]
 						+ bestQuality[i - k][j + k];
-				if (quality >= currentQuality) {
+				if (quality > currentQuality) {//TODO have replaced >= by > ; to verify
 					currentCut = k;
 					currentQuality = quality;
 				}
