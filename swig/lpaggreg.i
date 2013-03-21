@@ -82,12 +82,12 @@
 
 class LPAggregWrapper {
 	public:
-		LPAggregWrapper(bool normalization);
+		LPAggregWrapper();
 		virtual ~LPAggregWrapper();
 		void newVector();
 		void addToVector(double element);
 		void addToVector(double element, int index);
-		void computeQualities();
+		void computeQualities(bool normalization);
 		void computeParts(float parameter);
 		int * getParts();
 		int getPart(int index);

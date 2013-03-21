@@ -77,12 +77,6 @@
 
 #include "LPAggreg.h"
 
-LPAggreg::LPAggreg(bool normalization) :
-		normalization(normalization), size(0), loss(0), gain(0), bestCuts(0), bestPartitions(
-				0) {
-	
-}
-
 LPAggreg::~LPAggreg() {
 	deleteQualities();
 	deleteBestPartitions();
@@ -103,14 +97,6 @@ double LPAggreg::entropyReduction(double value, double ent) {
 double LPAggreg::divergence(int size, double value, double ent) {
 	return value * log(size) / log(2) - entropyReduction(value, ent);
 	
-}
-
-bool LPAggreg::isNormalization() const {
-	return normalization;
-}
-
-void LPAggreg::setNormalization(bool normalization) {
-	this->normalization = normalization;
 }
 
 int LPAggreg::getSize() const {
@@ -179,8 +165,8 @@ int LPAggreg::fillPartition(int i, int j, int p) {
 	}
 }
 
-void LPAggreg::init() {
-	computeQualities();
+void LPAggreg::init(bool normalization) {
+	computeQualities(normalization);
 }
 
 vector<int> LPAggreg::process(float parameter) {
@@ -192,7 +178,7 @@ vector<int> LPAggreg::process(float parameter) {
 }
 
 LPAggreg::LPAggreg() :
-		normalization(false), size(0), loss(0), gain(0), bestCuts(0), bestPartitions(
+		size(0), loss(0), gain(0), bestCuts(0), bestPartitions(
 				0) {
 }
 

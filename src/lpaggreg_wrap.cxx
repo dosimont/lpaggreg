@@ -218,21 +218,19 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 extern "C" {
 #endif
 
-SWIGEXPORT jlong JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggregJNI_new_1LPAggregWrapper(JNIEnv *jenv, jclass jcls, jboolean jarg1) {
+SWIGEXPORT jlong JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_core_jni_lpaggregJNI_new_1LPAggregWrapper(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
-  bool arg1 ;
   LPAggregWrapper *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = jarg1 ? true : false; 
-  result = (LPAggregWrapper *)new LPAggregWrapper(arg1);
+  result = (LPAggregWrapper *)new LPAggregWrapper();
   *(LPAggregWrapper **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggregJNI_delete_1LPAggregWrapper(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_core_jni_lpaggregJNI_delete_1LPAggregWrapper(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   LPAggregWrapper *arg1 = (LPAggregWrapper *) 0 ;
   
   (void)jenv;
@@ -242,7 +240,7 @@ SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggreg
 }
 
 
-SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggregJNI_LPAggregWrapper_1newVector(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_core_jni_lpaggregJNI_LPAggregWrapper_1newVector(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   LPAggregWrapper *arg1 = (LPAggregWrapper *) 0 ;
   
   (void)jenv;
@@ -253,7 +251,7 @@ SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggreg
 }
 
 
-SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggregJNI_LPAggregWrapper_1addToVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_core_jni_lpaggregJNI_LPAggregWrapper_1addToVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
   LPAggregWrapper *arg1 = (LPAggregWrapper *) 0 ;
   double arg2 ;
   
@@ -266,7 +264,7 @@ SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggreg
 }
 
 
-SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggregJNI_LPAggregWrapper_1addToVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jint jarg3) {
+SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_core_jni_lpaggregJNI_LPAggregWrapper_1addToVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2, jint jarg3) {
   LPAggregWrapper *arg1 = (LPAggregWrapper *) 0 ;
   double arg2 ;
   int arg3 ;
@@ -281,18 +279,20 @@ SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggreg
 }
 
 
-SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggregJNI_LPAggregWrapper_1computeQualities(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_core_jni_lpaggregJNI_LPAggregWrapper_1computeQualities(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
   LPAggregWrapper *arg1 = (LPAggregWrapper *) 0 ;
+  bool arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(LPAggregWrapper **)&jarg1; 
-  (arg1)->computeQualities();
+  arg2 = jarg2 ? true : false; 
+  (arg1)->computeQualities(arg2);
 }
 
 
-SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggregJNI_LPAggregWrapper_1computeParts(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jfloat jarg2) {
+SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_core_jni_lpaggregJNI_LPAggregWrapper_1computeParts(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jfloat jarg2) {
   LPAggregWrapper *arg1 = (LPAggregWrapper *) 0 ;
   float arg2 ;
   
@@ -305,7 +305,7 @@ SWIGEXPORT void JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggreg
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggregJNI_LPAggregWrapper_1getParts(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_core_jni_lpaggregJNI_LPAggregWrapper_1getParts(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   LPAggregWrapper *arg1 = (LPAggregWrapper *) 0 ;
   int *result = 0 ;
@@ -320,7 +320,7 @@ SWIGEXPORT jlong JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggre
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggregJNI_LPAggregWrapper_1getPart(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT jint JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_core_jni_lpaggregJNI_LPAggregWrapper_1getPart(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jint jresult = 0 ;
   LPAggregWrapper *arg1 = (LPAggregWrapper *) 0 ;
   int arg2 ;
@@ -337,7 +337,7 @@ SWIGEXPORT jint JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggreg
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggregJNI_LPAggregWrapper_1getVectorsNumber(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_core_jni_lpaggregJNI_LPAggregWrapper_1getVectorsNumber(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   LPAggregWrapper *arg1 = (LPAggregWrapper *) 0 ;
   int result;
@@ -352,7 +352,7 @@ SWIGEXPORT jint JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggreg
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggregJNI_LPAggregWrapper_1getVectorSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_core_jni_lpaggregJNI_LPAggregWrapper_1getVectorSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   LPAggregWrapper *arg1 = (LPAggregWrapper *) 0 ;
   int result;
@@ -367,7 +367,7 @@ SWIGEXPORT jint JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggreg
 }
 
 
-SWIGEXPORT jint JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_jni_lpaggregJNI_LPAggregWrapper_1getPartsNumber(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_com_inria_soctrace_tools_paje_lpaggreg_core_jni_lpaggregJNI_LPAggregWrapper_1getPartsNumber(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   LPAggregWrapper *arg1 = (LPAggregWrapper *) 0 ;
   int result;

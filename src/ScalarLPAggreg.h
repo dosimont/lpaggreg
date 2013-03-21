@@ -88,10 +88,10 @@ class ScalarLPAggreg: public LPAggreg {
 	private:
 		vector<double> values;
 	protected:
-		void computeQualities();
+		void computeQualities(bool normalization);
 	public:
-		ScalarLPAggreg(vector<double> values, bool normalization);
-		ScalarLPAggreg(bool normalization);
+		ScalarLPAggreg(vector<double> values);
+		ScalarLPAggreg();
 		virtual ~ScalarLPAggreg();
 		void setValues(const vector<double>& values);
 };

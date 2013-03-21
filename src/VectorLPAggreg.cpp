@@ -77,8 +77,8 @@
 
 #include "VectorLPAggreg.h"
 
-VectorLPAggreg::VectorLPAggreg(vector< vector<double> > values, bool normalization):
-	LPAggreg(normalization), values(values) {
+VectorLPAggreg::VectorLPAggreg(vector< vector<double> > values):
+	LPAggreg(), values(values) {
 		setSize(this->values.size());
 }
 
@@ -87,15 +87,15 @@ void VectorLPAggreg::setValues(const vector<vector<double> >& values) {
 	setSize(this->values.size());
 }
 
-VectorLPAggreg::VectorLPAggreg(bool normalization):
-	LPAggreg(normalization), values(0) {
+VectorLPAggreg::VectorLPAggreg():
+	LPAggreg(), values(0) {
 		setSize(this->values.size());
 }
 
 VectorLPAggreg::~VectorLPAggreg() {
 }
 
-void VectorLPAggreg::computeQualities() {
+void VectorLPAggreg::computeQualities(bool normalization) {
 	//Init and allocation
 	int n = getSize();
 	int m = values[0].size();
@@ -135,7 +135,7 @@ void VectorLPAggreg::computeQualities() {
 			}
 		}
 	}
-	if (isNormalization()) {
+	if (normalization) {
 		double maxGain = gain[n - 1][0];
 		double maxLoss = gain[n - 1][0];
 		for (int i = 0; i < n; i++) {

@@ -80,15 +80,15 @@
 
 using namespace std;
 ScalarLPAggreg::ScalarLPAggreg(
-		vector<double> values, bool normalization) :
-		LPAggreg(normalization), values(values) {
+		vector<double> values) :
+		LPAggreg(), values(values) {
 	setSize(this->values.size());
 }
 
 ScalarLPAggreg::~ScalarLPAggreg() {
 }
 
-void ScalarLPAggreg::computeQualities() {
+void ScalarLPAggreg::computeQualities(bool normalization) {
 	//Init and allocation
 	int n = getSize();
 	double ** sumValues = new double*[n];
@@ -117,7 +117,7 @@ void ScalarLPAggreg::computeQualities() {
 			loss[i][j] = this->divergence(i + 1, sumValues[i][j], entValues[i][j]);
 		}
 	}
-	if (isNormalization()) {
+	if (normalization) {
 		double maxGain = gain[n - 1][0];
 		double maxLoss = gain[n - 1][0];
 		for (int i = 0; i < n; i++) {
@@ -135,9 +135,10 @@ void ScalarLPAggreg::computeQualities() {
 	delete[] entValues;
 }
 
-ScalarLPAggreg::ScalarLPAggreg(bool normalization) : LPAggreg(normalization), values(vector <double>()){
+ScalarLPAggreg::ScalarLPAggreg() : LPAggreg(), values(vector <double>()){
 }
 
 void ScalarLPAggreg::setValues(const vector<double>& values) {
 	this->values = values;
+	setSize(this->values.size());
 }

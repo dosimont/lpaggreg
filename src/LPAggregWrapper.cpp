@@ -78,8 +78,8 @@
 #include "LPAggregWrapper.h"
 
 
-LPAggregWrapper::LPAggregWrapper(bool normalization) :
-normalization(normalization), aggregator(VectorLPAggreg(normalization)), values(vector< vector<double> >()), parts(vector<int>()){
+LPAggregWrapper::LPAggregWrapper() :
+aggregator(VectorLPAggreg()), values(vector< vector<double> >()), parts(vector<int>()){
 }
 
 LPAggregWrapper::~LPAggregWrapper() {
@@ -128,9 +128,9 @@ void LPAggregWrapper::computeParts(float parameter) {
 	parts=aggregator.process(parameter);
 }
 
-void LPAggregWrapper::computeQualities() {
+void LPAggregWrapper::computeQualities(bool normalization) {
 	aggregator.setValues(values);
-	aggregator.init();
+	aggregator.init(normalization);
 }
 
 int LPAggregWrapper::getPart(int index) {
