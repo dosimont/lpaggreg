@@ -80,11 +80,12 @@
 LPAggreg::~LPAggreg() {
 	deleteQualities();
 	deleteBestPartitions();
+	deleteParameters();
+	deleteQualitiesD();
 }
 
 inline double LPAggreg::entropy(double value) {
 	return value * log(value) / log(2);
-	
 }
 
 double LPAggreg::entropyReduction(double value, double ent) {
@@ -96,7 +97,6 @@ double LPAggreg::entropyReduction(double value, double ent) {
 
 double LPAggreg::divergence(int size, double value, double ent) {
 	return value * log(size) / log(2) - entropyReduction(value, ent);
-	
 }
 
 int LPAggreg::getSize() const {
@@ -122,8 +122,8 @@ void LPAggreg::computeBestCuts(float parameter) {
 	for (int i = 1; i < n; i++) {
 		for (int j = 0; j < n - i; j++) {
 			long currentCut = 0;
-			double currentQuality = parameter * gain[i][j]
-					- (1 - parameter) * loss[i][j];
+			double currentQuality = parameter * qualities[i][j]->getGain()
+					- (1 - parameter) * qualities[i][j]->getLoss();
 			for (int k = 1; k < i + 1; k++) {
 				double quality = bestQuality[k - 1][j]
 						+ bestQuality[i - k][j + k];
@@ -177,9 +177,8 @@ vector<int> LPAggreg::process(float parameter) {
 	return bestPartitions;
 }
 
-LPAggreg::LPAggreg() :
-		size(0), loss(0), gain(0), bestCuts(0), bestPartitions(
-				0) {
+LPAggreg::LPAggreg():
+		size(0), qualities(vector< vector<Quality*> >()), bestCuts(0), bestPartitions(vector<int>()), parametersD(vector<float>()), qualitiesD(vector<Quality*>()) {
 }
 
 void LPAggreg::deleteBestCuts() {
@@ -193,13 +192,80 @@ void LPAggreg::deleteBestCuts() {
 void LPAggreg::deleteQualities() {
 	int n = getSize();
 	for (int i = 0; i < n; i++) {
-		delete[] gain[i];
-		delete[] loss[i];
+		for (int j=0; j < n; j++)
+			delete qualities[i][j];
+		qualities[i].clear();
 	}
-	delete[] gain;
-	delete[] loss;
+	qualities.clear();
 }
 
 void LPAggreg::deleteBestPartitions() {
 	bestPartitions.clear();
+}
+
+void LPAggreg::computeBestQualities(float threshold) {
+	Quality *bestQualityParam0=new Quality();
+	Quality *bestQualityParam1=new Quality();
+	computeBestCuts(0);
+	computeBestQuality(bestQualityParam0);
+	deleteBestCuts();
+	parametersD.push_back(0);
+	qualitiesD.push_back(bestQualityParam0);
+	computeBestCuts(1);
+	computeBestQuality(bestQualityParam1);
+	deleteBestCuts();
+	addBestQualities(0, 1, bestQualityParam0, bestQualityParam1, threshold);
+	parametersD.push_back(1);
+	qualitiesD.push_back(bestQualityParam1);
+}
+
+void LPAggreg::computeBestQuality(Quality *bestQuality) {
+	int n = getSize();
+	bestQuality->setGain(0);
+	bestQuality->setLoss(0);
+	fillQuality(n-1, 0, 0, bestQuality);
+}
+
+void LPAggreg::fillQuality(int i, int j, int p, Quality *bestQuality) {
+	int c = bestCuts[i][j];
+	if (c > 0) {
+		fillQuality(c - 1, j, p, bestQuality);
+		fillQuality(i - c, j + c, p, bestQuality);
+	}
+	else {
+		bestQuality->addToGain(qualities[i][j]->getGain());
+		bestQuality->addToLoss(qualities[i][j]->getLoss());
+	}
+}
+
+void LPAggreg::addBestQualities(float parameter1, float parameter2,	Quality *bestQuality1, Quality *bestQuality2, float threshold) {
+	if (((bestQuality1->getGain()==bestQuality2->getGain())&&(bestQuality1->getLoss()==bestQuality2->getLoss()))||(parameter2-parameter1<=threshold)){
+		return;
+	}
+	float parameter = parameter1 + ((parameter2 -parameter1) / 2);
+	Quality *bestQuality=new Quality();
+	computeBestCuts(parameter);
+	computeBestQuality(bestQuality);
+	deleteBestCuts();
+	addBestQualities(parameter1, parameter, bestQuality1, bestQuality, threshold);
+	parametersD.push_back(parameter);
+	qualitiesD.push_back(bestQuality);
+	addBestQualities(parameter, parameter2, bestQuality, bestQuality2, threshold);;
+}
+
+vector<float> LPAggreg::dichotomy(float threshold) {
+	deleteParameters();
+	deleteQualitiesD();
+	computeBestQualities(threshold);
+	return parametersD;
+}
+
+void LPAggreg::deleteQualitiesD() {
+	for (unsigned int i=0; i<qualitiesD.size(); i++)
+		delete qualitiesD[i];
+	qualitiesD.clear();
+}
+
+void LPAggreg::deleteParameters() {
+	parametersD.clear();
 }

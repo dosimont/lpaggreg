@@ -81,6 +81,7 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
+#include "Quality.h"
 
 using namespace std;
 
@@ -89,10 +90,12 @@ class LPAggreg { //ABC
 		//float parameter;
 		int size;
 	protected:
-		double ** loss;
-		double ** gain;
+		vector< vector<Quality*> > qualities;
 		int ** bestCuts;
 		vector<int> bestPartitions;
+		vector<float> parametersD;
+		vector<Quality*> qualitiesD;
+
 	protected:
 		virtual void computeQualities(bool normalization)=0;
 		void deleteQualities();
@@ -105,12 +108,19 @@ class LPAggreg { //ABC
 		void deleteBestPartitions();
 		int fillPartition(int i, int j, int p);
 		void setSize(int size);
+		void computeBestQualities(float threshold);
+		void computeBestQuality(Quality *bestQuality);
+		void fillQuality(int i, int j, int p, Quality *bestQuality);
+		void addBestQualities(float parameter1, float parameter2, Quality *bestQuality1, Quality *bestQuality2, float threshold);
+		void deleteQualitiesD();
+		void deleteParameters();
 	public:
 		LPAggreg();
 		virtual ~LPAggreg();
 		int getSize() const;
 		void init(bool normalization);
 		vector<int> process(float parameter);
+		vector<float> dichotomy(float threshold);
 		
 };
 

@@ -102,13 +102,6 @@ void LPAggregWrapper::addToVector(double element, int index) {
 	values[index].push_back(element);
 }
 
-int* LPAggregWrapper::getParts() {
-	int *pparts=new int[getPartsNumber()];
-	for (int i=0; i<getPartsNumber(); i++)
-		pparts[i]=parts[i];
-	return pparts;
-}
-
 int LPAggregWrapper::getVectorsNumber() {
 	return (int)values.size();
 }
@@ -141,4 +134,18 @@ int LPAggregWrapper::getPart(int index) {
 
 int LPAggregWrapper::getPartsNumber() {
 	return (int)parts.size();
+}
+
+void LPAggregWrapper::computeDichotomy(float threshold) {
+	parameters=aggregator.dichotomy(threshold);
+}
+
+int LPAggregWrapper::getParametersNumber() {
+	return (int)parameters.size();
+}
+
+float LPAggregWrapper::getParameter(int index) {
+	if (index < getParametersNumber())
+		return parameters[index];
+	return -1;
 }

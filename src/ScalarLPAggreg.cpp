@@ -93,37 +93,33 @@ void ScalarLPAggreg::computeQualities(bool normalization) {
 	int n = getSize();
 	double ** sumValues = new double*[n];
 	double ** entValues = new double*[n];
-	gain = new double*[n];
-	loss = new double*[n];
 	for (int i = 0; i < n; i++) {
 		sumValues[i] = new double[n];
 		entValues[i] = new double[n];
-		gain[i] = new double[n];
-		loss[i] = new double[n];
+		qualities.push_back(vector<Quality*>());
+		for (int j=0; j<n; j++)
+			qualities[i].push_back(new Quality(0,0));
 	}
 	//Microscopic level
 	for (int j = 0; j < n; j++) {
 		sumValues[0][j] = values[j];
 		entValues[0][j] = this->entropyReduction(sumValues[0][j], 0);
-		gain[0][j] = 0;
-		loss[0][j] = 0;
 	}
 	//Other levels
 	for (int i = 1; i < n; i++) {
 		for (int j = 0; j < n - i; j++) {
 			sumValues[i][j] = sumValues[i - 1][j] + sumValues[0][i + j];
 			entValues[i][j] = entValues[i - 1][j] + entValues[0][i + j];
-			gain[i][j] = this->entropyReduction(sumValues[i][j], entValues[i][j]);
-			loss[i][j] = this->divergence(i + 1, sumValues[i][j], entValues[i][j]);
+			qualities[i][j]->setGain(this->entropyReduction(sumValues[i][j], entValues[i][j]));
+			qualities[i][j]->setLoss(this->divergence(i + 1, sumValues[i][j], entValues[i][j]));
 		}
 	}
 	if (normalization) {
-		double maxGain = gain[n - 1][0];
-		double maxLoss = gain[n - 1][0];
+		Quality * maxQuality = new Quality(qualities[n-1][0]->getGain(), qualities[n-1][0]->getLoss());
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n - i; j++) {
-				gain[i][j] /= maxGain;
-				loss[i][j] /= maxLoss;
+				qualities[i][j]->setGain(qualities[i][j]->getGain()/maxQuality->getGain());
+				qualities[i][j]->setLoss(qualities[i][j]->getLoss()/maxQuality->getLoss());
 			}
 		}
 	}

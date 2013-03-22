@@ -101,16 +101,14 @@ void VectorLPAggreg::computeQualities(bool normalization) {
 	int m = values[0].size();
 	double *** sumValues = new double**[n];
 	double *** entValues = new double**[n];
-	gain = new double*[n];
-	loss = new double*[n];
 	for (int i = 0; i < n; i++) {
 		sumValues[i] = new double*[n];
 		entValues[i] = new double*[n];
-		gain[i] = new double[n];
-		loss[i] = new double[n];
+		qualities.push_back(vector<Quality*>());
 		for (int j = 0; j<n; j++){
 			sumValues[i][j] = new double[m];
 			entValues[i][j] = new double[m];
+			qualities[i].push_back(new Quality(0,0));
 		}
 	}
 	//Microscopic level
@@ -119,33 +117,32 @@ void VectorLPAggreg::computeQualities(bool normalization) {
 			sumValues[0][j][k] = values[j][k];
 			entValues[0][j][k] = this->entropyReduction(sumValues[0][j][k], 0);
 		}
-		gain[0][j] = 0;
-		loss[0][j] = 0;
 	}
 	//Other levels
 	for (int i = 1; i < n; i++) {
 		for (int j = 0; j < n - i; j++) {
-			gain[i][j] = 0;
-			loss[i][j] = 0;
 			for (int k =0; k< m; k++){
 			sumValues[i][j][k] = sumValues[i - 1][j][k] + sumValues[0][i + j][k];
 			entValues[i][j][k] = entValues[i - 1][j][k] + entValues[0][i + j][k];
-			gain[i][j] += this->entropyReduction(sumValues[i][j][k], entValues[i][j][k]);
-			loss[i][j] += this->divergence(i + 1, sumValues[i][j][k], entValues[i][j][k]);
+			qualities[i][j]->addToGain(this->entropyReduction(sumValues[i][j][k], entValues[i][j][k]));
+			qualities[i][j]->addToLoss(this->divergence(i + 1, sumValues[i][j][k], entValues[i][j][k]));
 			}
 		}
 	}
 	if (normalization) {
-		double maxGain = gain[n - 1][0];
-		double maxLoss = gain[n - 1][0];
+		Quality * maxQuality = new Quality(qualities[n-1][0]->getGain(), qualities[n-1][0]->getLoss());
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n - i; j++) {
-				gain[i][j] /= maxGain;
-				loss[i][j] /= maxLoss;
+				qualities[i][j]->setGain(qualities[i][j]->getGain()/maxQuality->getGain());
+				qualities[i][j]->setLoss(qualities[i][j]->getLoss()/maxQuality->getLoss());
 			}
 		}
 	}
 	for (int i = 0; i < n; i++) {
+		for (int j=0; j < n; j++){
+			delete[] sumValues[i][j];
+			delete[] entValues[i][j];
+		}
 		delete[] sumValues[i];
 		delete[] entValues[i];
 	}
