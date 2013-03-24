@@ -166,7 +166,9 @@ int LPAggreg::fillPartition(int i, int j, int p) {
 }
 
 void LPAggreg::init(bool normalization) {
+	deleteQualities();
 	computeQualities(normalization);
+
 }
 
 vector<int> LPAggreg::process(float parameter) {
@@ -190,10 +192,11 @@ void LPAggreg::deleteBestCuts() {
 }
 
 void LPAggreg::deleteQualities() {
-	int n = getSize();
-	for (int i = 0; i < n; i++) {
-		for (int j=0; j < n; j++)
-			delete qualities[i][j];
+	for (unsigned int i = 0; i < qualities.size(); i++) {
+		for (unsigned int j=0; j < qualities[i].size(); j++){
+			if (&qualities[i][j]!=0)
+				delete qualities[i][j];
+		}
 		qualities[i].clear();
 	}
 	qualities.clear();

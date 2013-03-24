@@ -118,6 +118,7 @@ int LPAggregWrapper::getVectorSize() {
 }
 
 void LPAggregWrapper::computeParts(float parameter) {
+	parts.clear();
 	parts=aggregator.process(parameter);
 }
 
