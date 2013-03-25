@@ -121,7 +121,9 @@ class LPAggreg { //ABC
 		void init(bool normalization);
 		vector<int> process(float parameter);
 		vector<float> dichotomy(float threshold);
-		
+		const vector<Quality*>& getQualitiesD() const {
+			return qualitiesD;
+		}
 };
 
 #endif /* LPAGGREG_H_ */

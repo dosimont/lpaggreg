@@ -96,7 +96,7 @@ double LPAggreg::entropyReduction(double value, double ent) {
 }
 
 double LPAggreg::divergence(int size, double value, double ent) {
-	return value * log(size) / log(2) - entropyReduction(value, ent);
+	return value * log(size) / log(2)  - entropyReduction(value, ent);
 }
 
 int LPAggreg::getSize() const {
@@ -220,6 +220,13 @@ void LPAggreg::computeBestQualities(float threshold) {
 	addBestQualities(0, 1, bestQualityParam0, bestQualityParam1, threshold);
 	parametersD.push_back(1);
 	qualitiesD.push_back(bestQualityParam1);
+	for (unsigned int i=qualitiesD.size()-1; i>0; i--){
+		if ((qualitiesD[i]->getGain()==qualitiesD[i-1]->getGain())&&(qualitiesD[i]->getLoss()==qualitiesD[i-1]->getLoss())){
+			delete qualitiesD[i];
+			qualitiesD.erase(qualitiesD.begin()+i);
+			parametersD.erase(parametersD.begin()+i);
+		}
+	}
 }
 
 void LPAggreg::computeBestQuality(Quality *bestQuality) {
@@ -236,15 +243,13 @@ void LPAggreg::fillQuality(int i, int j, int p, Quality *bestQuality) {
 		fillQuality(i - c, j + c, p, bestQuality);
 	}
 	else {
-		bestQuality->addToGain(qualities[i][j]->getGain());
+		bestQuality->addToGain(qualities[i][j]->getGain());//
 		bestQuality->addToLoss(qualities[i][j]->getLoss());
 	}
 }
 
 void LPAggreg::addBestQualities(float parameter1, float parameter2,	Quality *bestQuality1, Quality *bestQuality2, float threshold) {
-	if (((bestQuality1->getGain()==bestQuality2->getGain())&&(bestQuality1->getLoss()==bestQuality2->getLoss()))||(parameter2-parameter1<=threshold)){
-		return;
-	}
+	if (!(((bestQuality1->getGain()==bestQuality2->getGain())&&(bestQuality1->getLoss()==bestQuality2->getLoss()))||(parameter2-parameter1<=threshold))){
 	float parameter = parameter1 + ((parameter2 -parameter1) / 2);
 	Quality *bestQuality=new Quality();
 	computeBestCuts(parameter);
@@ -253,7 +258,8 @@ void LPAggreg::addBestQualities(float parameter1, float parameter2,	Quality *bes
 	addBestQualities(parameter1, parameter, bestQuality1, bestQuality, threshold);
 	parametersD.push_back(parameter);
 	qualitiesD.push_back(bestQuality);
-	addBestQualities(parameter, parameter2, bestQuality, bestQuality2, threshold);;
+	addBestQualities(parameter, parameter2, bestQuality, bestQuality2, threshold);
+	}
 }
 
 vector<float> LPAggreg::dichotomy(float threshold) {
@@ -272,3 +278,4 @@ void LPAggreg::deleteQualitiesD() {
 void LPAggreg::deleteParameters() {
 	parametersD.clear();
 }
+
