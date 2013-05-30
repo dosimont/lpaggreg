@@ -32,5 +32,9 @@ __Compile__
 
 		$ cd Release
 		$ make
+		
+__Install__
 
+		$ cd ..
+		$ ./install.sh
 
