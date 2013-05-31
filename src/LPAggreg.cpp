@@ -61,31 +61,34 @@ void LPAggreg::setSize(int size) {
 
 void LPAggreg::computeBestCuts(float parameter) {
 	int n = getSize();
-	bestCuts = new int*[n];
-	double ** bestQuality = new double*[n];
-	for (int i = 0; i < n; i++) {
-		bestCuts[i] = new int[n];
-		bestQuality[i] = new double[n];
-	}
-	for (int j = 0; j < n; j++) {
-		bestCuts[0][j] = 0;
-		bestQuality[0][j] = 0;
-	}
+//	bestCuts = new int*[n];
+//	double ** bestQuality = new double*[n];
+//	for (int i = 0; i < n; i++) {
+//		bestCuts[i] = new int[n];
+//		bestQuality[i] = new double[n];
+//	}
+//	for (int j = 0; j < n; j++) {
+//		bestCuts[0][j] = 0;
+//		bestQuality[0][j] = 0;
+//	}
+	bestCuts = new int[n];
+	double * bestQuality = new double[n];
+	bestCuts[0] = 0;
+	bestQuality[0] = 0;
 	for (int i = 1; i < n; i++) {
-		for (int j = 0; j < n - i; j++) {
+		//for (int j = 0; j < n - i; j++) {
 			long currentCut = 0;
-			double currentQuality = parameter * qualities[i][j]->getGain()
-					- (1 - parameter) * qualities[i][j]->getLoss();
+			double currentQuality = parameter * qualities[i][0]->getGain()
+					- (1 - parameter) * qualities[i][0]->getLoss();
 			for (int k = 1; k < i + 1; k++) {
-				double quality = bestQuality[k - 1][j]
-						+ bestQuality[i - k][j + k];
+				double quality = bestQuality[k - 1] + parameter * qualities[i-k][k]->getGain()-(1-parameter) * qualities[i-k][k]->getLoss();
 				if (quality > currentQuality) {//TODO have replaced >= by > ; to verify
 					currentCut = k;
 					currentQuality = quality;
 				}
-				bestCuts[i][j] = currentCut;
-				bestQuality[i][j] = currentQuality;
-			}
+				bestCuts[i] = currentCut;
+				bestQuality[i] = currentQuality;
+
 		}
 	}
 	for (int i = 0; i < n; i++) {
@@ -98,23 +101,17 @@ void LPAggreg::computeBestPartitions() {
 	int n = getSize();
 	for (int i = 0; i < n; i++)
 		bestPartitions.push_back(-1);
-	fillPartition(n - 1, 0, 0);
+	fillPartition(n - 1, 0);
 	
 }
 
-int LPAggreg::fillPartition(int i, int j, int p) {
-	int c = bestCuts[i][j];
-	if (c > 0) {
-		p = fillPartition(c - 1, j, p);
-		p = fillPartition(i - c, j + c, p);
-		return p;
-	}
-	else {
-		for (int k = 0; k < i + 1; k++) {
-			bestPartitions[j + k] = p;
-		}
-		return p + 1;
-	}
+int LPAggreg::fillPartition(int i, int p) {
+	int c = bestCuts[i];
+	if (c > 0)
+		p = fillPartition(c - 1, p);
+	for (int k = c; k < i + 1; k++)
+		bestPartitions[k] = p;
+	return p + 1;
 }
 
 void LPAggreg::init(bool normalization) {
@@ -137,9 +134,6 @@ LPAggreg::LPAggreg():
 
 void LPAggreg::deleteBestCuts() {
 	int n = getSize();
-	for (int i = 0; i < n; i++) {
-		delete[] bestCuts[i];
-	}
 	delete[] bestCuts;
 }
 

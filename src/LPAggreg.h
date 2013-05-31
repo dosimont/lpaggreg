@@ -43,7 +43,8 @@ class LPAggreg { //ABC
 		int size;
 	protected:
 		vector< vector<Quality*> > qualities;
-		int ** bestCuts;
+		//int ** bestCuts;
+		int * bestCuts;
 		vector<int> bestPartitions;
 		vector<float> parametersD;
 		vector<Quality*> qualitiesD;
