@@ -91,9 +91,6 @@ void LPAggreg::computeBestCuts(float parameter) {
 
 		}
 	}
-	for (int i = 0; i < n; i++) {
-		delete[] bestQuality[i];
-	}
 	delete[] bestQuality;
 }
 
@@ -133,7 +130,6 @@ LPAggreg::LPAggreg():
 }
 
 void LPAggreg::deleteBestCuts() {
-	int n = getSize();
 	delete[] bestCuts;
 }
 
@@ -179,19 +175,16 @@ void LPAggreg::computeBestQuality(Quality *bestQuality) {
 	int n = getSize();
 	bestQuality->setGain(0);
 	bestQuality->setLoss(0);
-	fillQuality(n-1, 0, 0, bestQuality);
+	fillQuality(n-1, bestQuality);
 }
 
-void LPAggreg::fillQuality(int i, int j, int p, Quality *bestQuality) {
-	int c = bestCuts[i][j];
+void LPAggreg::fillQuality(int i, Quality *bestQuality) {
+	int c = bestCuts[i];
 	if (c > 0) {
-		fillQuality(c - 1, j, p, bestQuality);
-		fillQuality(i - c, j + c, p, bestQuality);
+		fillQuality(c - 1,bestQuality);
 	}
-	else {
-		bestQuality->addToGain(qualities[i][j]->getGain());//
-		bestQuality->addToLoss(qualities[i][j]->getLoss());
-	}
+	bestQuality->addToGain(qualities[i-c][c]->getGain());//
+	bestQuality->addToLoss(qualities[i-c][c]->getLoss());
 }
 
 void LPAggreg::addBestQualities(float parameter1, float parameter2,	Quality *bestQuality1, Quality *bestQuality2, float threshold) {
@@ -225,3 +218,6 @@ void LPAggreg::deleteParameters() {
 	parametersD.clear();
 }
 
+int LPAggreg::sizeReduction(int size) {
+	return size-1;
+}
