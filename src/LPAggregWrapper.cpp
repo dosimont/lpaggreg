@@ -1,10 +1,12 @@
 /*******************************************************************************
  *
  * This library is a C++ implementation of an algorithm designed by Robin
- * Lamarche-Perrin. This algorithm allows to aggregate sets of scalar or vector
+ * Lamarche-Perrin. This algorithm enables to aggregate sets of scalar or vector
  * data, according aggregation gain & information loss ratio parameter.
- * More information in "R. Lamarche-Perrin & al. - The Best-partitions Problem:
- * How to Build Meaningful Aggregations? in ..."
+ * More information in "Robin Lamarche-Perrin, Yves Demazeau and Jean-Marc
+ * Vincent. The Best-partitions Problem: How to Build Meaningful Agregations?
+ * Research report RR-LIG-XXX, Laboratoire d’Informatique de Grenoble, France,
+ * Feb. 2013. (forthcoming)"
  *
  * (C) Copyright (February 28th 2013) Damien Dosimont. All rights reserved.
  *
@@ -35,7 +37,7 @@ aggregator(VectorLPAggreg()), values(vector< vector<double> >()), parts(vector<i
 }
 
 LPAggregWrapper::~LPAggregWrapper() {
-	for (int i=0; i<getVectorsNumber(); i++)
+	for (int i=0; i<getVectorNumber(); i++)
 		values[i].clear();
 	values.clear();
 	parts.clear();
@@ -54,16 +56,16 @@ void LPAggregWrapper::addToVector(double element, int index) {
 	values[index].push_back(element);
 }
 
-int LPAggregWrapper::getVectorsNumber() {
+int LPAggregWrapper::getVectorNumber() {
 	return (int)values.size();
 }
 
 int LPAggregWrapper::getVectorSize() {
-	for (int i=0; (i<getVectorsNumber()-1) && (getVectorsNumber()>1) ; i++){
+	for (int i=0; (i<getVectorNumber()-1) && (getVectorNumber()>1) ; i++){
 		if (values[i].size()!=values[i+1].size())
 			return -1;
 	}
-	if (getVectorsNumber()>0)
+	if (getVectorNumber()>0)
 		return values[0].size();
 	else
 		return -1;
@@ -80,12 +82,12 @@ void LPAggregWrapper::computeQualities(bool normalization) {
 }
 
 int LPAggregWrapper::getPart(int index) {
-	if (index < getPartsNumber())
+	if (index < getPartNumber())
 		return parts[index];
 	return -1;
 }
 
-int LPAggregWrapper::getPartsNumber() {
+int LPAggregWrapper::getPartNumber() {
 	return (int)parts.size();
 }
 
@@ -94,38 +96,38 @@ void LPAggregWrapper::computeDichotomy(float threshold) {
 	qualities=aggregator.getQualities();
 }
 
-int LPAggregWrapper::getParametersNumber() {
+int LPAggregWrapper::getParameterNumber() {
 	return (int)parameters.size();
 }
 
 float LPAggregWrapper::getParameter(int index) {
-	if (index < getParametersNumber())
+	if (index < getParameterNumber())
 		return parameters[index];
 	return -1;
 }
 
 double LPAggregWrapper::getGainByIndex(int index) {
-	if (index<qualities.size())
-		return qualities[index].getGain();
+	if (index<(int) qualities.size())
+		return qualities[index]->getGain();
 	return -1;
 }
 
 double LPAggregWrapper::getGainByParameter(float parameter) {
-	for (int i=0; i<parameters.size(); i++)
+	for (int i=0; i<(int) parameters.size(); i++)
 		if (parameter==parameters[i])
-		   return qualities[i].getGain();
+		   return qualities[i]->getGain();
 	return -1;
 }
 
 double LPAggregWrapper::getLossByIndex(int index) {
-	if (index<qualities.size())
-		return qualities[index].getLoss();
+	if (index<(int) qualities.size())
+		return qualities[index]->getLoss();
 	return -1;
 }
 
 double LPAggregWrapper::getLossByParameter(float parameter) {
-	for (int i=0; i<parameters.size(); i++)
+	for (int i=0; i<(int) parameters.size(); i++)
 		if (parameter==parameters[i])
-		   return qualities[i].getLoss();
+		   return qualities[i]->getLoss();
 	return -1;
 }

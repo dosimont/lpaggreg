@@ -1,10 +1,12 @@
 /*******************************************************************************
  *
  * This library is a C++ implementation of an algorithm designed by Robin
- * Lamarche-Perrin. This algorithm allows to aggregate sets of scalar or vector
+ * Lamarche-Perrin. This algorithm enables to aggregate sets of scalar or vector
  * data, according aggregation gain & information loss ratio parameter.
- * More information in "R. Lamarche-Perrin & al. - The Best-partitions Problem:
- * How to Build Meaningful Aggregations? in ..."
+ * More information in "Robin Lamarche-Perrin, Yves Demazeau and Jean-Marc
+ * Vincent. The Best-partitions Problem: How to Build Meaningful Agregations?
+ * Research report RR-LIG-XXX, Laboratoire d’Informatique de Grenoble, France,
+ * Feb. 2013. (forthcoming)"
  *
  * (C) Copyright (February 28th 2013) Damien Dosimont. All rights reserved.
  * 
@@ -26,6 +28,18 @@
  * USA.
  *
  *******************************************************************************/
+
+/*Author : Damien Dosimont <damien.dosimont@imag.fr>*/
+
+/*LPAggreg cpp file
+ *
+ * Virtual class that contains methods enabling to perform LP aggregation computation
+ * and get aggregated parts, a list of relevant parameters obtained by dichotomy and
+ * their associated quality measures
+ *
+ * computeQualities(bool normalization) method is virtual and need to be implemented
+ * in child classes
+ */
 
 #include "LPAggreg.h"
 

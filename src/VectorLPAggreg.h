@@ -1,10 +1,12 @@
 /*******************************************************************************
  *
  * This library is a C++ implementation of an algorithm designed by Robin
- * Lamarche-Perrin. This algorithm allows to aggregate sets of scalar or vector
+ * Lamarche-Perrin. This algorithm enables to aggregate sets of scalar or vector
  * data, according aggregation gain & information loss ratio parameter.
- * More information in "R. Lamarche-Perrin & al. - The Best-partitions Problem:
- * How to Build Meaningful Aggregations? in ..."
+ * More information in "Robin Lamarche-Perrin, Yves Demazeau and Jean-Marc
+ * Vincent. The Best-partitions Problem: How to Build Meaningful Agregations?
+ * Research report RR-LIG-XXX, Laboratoire d’Informatique de Grenoble, France,
+ * Feb. 2013. (forthcoming)"
  *
  * (C) Copyright (February 28th 2013) Damien Dosimont. All rights reserved.
  * 
@@ -27,6 +29,14 @@
  *
  *******************************************************************************/
 
+/*Author : Damien Dosimont <damien.dosimont@imag.fr>*/
+
+/*VectorLPAggreg header file
+ *
+ * Class that enables to perform LP aggregation on vectors. Inherits from
+ * virtual LPAggreg class.
+ */
+
 #ifndef VECTORLPAGGREG_H_
 #define VECTORLPAGGREG_H_
 
@@ -36,13 +46,25 @@
 
 class VectorLPAggreg: public LPAggreg{
 	private:
+
+		/*Value matrix used as input*/
 		vector< vector<double> > values;
+
 	protected:
+
+		/*Override LPAggreg virtual method. Perform quality computation.
+		 * bool normalization : if true, normalize quality measures*/
 		void computeQualities(bool normalization);
+
 	public:
+
+		/*Constructor with values*/
 		VectorLPAggreg(vector< vector<double> > values);
+
+		/*Constructor*/
 		VectorLPAggreg();
-		virtual ~VectorLPAggreg();
+
+		/*Set input values*/
 		void setValues(const vector<vector<double> >& values);
 };
 
