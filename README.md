@@ -4,8 +4,8 @@ lpaggreg
 __License__
 
 This library is a C++ implementation of an algorithm designed by Robin
-Lamarche-Perrin. This algorithm allows to aggregate sets of scalar or vector 
-data, according aggregation gain & information loss ratio parameter.
+Lamarche-Perrin. This algorithm enables to aggregate sets of scalar or vector 
+data, according an ggregation gain & information loss ratio parameter.
 More information in "R. Lamarche-Perrin & al. - The Best-partitions Problem:
 How to Build Meaningful Aggregations? in ..."
 
