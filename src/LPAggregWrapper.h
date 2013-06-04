@@ -119,7 +119,6 @@ class LPAggregWrapper {
 		/*Get the loss by parameter*/
 		double getLossByParameter(float parameter);
 
-
 };
 
 #endif /* VECTORWRAPPER_H_ */
