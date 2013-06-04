@@ -31,6 +31,7 @@
 #define VECTORWRAPPER_H_
 
 #include "VectorLPAggreg.h"
+#include "Quality.h"
 #include <vector>
 
 class LPAggregWrapper {
@@ -39,6 +40,7 @@ class LPAggregWrapper {
 		vector< vector<double> > values;
 		vector<int> parts;
 		vector<float> parameters;
+		vector<Quality> qualities;
 
 
 
@@ -57,6 +59,11 @@ class LPAggregWrapper {
 		int getVectorSize();
 		float getParameter(int index);
 		int getParametersNumber();
+		double getGainByIndex(int index);
+		double getGainByParameter(float parameter);
+		double getLossByIndex(int index);
+		double getLossByParameter(float parameter);
+
 
 };
 

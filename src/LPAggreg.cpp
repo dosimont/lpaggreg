@@ -117,7 +117,7 @@ void LPAggreg::init(bool normalization) {
 
 }
 
-vector<int> LPAggreg::process(float parameter) {
+vector<int> LPAggreg::getParts(float parameter) {
 	deleteBestPartitions();
 	computeBestCuts(parameter);
 	computeBestPartitions();
@@ -201,7 +201,7 @@ void LPAggreg::addBestQualities(float parameter1, float parameter2,	Quality *bes
 	}
 }
 
-vector<float> LPAggreg::dichotomy(float threshold) {
+vector<float> LPAggreg::getParameters(float threshold) {
 	deleteParameters();
 	deleteQualitiesD();
 	computeBestQualities(threshold);

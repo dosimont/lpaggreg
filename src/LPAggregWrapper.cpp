@@ -71,7 +71,7 @@ int LPAggregWrapper::getVectorSize() {
 
 void LPAggregWrapper::computeParts(float parameter) {
 	parts.clear();
-	parts=aggregator.process(parameter);
+	parts=aggregator.getParts(parameter);
 }
 
 void LPAggregWrapper::computeQualities(bool normalization) {
@@ -90,7 +90,8 @@ int LPAggregWrapper::getPartsNumber() {
 }
 
 void LPAggregWrapper::computeDichotomy(float threshold) {
-	parameters=aggregator.dichotomy(threshold);
+	parameters=aggregator.getParameters(threshold);
+	qualities=aggregator.getQualities();
 }
 
 int LPAggregWrapper::getParametersNumber() {
@@ -100,5 +101,31 @@ int LPAggregWrapper::getParametersNumber() {
 float LPAggregWrapper::getParameter(int index) {
 	if (index < getParametersNumber())
 		return parameters[index];
+	return -1;
+}
+
+double LPAggregWrapper::getGainByIndex(int index) {
+	if (index<qualities.size())
+		return qualities[index].getGain();
+	return -1;
+}
+
+double LPAggregWrapper::getGainByParameter(float parameter) {
+	for (int i=0; i<parameters.size(); i++)
+		if (parameter==parameters[i])
+		   return qualities[i].getGain();
+	return -1;
+}
+
+double LPAggregWrapper::getLossByIndex(int index) {
+	if (index<qualities.size())
+		return qualities[index].getLoss();
+	return -1;
+}
+
+double LPAggregWrapper::getLossByParameter(float parameter) {
+	for (int i=0; i<parameters.size(); i++)
+		if (parameter==parameters[i])
+		   return qualities[i].getLoss();
 	return -1;
 }

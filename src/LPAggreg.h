@@ -39,11 +39,9 @@ using namespace std;
 
 class LPAggreg { //ABC
 	private:
-		//float parameter;
 		int size;
 	protected:
 		vector< vector<Quality*> > qualities;
-		//int ** bestCuts;
 		int * bestCuts;
 		vector<int> bestPartitions;
 		vector<float> parametersD;
@@ -73,9 +71,9 @@ class LPAggreg { //ABC
 		virtual ~LPAggreg();
 		int getSize() const;
 		void init(bool normalization);
-		vector<int> process(float parameter);
-		vector<float> dichotomy(float threshold);
-		const vector<Quality*>& getQualitiesD() const {
+		vector<int> getParts(float parameter);
+		vector<float> getParameters(float threshold);
+		const vector<Quality*>& getQualities() const {
 			return qualitiesD;
 		}
 };
