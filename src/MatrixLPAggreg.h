@@ -9,7 +9,7 @@
  * Feb. 2013. (forthcoming)"
  *
  * (C) Copyright (February 28th 2013) Damien Dosimont. All rights reserved.
- *
+ * 
  * Damien Dosimont <damien.dosimont@imag.fr>
  *
  * This library is free software; you can redistribute it and/or modify it
@@ -29,59 +29,43 @@
  *
  *******************************************************************************/
 
-#include "LPAggregWrapper.h"
+/*Author : Damien Dosimont <damien.dosimont@imag.fr>*/
 
+/*MatrixLPAggreg header file
+ *
+ * Class that enables to perform LP aggregation on matrix. Inherits from
+ * virtual LPAggreg class.
+ */
 
-LPAggregWrapper::LPAggregWrapper() :
-parts(vector<int>()){
-}
+#ifndef MATRIXLPAGGREG_H_
+#define MATRIXLPAGGREG_H_
 
-LPAggregWrapper::~LPAggregWrapper() {
-	parts.clear();
-}
+#include <vector>
+#include "LPAggreg.h"
+#include <iostream>
 
-int LPAggregWrapper::getPart(int index) {
-	if (index < getPartNumber())
-		return parts[index];
-	return -1;
-}
+class MatrixLPAggreg: public LPAggreg{
+	private:
 
-int LPAggregWrapper::getPartNumber() {
-	return (int)parts.size();
-}
+		/*Value matrix used as input*/
+		vector< vector < vector<double> > > values;
 
-int LPAggregWrapper::getParameterNumber() {
-	return (int)parameters.size();
-}
+	protected:
 
-float LPAggregWrapper::getParameter(int index) {
-	if (index < getParameterNumber())
-		return parameters[index];
-	return -1;
-}
+		/*Override LPAggreg virtual method. Perform quality computation.
+		 * bool normalization : if true, normalize quality measures*/
+		void computeQualities(bool normalization);
 
-double LPAggregWrapper::getGainByIndex(int index) {
-	if (index<(int) qualities.size())
-		return qualities[index]->getGain();
-	return -1;
-}
+	public:
 
-double LPAggregWrapper::getGainByParameter(float parameter) {
-	for (int i=0; i<(int) parameters.size(); i++)
-		if (parameter==parameters[i])
-		   return qualities[i]->getGain();
-	return -1;
-}
+		/*Constructor with values*/
+		MatrixLPAggreg(vector< vector < vector<double> > > values);
 
-double LPAggregWrapper::getLossByIndex(int index) {
-	if (index<(int) qualities.size())
-		return qualities[index]->getLoss();
-	return -1;
-}
+		/*Constructor*/
+		MatrixLPAggreg();
 
-double LPAggregWrapper::getLossByParameter(float parameter) {
-	for (int i=0; i<(int) parameters.size(); i++)
-		if (parameter==parameters[i])
-		   return qualities[i]->getLoss();
-	return -1;
-}
+		/*Set input values*/
+		void setValues(const vector< vector < vector<double> > > &values);
+};
+
+#endif /* MATRIXLPAGGREG_H_ */
