@@ -5,8 +5,8 @@
  *      Author: dosimont
  */
 
-#ifndef VLPAGGREGWRAPPER_H_
-#define VLPAGGREGWRAPPER_H_
+#ifndef MLPAGGREGWRAPPER_H_
+#define MLPAGGREGWRAPPER_H_
 
 #include "LPAggregWrapper.h"
 #include "MatrixLPAggreg.h"
@@ -62,4 +62,4 @@ class MLPAggregWrapper: public LPAggregWrapper {
 		int getVectorSize();
 };
 
-#endif /* VLPAGGREGWRAPPER_H_ */
+#endif /* MLPAGGREGWRAPPER_H_ */
