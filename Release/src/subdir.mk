@@ -6,22 +6,31 @@
 CPP_SRCS += \
 ../src/LPAggreg.cpp \
 ../src/LPAggregWrapper.cpp \
+../src/MLPAggregWrapper.cpp \
+../src/MatrixLPAggreg.cpp \
 ../src/Quality.cpp \
 ../src/ScalarLPAggreg.cpp \
+../src/VLPAggregWrapper.cpp \
 ../src/VectorLPAggreg.cpp 
 
 OBJS += \
 ./src/LPAggreg.o \
 ./src/LPAggregWrapper.o \
+./src/MLPAggregWrapper.o \
+./src/MatrixLPAggreg.o \
 ./src/Quality.o \
 ./src/ScalarLPAggreg.o \
+./src/VLPAggregWrapper.o \
 ./src/VectorLPAggreg.o 
 
 CPP_DEPS += \
 ./src/LPAggreg.d \
 ./src/LPAggregWrapper.d \
+./src/MLPAggregWrapper.d \
+./src/MatrixLPAggreg.d \
 ./src/Quality.d \
 ./src/ScalarLPAggreg.d \
+./src/VLPAggregWrapper.d \
 ./src/VectorLPAggreg.d 
 
 

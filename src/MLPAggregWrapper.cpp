@@ -9,12 +9,15 @@
 
 
 MLPAggregWrapper::MLPAggregWrapper() :
-LPAggregWrapper(), aggregator(MatrixLPAggreg()), values(vector< vector<double> >()){
+LPAggregWrapper(), aggregator(MatrixLPAggreg()), values(vector< vector < vector <double> > >()){
 }
 
 MLPAggregWrapper::~MLPAggregWrapper() {
-	for (int i=0; i<getVectorNumber(); i++)
+	for (int i=0; i<getMatrixNumber(); i++){
+		for (int j=0; j<getMatrixSize(); j++)
+			values[i][j].clear();
 		values[i].clear();
+	}
 	values.clear();
 	parts.clear();
 }
