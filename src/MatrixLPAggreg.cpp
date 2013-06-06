@@ -108,6 +108,10 @@ void MatrixLPAggreg::computeQualities(bool normalization) {
 	}
 	for (int i = 0; i < n; i++) {
 		for (int j=0; j < n; j++){
+			for (int k=0; k<m; k++){
+				delete[] sumValues[i][j][k];
+				delete[] entValues[i][j][k];
+			}
 			delete[] sumValues[i][j];
 			delete[] entValues[i][j];
 		}
