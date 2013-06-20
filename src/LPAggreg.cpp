@@ -127,14 +127,20 @@ int LPAggreg::fillPartition(int i, int p) {
 
 void LPAggreg::init(bool normalization) {
 	deleteQualities();
+	timer.startQualityTimer();
 	computeQualities(normalization);
+	timer.stopQualityTimer();
 
 }
 
 vector<int> LPAggreg::getParts(float parameter) {
 	deleteBestPartitions();
+	timer.startBestCutTimer();
 	computeBestCuts(parameter);
+	timer.stopBestCutTimer();
+	timer.startBestPartitionTimer();
 	computeBestPartitions();
+	timer.stopBestPartitionTimer();
 	deleteBestCuts();
 	return bestPartitions;
 }

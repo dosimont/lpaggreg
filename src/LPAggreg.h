@@ -48,6 +48,7 @@
 #include <vector>
 #include <math.h>
 #include "Quality.h"
+#include "Timer.h"
 
 using namespace std;
 
@@ -56,6 +57,7 @@ class LPAggreg { //ABC
 
 		/*Number of vector of scalar of input matrix*/
 		int size;
+		Timer timer;
 
 	protected:
 
@@ -145,6 +147,9 @@ class LPAggreg { //ABC
 		vector<float> getParameters(float threshold);
 		const vector<Quality*>& getQualities() const {
 			return qualitiesD;
+		}
+		const Timer& getTimer() const {
+			return timer;
 		}
 };
 
