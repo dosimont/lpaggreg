@@ -31,7 +31,7 @@
 
 /*Author : Damien Dosimont <damien.dosimont@imag.fr>*/
 
-/*MatrixLPAggreg cpp file
+/* MatrixLPAggreg cpp file
  *
  * Class that enables to perform LP aggregation on matrix. Inherits from
  * virtual LPAggreg class.
