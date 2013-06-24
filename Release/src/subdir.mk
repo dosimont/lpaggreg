@@ -10,6 +10,7 @@ CPP_SRCS += \
 ../src/MatrixLPAggreg.cpp \
 ../src/Quality.cpp \
 ../src/ScalarLPAggreg.cpp \
+../src/Timer.cpp \
 ../src/VLPAggregWrapper.cpp \
 ../src/VectorLPAggreg.cpp 
 
@@ -20,6 +21,7 @@ OBJS += \
 ./src/MatrixLPAggreg.o \
 ./src/Quality.o \
 ./src/ScalarLPAggreg.o \
+./src/Timer.o \
 ./src/VLPAggregWrapper.o \
 ./src/VectorLPAggreg.o 
 
@@ -30,6 +32,7 @@ CPP_DEPS += \
 ./src/MatrixLPAggreg.d \
 ./src/Quality.d \
 ./src/ScalarLPAggreg.d \
+./src/Timer.d \
 ./src/VLPAggregWrapper.d \
 ./src/VectorLPAggreg.d 
 

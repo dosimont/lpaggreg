@@ -241,3 +241,15 @@ void LPAggreg::deleteParameters() {
 int LPAggreg::sizeReduction(int size) {
 	return size-1;
 }
+
+time_t LPAggreg::getQualityDuration() {
+	return timer.getQualityDuration();
+}
+
+time_t LPAggreg::getBestCutDuration() {
+	return timer.getBestCutDuration();
+}
+
+time_t LPAggreg::getBestPartitionDuration() {
+	return timer.getBestPartitionDuration();
+}

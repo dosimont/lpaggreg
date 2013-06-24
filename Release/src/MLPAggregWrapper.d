@@ -1,6 +1,6 @@
 src/MLPAggregWrapper.d: ../src/MLPAggregWrapper.cpp \
  ../src/MLPAggregWrapper.h ../src/LPAggregWrapper.h ../src/Quality.h \
- ../src/MatrixLPAggreg.h ../src/LPAggreg.h
+ ../src/MatrixLPAggreg.h ../src/LPAggreg.h ../src/Timer.h
 
 ../src/MLPAggregWrapper.h:
 
@@ -11,3 +11,5 @@ src/MLPAggregWrapper.d: ../src/MLPAggregWrapper.cpp \
 ../src/MatrixLPAggreg.h:
 
 ../src/LPAggreg.h:
+
+../src/Timer.h:
