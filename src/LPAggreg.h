@@ -148,9 +148,9 @@ class LPAggreg { //ABC
 		const vector<Quality*>& getQualities() const {
 			return qualitiesD;
 		}
-		time_t getQualityDuration();
-		time_t getBestCutDuration();
-		time_t getBestPartitionDuration();
+		useconds_t getQualityDuration();
+		useconds_t getBestCutDuration();
+		useconds_t getBestPartitionDuration();
 };
 
 #endif /* LPAGGREG_H_ */

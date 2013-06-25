@@ -9,12 +9,12 @@
 #define TIMER_H_
 
 #include <cstdlib>
-#include <time.h>
+#include <sys/time.h>
 
 class Timer {
 
 	private:
-		time_t timeQ1, timeQ2, timeBC1, timeBC2, timeBP1, timeBP2;
+		timeval timeQ1, timeQ2, timeBC1, timeBC2, timeBP1, timeBP2;
 
 	public:
 		Timer();
@@ -24,9 +24,9 @@ class Timer {
 		void stopBestCutTimer();
 		void startBestPartitionTimer();
 		void stopBestPartitionTimer();
-		time_t getQualityDuration();
-		time_t getBestCutDuration();
-		time_t getBestPartitionDuration();
+		suseconds_t getQualityDuration();
+		suseconds_t getBestCutDuration();
+		suseconds_t getBestPartitionDuration();
 		virtual ~Timer();
 };
 

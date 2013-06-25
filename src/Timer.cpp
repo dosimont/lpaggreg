@@ -7,43 +7,43 @@
 
 #include "Timer.h"
 
-Timer::Timer(): timeQ1(0), timeQ2(0), timeBC1(0), timeBC2(0), timeBP1(0), timeBP2(0) {
+Timer::Timer()/*: timeQ1(NULL), timeQ2(0), timeBC1(0), timeBC2(0), timeBP1(0), timeBP2(0)*/ {
 }
 
 void Timer::startQualityTimer() {
-	timeQ1=time(NULL);
+	gettimeofday(&timeQ1,NULL);
 }
 
 void Timer::stopQualityTimer() {
-	timeQ2=time(NULL);
+	gettimeofday(&timeQ2, NULL);
 }
 
 void Timer::startBestCutTimer() {
-	timeBC1=time(NULL);
+	gettimeofday(&timeBC1,NULL);
 }
 
 void Timer::stopBestCutTimer() {
-	timeBC2=time(NULL);
+	gettimeofday(&timeBC2,NULL);
 }
 
 void Timer::startBestPartitionTimer() {
-	timeBP1=time(NULL);
+	gettimeofday(&timeBP1,NULL);
 }
 
 void Timer::stopBestPartitionTimer() {
-	timeBP2=time(NULL);
+	gettimeofday(&timeBP2,NULL);
 }
 
-time_t Timer::getQualityDuration() {
-	return timeQ2-timeQ1;
+suseconds_t Timer::getQualityDuration() {
+	return timeQ2.tv_usec-timeQ1.tv_usec;
 }
 
-time_t Timer::getBestCutDuration() {
-	return timeBC2-timeBC1;
+suseconds_t Timer::getBestCutDuration() {
+	return timeBC2.tv_usec-timeBC1.tv_usec;
 }
 
-time_t Timer::getBestPartitionDuration() {
-	return timeBP2-timeBP1;
+suseconds_t Timer::getBestPartitionDuration() {
+	return timeBP2.tv_usec-timeBP1.tv_usec;
 }
 
 Timer::~Timer() {
