@@ -24,9 +24,9 @@ class Timer {
 		void stopBestCutTimer();
 		void startBestPartitionTimer();
 		void stopBestPartitionTimer();
-		suseconds_t getQualityDuration();
-		suseconds_t getBestCutDuration();
-		suseconds_t getBestPartitionDuration();
+		int getQualityDuration(); //ms
+		int getBestCutDuration(); //ms
+		int getBestPartitionDuration(); //ms
 		virtual ~Timer();
 };
 

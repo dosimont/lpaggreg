@@ -242,14 +242,14 @@ int LPAggreg::sizeReduction(int size) {
 	return size-1;
 }
 
-useconds_t LPAggreg::getQualityDuration() {
+int LPAggreg::getQualityDuration() {
 	return timer.getQualityDuration();
 }
 
-useconds_t LPAggreg::getBestCutDuration() {
+int LPAggreg::getBestCutDuration() {
 	return timer.getBestCutDuration();
 }
 
-useconds_t LPAggreg::getBestPartitionDuration() {
+int LPAggreg::getBestPartitionDuration() {
 	return timer.getBestPartitionDuration();
 }

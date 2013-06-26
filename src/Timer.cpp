@@ -34,16 +34,16 @@ void Timer::stopBestPartitionTimer() {
 	gettimeofday(&timeBP2,NULL);
 }
 
-suseconds_t Timer::getQualityDuration() {
-	return timeQ2.tv_usec-timeQ1.tv_usec;
+int Timer::getQualityDuration() {
+	return ((timeQ2.tv_sec-timeQ1.tv_sec)*1000)+((timeQ2.tv_usec-timeQ1.tv_usec)/1000);
 }
 
-suseconds_t Timer::getBestCutDuration() {
-	return timeBC2.tv_usec-timeBC1.tv_usec;
+int Timer::getBestCutDuration() {
+	return ((timeBC2.tv_sec-timeBC1.tv_sec)*1000)+((timeBC2.tv_usec-timeBC1.tv_usec)/1000);
 }
 
-suseconds_t Timer::getBestPartitionDuration() {
-	return timeBP2.tv_usec-timeBP1.tv_usec;
+int Timer::getBestPartitionDuration() {
+	return ((timeBP2.tv_sec-timeBP1.tv_sec)*1000)+((timeBP2.tv_usec-timeBP1.tv_usec)/1000);
 }
 
 Timer::~Timer() {
