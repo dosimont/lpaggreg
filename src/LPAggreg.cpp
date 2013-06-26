@@ -75,34 +75,27 @@ void LPAggreg::setSize(int size) {
 
 void LPAggreg::computeBestCuts(float parameter) {
 	int n = getSize();
-//	bestCuts = new int*[n];
-//	double ** bestQuality = new double*[n];
-//	for (int i = 0; i < n; i++) {
-//		bestCuts[i] = new int[n];
-//		bestQuality[i] = new double[n];
-//	}
-//	for (int j = 0; j < n; j++) {
-//		bestCuts[0][j] = 0;
-//		bestQuality[0][j] = 0;
-//	}
 	bestCuts = new int[n];
 	double * bestQuality = new double[n];
-	bestCuts[0] = 0;
-	bestQuality[0] = 0;
+	bestCuts[0] = 0;//WRITE
+	bestQuality[0] = 0;//WRITE
+	eval.incrBCCounter(2);
 	for (int i = 1; i < n; i++) {
-		//for (int j = 0; j < n - i; j++) {
-			long currentCut = 0;
-			double currentQuality = parameter * qualities[i][0]->getGain()
+			long currentCut = 0;//WRITE
+			double currentQuality = parameter * qualities[i][0]->getGain()//WRITE
 					- (1 - parameter) * qualities[i][0]->getLoss();
-			for (int k = 1; k < i + 1; k++) {
+			eval.incrBCCounter(2);
+			for (int k = 1; k < i + 1; k++) {//WRITE
 				double quality = bestQuality[k - 1] + parameter * qualities[i-k][k]->getGain()-(1-parameter) * qualities[i-k][k]->getLoss();
+				eval.incrBCCounter();
 				if (quality > currentQuality) {//TODO have replaced >= by > ; to verify
-					currentCut = k;
+					currentCut = k;//WRITE*2
 					currentQuality = quality;
+					eval.incrBCCounter(2);
 				}
-				bestCuts[i] = currentCut;
+				bestCuts[i] = currentCut;//WRITE*2
 				bestQuality[i] = currentQuality;
-
+				eval.incrBCCounter(2);
 		}
 	}
 	delete[] bestQuality;
@@ -110,37 +103,47 @@ void LPAggreg::computeBestCuts(float parameter) {
 
 void LPAggreg::computeBestPartitions() {
 	int n = getSize();
-	for (int i = 0; i < n; i++)
-		bestPartitions.push_back(-1);
+	for (int i = 0; i < n; i++){
+		bestPartitions.push_back(-1);//WRITE
+		eval.incrBPCounter();
+	}
 	fillPartition(n - 1, 0);
 	
 }
 
 int LPAggreg::fillPartition(int i, int p) {
-	int c = bestCuts[i];
-	if (c > 0)
-		p = fillPartition(c - 1, p);
-	for (int k = c; k < i + 1; k++)
-		bestPartitions[k] = p;
+	int c = bestCuts[i];//WRITE
+	eval.incrBPCounter();
+	if (c > 0){
+		p = fillPartition(c - 1, p);//WRITE
+		eval.incrBPCounter();
+	}
+	for (int k = c; k < i + 1; k++){
+		bestPartitions[k] = p;//WRITE
+		eval.incrBPCounter();
+	}
 	return p + 1;
 }
 
 void LPAggreg::init(bool normalization) {
 	deleteQualities();
-	timer.startQualityTimer();
+	eval.resetQCounter();
+	eval.startQTimer();
 	computeQualities(normalization);
-	timer.stopQualityTimer();
+	eval.stopQTimer();
 
 }
 
 vector<int> LPAggreg::getParts(float parameter) {
 	deleteBestPartitions();
-	timer.startBestCutTimer();
+	eval.resetBCCounter();
+	eval.startBCTimer();
 	computeBestCuts(parameter);
-	timer.stopBestCutTimer();
-	timer.startBestPartitionTimer();
+	eval.stopBCTimer();
+	eval.resetBPCounter();
+	eval.startBPTimer();
 	computeBestPartitions();
-	timer.stopBestPartitionTimer();
+	eval.stopBPTimer();
 	deleteBestCuts();
 	return bestPartitions;
 }
@@ -243,13 +246,25 @@ int LPAggreg::sizeReduction(int size) {
 }
 
 int LPAggreg::getQualityDuration() {
-	return timer.getQualityDuration();
+	return eval.getQDuration();
 }
 
 int LPAggreg::getBestCutDuration() {
-	return timer.getBestCutDuration();
+	return eval.getBCDuration();
 }
 
 int LPAggreg::getBestPartitionDuration() {
-	return timer.getBestPartitionDuration();
+	return eval.getBPDuration();
+}
+
+int LPAggreg::getQualityCount() {
+	return eval.getQCount();
+}
+
+int LPAggreg::getBestCutCount() {
+	return eval.getBCCount();
+}
+
+int LPAggreg::getBestPartitionCount() {
+	return eval.getBPCount();
 }

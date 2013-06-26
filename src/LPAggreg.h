@@ -48,7 +48,7 @@
 #include <vector>
 #include <math.h>
 #include "Quality.h"
-#include "Timer.h"
+#include "Eval.h"
 
 using namespace std;
 
@@ -57,7 +57,7 @@ class LPAggreg { //ABC
 
 		/*Number of vector of scalar of input matrix*/
 		int size;
-		Timer timer;
+
 
 	protected:
 
@@ -77,6 +77,8 @@ class LPAggreg { //ABC
 
 		/*Vector that contains qualities related to parametersD list*/
 		vector<Quality*> qualitiesD;
+
+		Eval eval;
 
 	protected:
 		/*This method has to be overridden. It computes quality matrix.
@@ -151,6 +153,9 @@ class LPAggreg { //ABC
 		int getQualityDuration(); //ms
 		int getBestCutDuration(); //ms
 		int getBestPartitionDuration(); //ms
+		int getQualityCount();
+		int getBestCutCount();
+		int getBestPartitionCount();
 };
 
 #endif /* LPAGGREG_H_ */
