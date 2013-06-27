@@ -1,5 +1,5 @@
 src/MatrixLPAggreg.d: ../src/MatrixLPAggreg.cpp ../src/MatrixLPAggreg.h \
- ../src/LPAggreg.h ../src/Quality.h ../src/Timer.h
+ ../src/LPAggreg.h ../src/Quality.h ../src/Eval.h
 
 ../src/MatrixLPAggreg.h:
 
@@ -7,4 +7,4 @@ src/MatrixLPAggreg.d: ../src/MatrixLPAggreg.cpp ../src/MatrixLPAggreg.h \
 
 ../src/Quality.h:
 
-../src/Timer.h:
+../src/Eval.h:
