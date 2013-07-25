@@ -33,7 +33,7 @@
 
 /*NodeLPAggreg cpp file
  *
- * Class that enables to perform LP aggregation on scalars. Inherits from
+ * Class that enables to perform LP aggregation on Nodes. Inherits from
  * virtual LPAggreg class.
  */
 
@@ -41,13 +41,13 @@
 #include <math.h>
 
 using namespace std;
-ScalarLPAggreg::ScalarLPAggreg(
+NodeLPAggreg::NodeLPAggreg(
 		vector<double> values) :
 		LPAggreg(), values(values) {
 	setSize(this->values.size());
 }
 
-void ScalarLPAggreg::computeQualities(bool normalization) {
+void NodeLPAggreg::computeQualities(bool normalization) {
 	//Init and allocation
 	int n = getSize();
 	double ** sumValues = new double*[n];
@@ -96,10 +96,10 @@ void ScalarLPAggreg::computeQualities(bool normalization) {
 	delete[] entValues;
 }
 
-ScalarLPAggreg::ScalarLPAggreg() : LPAggreg(), values(vector <double>()){
+NodeLPAggreg::NodeLPAggreg() : LPAggreg(), values(vector <double>()){
 }
 
-void ScalarLPAggreg::setValues(const vector<double>& values) {
+void NodeLPAggreg::setValues(const vector<double>& values) {
 	this->values = values;
 	setSize(this->values.size());
 }

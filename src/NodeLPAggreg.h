@@ -31,9 +31,9 @@
 
 /*Author : Damien Dosimont <damien.dosimont@imag.fr>*/
 
-/*ScalarLPAggreg header file
+/*NodeLPAggreg header file
  *
- * Class that enables to perform LP aggregation on scalars. Inherits from
+ * Class that enables to perform LP aggregation on Nodes. Inherits from
  * virtual LPAggreg class.
  */
 
@@ -46,7 +46,7 @@
 
 using namespace std;
 
-class ScalarLPAggreg: public LPAggreg {
+class NodeLPAggreg: public LPAggreg {
 	private:
 
 		/*Values used as input*/
@@ -61,13 +61,13 @@ class ScalarLPAggreg: public LPAggreg {
 	public:
 
 		/*Constructor with values*/
-		ScalarLPAggreg(vector<double> values);
+		NodeLPAggreg(vector<double> values);
 
 		/*Constructor*/
-		ScalarLPAggreg();
+		NodeLPAggreg();
 
 		/*Set input values*/
 		void setValues(const vector<double>& values);
 };
 
-#endif /* SCALARLPAGGREG_H_ */
+#endif /* NodeLPAGGREG_H_ */
