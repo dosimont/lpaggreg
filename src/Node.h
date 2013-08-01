@@ -10,34 +10,43 @@
 
 #include <iostream>
 #include <vector>
-#include <Quality.h>
+#include "Quality.h"
+#include "Complexity.h"
 
 using namespace std;
 
-class Node {
+class Node{
 	private:
+		int id;
 		double value;
 		Node *parent;
 		vector<Node*> childNodes;
-		vector<double> childValues;
 		Quality *quality;
+		bool aggregate;
+		int size;
+		double entSum;
+
 
 	public:
 		Node();
+		Node(Node* parent, int id);
 		virtual ~Node();
-		void addChild(Node *child);
-		void addChild(double child);
+		void addChild(Node* child);
 		void updateParents();
-		double getValue();
-		vector<Node*> getChildNodes(int i);
-		vector<double> getChildValues(int i);
-		int getChildNodesNumber();
-		int getChildValuesNumber();
 		Node* getParent();
 		Quality* getQuality();
 		void setQuality(Quality *quality);
+		void computeQuality();
 		bool hasChild();
 		void setParent(Node* parent);
+		const vector<Node*>& getChildNodes() const;
+		bool isAggregate() const;
+		int getId() const;
+		void setId(int id);
+		double getValue() const;
+		void setValue(double value);
+		double getEntSum() const;
+		int getSize() const;
 };
 
 #endif /* NODE_H_ */

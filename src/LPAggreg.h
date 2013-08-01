@@ -49,6 +49,7 @@
 #include <math.h>
 #include "Quality.h"
 #include "Eval.h"
+#include "Complexity.h"
 
 using namespace std;
 
@@ -89,17 +90,8 @@ class LPAggreg { //ABC
 		/*Deallocate quality matrix*/
 		void deleteQualities();
 
-		/*Entropy formula method*/
-		inline double entropy(double value);
-
-		/*Entropy reduction formula method*/
-		double entropyReduction(double value, double ent);
-
 		/*Size reduction formula method*/
 		int sizeReduction(int size);
-
-		/*Divergence formula method*/
-		double divergence(int size, double value, double ent);
 
 		/*Compute best cuts for a given parameter p*/
 		void computeBestCuts(float parameter);
@@ -147,9 +139,7 @@ class LPAggreg { //ABC
 		void init(bool normalization);
 		vector<int> getParts(float parameter);
 		vector<float> getParameters(float threshold);
-		const vector<Quality*>& getQualities() const {
-			return qualitiesD;
-		}
+		const vector<Quality*>& getQualities() const;
 		int getQualityDuration(); //ms
 		int getBestCutDuration(); //ms
 		int getBestPartitionDuration(); //ms

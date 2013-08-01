@@ -80,7 +80,7 @@ void MatrixLPAggreg::computeQualities(bool normalization) {
 		for (int k = 0; k < m; k++){
 			for (int o = 0; o < l; o++){
 				sumValues[0][j][k][o] = values[j][k][o];
-				entValues[0][j][k][o] = this->entropyReduction(sumValues[0][j][k][o], 0);
+				entValues[0][j][k][o] = entropyReduction(sumValues[0][j][k][o], 0);
 			}
 		}
 	}
@@ -91,8 +91,8 @@ void MatrixLPAggreg::computeQualities(bool normalization) {
 				for (int o = 0; o < l; o++){
 					sumValues[i][j][k][o] = sumValues[i - 1][j][k][o] + sumValues[0][i + j][k][o];
 					entValues[i][j][k][o] = entValues[i - 1][j][k][o] + entValues[0][i + j][k][o];
-					qualities[i][j]->addToGain(this->entropyReduction(sumValues[i][j][k][o], entValues[i][j][k][o]));
-					qualities[i][j]->addToLoss(this->divergence(i + 1, sumValues[i][j][k][o], entValues[i][j][k][o]));
+					qualities[i][j]->addToGain(entropyReduction(sumValues[i][j][k][o], entValues[i][j][k][o]));
+					qualities[i][j]->addToLoss(divergence(i + 1, sumValues[i][j][k][o], entValues[i][j][k][o]));
 				}
 			}
 		}

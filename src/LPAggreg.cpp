@@ -50,21 +50,6 @@ LPAggreg::~LPAggreg() {
 	deleteQualitiesD();
 }
 
-inline double LPAggreg::entropy(double value) {
-	return value * log(value) / log(2);
-}
-
-double LPAggreg::entropyReduction(double value, double ent) {
-	if (value > 0)
-		return entropy(value) - ent;
-	else
-		return 0;
-}
-
-double LPAggreg::divergence(int size, double value, double ent) {
-	return value * log(size) / log(2)  - entropyReduction(value, ent);
-}
-
 int LPAggreg::getSize() const {
 	return size;
 }
@@ -267,4 +252,8 @@ int LPAggreg::getBestCutCount() {
 
 int LPAggreg::getBestPartitionCount() {
 	return eval.getBPCount();
+}
+
+const vector<Quality*>& LPAggreg::getQualities() const {
+	return qualitiesD;
 }

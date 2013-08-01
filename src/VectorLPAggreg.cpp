@@ -74,7 +74,7 @@ void VectorLPAggreg::computeQualities(bool normalization) {
 	for (int j = 0; j < n; j++) {
 		for (int k =0; k< m; k++){
 			sumValues[0][j][k] = values[j][k];
-			entValues[0][j][k] = this->entropyReduction(sumValues[0][j][k], 0);
+			entValues[0][j][k] = entropyReduction(sumValues[0][j][k], 0);
 		}
 	}
 	//Other levels
@@ -83,8 +83,8 @@ void VectorLPAggreg::computeQualities(bool normalization) {
 			for (int k =0; k< m; k++){
 			sumValues[i][j][k] = sumValues[i - 1][j][k] + sumValues[0][i + j][k];
 			entValues[i][j][k] = entValues[i - 1][j][k] + entValues[0][i + j][k];
-			qualities[i][j]->addToGain(this->entropyReduction(sumValues[i][j][k], entValues[i][j][k]));
-			qualities[i][j]->addToLoss(this->divergence(i + 1, sumValues[i][j][k], entValues[i][j][k]));
+			qualities[i][j]->addToGain(entropyReduction(sumValues[i][j][k], entValues[i][j][k]));
+			qualities[i][j]->addToLoss(divergence(i + 1, sumValues[i][j][k], entValues[i][j][k]));
 			}
 		}
 	}

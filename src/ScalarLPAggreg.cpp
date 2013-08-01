@@ -64,7 +64,7 @@ void ScalarLPAggreg::computeQualities(bool normalization) {
 	//Microscopic level
 	for (int j = 0; j < n; j++) {
 		sumValues[0][j] = values[j];//WRITE
-		entValues[0][j] = this->entropyReduction(sumValues[0][j], 0);//WRITE
+		entValues[0][j] = entropyReduction(sumValues[0][j], 0);//WRITE
 		eval.incrQCounter(2);
 	}
 	//Other levels
@@ -72,8 +72,8 @@ void ScalarLPAggreg::computeQualities(bool normalization) {
 		for (int j = 0; j < n - i; j++) {//WRITE*4
 			sumValues[i][j] = sumValues[i - 1][j] + sumValues[0][i + j];
 			entValues[i][j] = entValues[i - 1][j] + entValues[0][i + j];
-			qualities[i][j]->setGain(this->entropyReduction(sumValues[i][j], entValues[i][j]));
-			qualities[i][j]->setLoss(this->divergence(i + 1, sumValues[i][j], entValues[i][j]));
+			qualities[i][j]->setGain(entropyReduction(sumValues[i][j], entValues[i][j]));
+			qualities[i][j]->setLoss(divergence(i + 1, sumValues[i][j], entValues[i][j]));
 			eval.incrQCounter(4);
 		}
 	}
