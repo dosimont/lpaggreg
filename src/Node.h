@@ -12,6 +12,8 @@
 #include <vector>
 #include "Quality.h"
 #include "Complexity.h"
+#define CHILDS (unsigned int i=0; i<childNodes.size(); i++)
+#define CHILD childNodes[i]
 
 using namespace std;
 
@@ -22,7 +24,7 @@ class Node{
 		Node *parent;
 		vector<Node*> childNodes;
 		Quality *quality;
-		bool aggregate;
+		bool aggregated;
 		int size;
 		double entSum;
 
@@ -40,13 +42,18 @@ class Node{
 		bool hasChild();
 		void setParent(Node* parent);
 		const vector<Node*>& getChildNodes() const;
-		bool isAggregate() const;
+		bool isAggregated() const;
 		int getId() const;
 		void setId(int id);
 		double getValue() const;
 		void setValue(double value);
 		double getEntSum() const;
 		int getSize() const;
+		void normalize(double maxGain, double maxLoss);
+		double computeAggregation(float parameter);
+		vector<int> * computeBestPartitions();
+		int fillBestPartitions(vector<int>*bestPartition, int p);
+		void setAggregated(bool aggregated);
 };
 
 #endif /* NODE_H_ */

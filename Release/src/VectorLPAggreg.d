@@ -1,5 +1,5 @@
 src/VectorLPAggreg.d: ../src/VectorLPAggreg.cpp ../src/VectorLPAggreg.h \
- ../src/LPAggreg.h ../src/Quality.h ../src/Eval.h
+ ../src/LPAggreg.h ../src/Quality.h ../src/Eval.h ../src/Complexity.h
 
 ../src/VectorLPAggreg.h:
 
@@ -8,3 +8,5 @@ src/VectorLPAggreg.d: ../src/VectorLPAggreg.cpp ../src/VectorLPAggreg.h \
 ../src/Quality.h:
 
 ../src/Eval.h:
+
+../src/Complexity.h:

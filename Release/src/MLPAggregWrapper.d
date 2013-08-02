@@ -1,6 +1,7 @@
 src/MLPAggregWrapper.d: ../src/MLPAggregWrapper.cpp \
  ../src/MLPAggregWrapper.h ../src/LPAggregWrapper.h ../src/Quality.h \
- ../src/MatrixLPAggreg.h ../src/LPAggreg.h ../src/Eval.h
+ ../src/MatrixLPAggreg.h ../src/LPAggreg.h ../src/Eval.h \
+ ../src/Complexity.h
 
 ../src/MLPAggregWrapper.h:
 
@@ -13,3 +14,5 @@ src/MLPAggregWrapper.d: ../src/MLPAggregWrapper.cpp \
 ../src/LPAggreg.h:
 
 ../src/Eval.h:
+
+../src/Complexity.h:
