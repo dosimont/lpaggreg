@@ -10,7 +10,7 @@ CPP_SRCS += \
 ../src/LPAggregWrapper.cpp \
 ../src/MLPAggregWrapper.cpp \
 ../src/MatrixLPAggreg.cpp \
-../src/Node.cpp \
+../src/NodeLPAggreg.cpp \
 ../src/Quality.cpp \
 ../src/ScalarLPAggreg.cpp \
 ../src/VLPAggregWrapper.cpp \
@@ -23,7 +23,7 @@ OBJS += \
 ./src/LPAggregWrapper.o \
 ./src/MLPAggregWrapper.o \
 ./src/MatrixLPAggreg.o \
-./src/Node.o \
+./src/NodeLPAggreg.o \
 ./src/Quality.o \
 ./src/ScalarLPAggreg.o \
 ./src/VLPAggregWrapper.o \
@@ -36,7 +36,7 @@ CPP_DEPS += \
 ./src/LPAggregWrapper.d \
 ./src/MLPAggregWrapper.d \
 ./src/MatrixLPAggreg.d \
-./src/Node.d \
+./src/NodeLPAggreg.d \
 ./src/Quality.d \
 ./src/ScalarLPAggreg.d \
 ./src/VLPAggregWrapper.d \
