@@ -71,6 +71,7 @@ class NodeLPAggreg{
 		int getBestPartitionCount();
 		int getRank() const;
 		void setRank(int rank);
+		bool ownsNode(NodeLPAggreg* node);
 };
 
 #endif /* NODE_H_ */

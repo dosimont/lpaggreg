@@ -8,15 +8,15 @@
 #include "NodeLPAggreg.h"
 
 
-NodeLPAggreg::NodeLPAggreg(): id(0), rank(0), value(0), parent(0), childNodes(vector<NodeLPAggreg*>()), quality(new Quality(0,0)), aggregated(false), size(0), entSum(0), eval(new Eval()), bestPartitions(0){
+NodeLPAggreg::NodeLPAggreg(): id(0), rank(0), value(0), parent(0), childNodes(vector<NodeLPAggreg*>()), quality(new Quality(0,0)), aggregated(false), size(0), entSum(0), eval(0), bestPartitions(0){
 	
 }
 
-NodeLPAggreg::NodeLPAggreg(int id, int value=0): id(id), rank(0), value(value), parent(0), childNodes(vector<NodeLPAggreg*>()), quality(new Quality(0,0)), aggregated(false), size(0), entSum(0), eval(new Eval()), bestPartitions(0){
+NodeLPAggreg::NodeLPAggreg(int id, int value=0): id(id), rank(0), value(value), parent(0), childNodes(vector<NodeLPAggreg*>()), quality(new Quality(0,0)), aggregated(false), size(0), entSum(0), eval(0), bestPartitions(0){
 
 }
 
-NodeLPAggreg::NodeLPAggreg(NodeLPAggreg* parent, int id=0, int value=0): id(id), rank(0), value(value), parent(parent), childNodes(vector<NodeLPAggreg*>()), quality(new Quality(0,0)), aggregated(false), size(0), entSum(0), eval(new Eval()), bestPartitions(0){
+NodeLPAggreg::NodeLPAggreg(NodeLPAggreg* parent, int id=0, int value=0): id(id), rank(0), value(value), parent(parent), childNodes(vector<NodeLPAggreg*>()), quality(new Quality(0,0)), aggregated(false), size(0), entSum(0), eval(0), bestPartitions(0){
 	parent->addChild(this);
 }
 
@@ -24,7 +24,6 @@ void NodeLPAggreg::addChild(NodeLPAggreg *child) {
 	childNodes.push_back(child);
 	child->setParent(this);
 	child->setRank(rank+1);
-	child->setEval(eval);
 }
 
 void NodeLPAggreg::setQuality(Quality *quality) {
@@ -140,8 +139,9 @@ bool NodeLPAggreg::hasParent() {
 }
 
 void NodeLPAggreg::setEval(Eval* eval) {
-	delete this->eval;
 	this->eval = eval;
+	for CHILDS
+		CHILD->setEval(eval);
 }
 
 void NodeLPAggreg::setAggregated(bool aggregated) {
@@ -192,6 +192,7 @@ int NodeLPAggreg::fillBestPartitions(vector<int>*bestPartitions, int p) {
 
 void NodeLPAggreg::init(bool normalization) {
 	if (!hasParent()){
+		setEval(new Eval);
 		eval->resetQCounter();
 		eval->startQTimer();
 		computeQuality();
@@ -249,4 +250,15 @@ void NodeLPAggreg::setRank(int rank) {
 	this->rank = rank;
 	for CHILDS
 		CHILD->setRank(rank+1);
+}
+
+bool NodeLPAggreg::ownsNode(NodeLPAggreg* node) {
+	if (this==node)
+		return true;
+	if (hasChild()){
+		for CHILDS
+			if (CHILD->ownsNode(node))
+				return true;
+	}
+	return false;
 }
