@@ -5,6 +5,4 @@
 .cproject
 .project
 Debug
-Debug/*
 .settings
-.settings/*

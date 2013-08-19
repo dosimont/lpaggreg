@@ -8,17 +8,18 @@
 #include "NodeLPAggreg.h"
 
 
-NodeLPAggreg::NodeLPAggreg(): id(0), rank(0), value(0), parent(0), childNodes(vector<NodeLPAggreg*>()), quality(new Quality(0,0)), aggregated(false), size(0), entSum(0), eval(0), bestPartitions(0){
+NodeLPAggreg::NodeLPAggreg(): id(0), rank(0), parent(0), childNodes(vector<NodeLPAggreg*>()), quality(new Quality(0,0)), aggregated(false), size(0), entSum(0), eval(0), bestPartitions(0){
 	
 }
 
-NodeLPAggreg::NodeLPAggreg(int id, int value=0): id(id), rank(0), value(value), parent(0), childNodes(vector<NodeLPAggreg*>()), quality(new Quality(0,0)), aggregated(false), size(0), entSum(0), eval(0), bestPartitions(0){
+NodeLPAggreg::NodeLPAggreg(int id): id(id), rank(0), parent(0), childNodes(vector<NodeLPAggreg*>()), quality(new Quality(0,0)), aggregated(false), size(0), entSum(0), eval(0), bestPartitions(0){
 
 }
 
-NodeLPAggreg::NodeLPAggreg(NodeLPAggreg* parent, int id=0, int value=0): id(id), rank(0), value(value), parent(parent), childNodes(vector<NodeLPAggreg*>()), quality(new Quality(0,0)), aggregated(false), size(0), entSum(0), eval(0), bestPartitions(0){
+NodeLPAggreg::NodeLPAggreg(NodeLPAggreg* parent, int id=0): id(id), rank(0), parent(parent), childNodes(vector<NodeLPAggreg*>()), quality(new Quality(0,0)), aggregated(false), size(0), entSum(0), eval(0), bestPartitions(0){
 	parent->addChild(this);
 }
+
 
 void NodeLPAggreg::addChild(NodeLPAggreg *child) {
 	childNodes.push_back(child);
@@ -58,43 +59,10 @@ void NodeLPAggreg::setId(int id) {
 	this->id = id;
 }
 
-double NodeLPAggreg::getValue() const {
-	return value;
-}
-
-void NodeLPAggreg::setValue(double value) {
-	if (!hasChild()){
-		this->value = value;
-	}
-}
 
 const vector<NodeLPAggreg*>& NodeLPAggreg::getChildNodes() const {
 	return childNodes;
 }
-
-void NodeLPAggreg::computeQuality() {
-	if (!hasChild()){
-		entSum=entropyReduction(value, 0);
-		size=1;
-		eval->incrQCounter(2);
-	}else{
-		value=0;
-		entSum=0;
-		size=0;
-		eval->incrQCounter(3);
-		for CHILDS{
-			CHILD->computeQuality();
-			value+=CHILD->getValue();
-			entSum+=CHILD->getEntSum();
-			size+=CHILD->getSize();
-			eval->incrQCounter(3);
-		}
-		quality->setGain(entropyReduction(value, entSum));
-		quality->setLoss(divergence(size, value, entSum));
-		eval->incrQCounter(2);
-	}
-}
-
 
 int NodeLPAggreg::getSize() const {
 	return size;

@@ -13,8 +13,10 @@ CPP_SRCS += \
 ../src/NodeLPAggreg.cpp \
 ../src/Quality.cpp \
 ../src/ScalarLPAggreg.cpp \
+../src/ScalarNodeLPAggreg.cpp \
 ../src/VLPAggregWrapper.cpp \
-../src/VectorLPAggreg.cpp 
+../src/VectorLPAggreg.cpp \
+../src/VectorNodeLPAggreg.cpp 
 
 OBJS += \
 ./src/Complexity.o \
@@ -26,8 +28,10 @@ OBJS += \
 ./src/NodeLPAggreg.o \
 ./src/Quality.o \
 ./src/ScalarLPAggreg.o \
+./src/ScalarNodeLPAggreg.o \
 ./src/VLPAggregWrapper.o \
-./src/VectorLPAggreg.o 
+./src/VectorLPAggreg.o \
+./src/VectorNodeLPAggreg.o 
 
 CPP_DEPS += \
 ./src/Complexity.d \
@@ -39,8 +43,10 @@ CPP_DEPS += \
 ./src/NodeLPAggreg.d \
 ./src/Quality.d \
 ./src/ScalarLPAggreg.d \
+./src/ScalarNodeLPAggreg.d \
 ./src/VLPAggregWrapper.d \
-./src/VectorLPAggreg.d 
+./src/VectorLPAggreg.d \
+./src/VectorNodeLPAggreg.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

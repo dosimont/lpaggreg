@@ -19,10 +19,9 @@
 using namespace std;
 
 class NodeLPAggreg{
-	private:
+	protected:
 		int id;
 		int rank;
-		double value;
 		NodeLPAggreg *parent;
 		vector<NodeLPAggreg*> childNodes;
 		Quality *quality;
@@ -35,23 +34,21 @@ class NodeLPAggreg{
 
 	public:
 		NodeLPAggreg();
-		NodeLPAggreg(int id, int value);
-		NodeLPAggreg(NodeLPAggreg* parent, int id, int value);
+		NodeLPAggreg(int id);
+		NodeLPAggreg(NodeLPAggreg* parent, int id);
 		virtual ~NodeLPAggreg();
-		void addChild(NodeLPAggreg* child);
 		NodeLPAggreg* getParent();
 		Quality* getQuality();
 		void setQuality(Quality *quality);
-		void computeQuality();
+		virtual void computeQuality()=0;
 		bool hasChild();
 		bool hasParent();
+		void addChild(NodeLPAggreg* child);
 		void setParent(NodeLPAggreg* parent);
 		const vector<NodeLPAggreg*>& getChildNodes() const;
 		bool isAggregated() const;
 		int getId() const;
 		void setId(int id);
-		double getValue() const;
-		void setValue(double value);
 		double getEntSum() const;
 		int getSize() const;
 		void normalize(double maxGain, double maxLoss);
