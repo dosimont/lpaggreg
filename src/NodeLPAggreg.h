@@ -13,8 +13,10 @@
 #include "Quality.h"
 #include "Complexity.h"
 #include "Eval.h"
-#define CHILDS (unsigned int i=0; i<childNodes.size(); i++)
-#define CHILD childNodes[i]
+#define CHILDS (unsigned int i_child=0; i_child<childNodes.size(); i_child++)
+#define NCHILDS(n) (unsigned int i_child=0; i_child<n->childNodeSize(); i_child++)
+#define CHILD childNodes[i_child]
+#define NCHILD(n) n->getChildNodes()[i_child]
 
 using namespace std;
 
@@ -69,6 +71,7 @@ class NodeLPAggreg{
 		int getRank() const;
 		void setRank(int rank);
 		bool ownsNode(NodeLPAggreg* node);
+		unsigned int childNodeSize();
 };
 
 #endif /* NODE_H_ */

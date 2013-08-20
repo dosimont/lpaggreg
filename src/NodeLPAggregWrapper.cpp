@@ -7,9 +7,8 @@
 
 #include "NodeLPAggregWrapper.h"
 
-NodeLPAggregWrapper::NodeLPAggregWrapper() {
+NodeLPAggregWrapper::NodeLPAggregWrapper(): root(0){
 	// TODO Auto-generated constructor stub
-	
 }
 
 NodeLPAggregWrapper::~NodeLPAggregWrapper() {
@@ -17,28 +16,30 @@ NodeLPAggregWrapper::~NodeLPAggregWrapper() {
 }
 
 void NodeLPAggregWrapper::computeQualities(bool normalization) {
+	root->computeQuality();
 }
 
-void NodeLPAggregWrapper::computeParts(float parameter) {
+void NodeLPAggregWrapper::computeAggregation(float parameter) {
+	aggregatedId.clear();
+	root->computeAggregation(parameter);
+	root->computeBestPartitions();
+	computeAggregatedId(root);
 }
-
+//TODO
 void NodeLPAggregWrapper::computeDichotomy(float threshold) {
 }
 
-float NodeLPAggregWrapper::getParameter(int index) {
+bool NodeLPAggregWrapper::isAggregated(int id) {
+	return aggregatedId[id];
 }
 
-int NodeLPAggregWrapper::getParameterNumber() {
-}
-
-double NodeLPAggregWrapper::getGainByIndex(int index) {
-}
-
-double NodeLPAggregWrapper::getGainByParameter(float parameter) {
-}
-
-double NodeLPAggregWrapper::getLossByIndex(int index) {
-}
-
-double NodeLPAggregWrapper::getLossByParameter(float parameter) {
+void NodeLPAggregWrapper::computeAggregatedId(NodeLPAggreg* node) {
+	if (node->isAggregated())
+		aggregatedId[node->getId()]=true;
+	else
+		aggregatedId[node->getId()]=false;
+	if (!node->hasChild())
+		return;
+	for NCHILDS(node)
+		computeAggregatedId(NCHILD(node));
 }

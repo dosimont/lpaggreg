@@ -230,3 +230,7 @@ bool NodeLPAggreg::ownsNode(NodeLPAggreg* node) {
 	}
 	return false;
 }
+
+unsigned int NodeLPAggreg::childNodeSize() {
+	return childNodes.size();
+}

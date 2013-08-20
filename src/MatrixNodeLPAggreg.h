@@ -12,16 +12,16 @@
 
 class MatrixNodeLPAggreg: public NodeLPAggreg {
 	private:
-		vector<vector<double>> value;
+		vector< vector<double> > value;
 	public:
 		MatrixNodeLPAggreg();
-		MatrixNodeLPAggreg(int id, vector<vector<double>> value);
-		MatrixNodeLPAggreg(MatrixNodeLPAggreg* parent, int id, vector<vector<double>> value);
+		MatrixNodeLPAggreg(int id, vector< vector<double> > value);
+		MatrixNodeLPAggreg(MatrixNodeLPAggreg* parent, int id, vector< vector<double> > value);
 		void computeQuality();
 		void computeQuality(int i, int j);
 		virtual ~MatrixNodeLPAggreg();
-		const vector<vector<double> >& getValue() const;
-		void setValue(vector<vector<double>> value);
+		const vector< vector<double> >& getValue() const;
+		void setValue(vector< vector<double> > value);
 };
 
 #endif /* MATRIXNODELPAGGREG_H_ */

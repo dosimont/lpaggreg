@@ -12,11 +12,11 @@ MatrixNodeLPAggreg::MatrixNodeLPAggreg(): NodeLPAggreg(), value(0){
 	
 }
 
-MatrixNodeLPAggreg::MatrixNodeLPAggreg(int id, vector<vector<double>> value): NodeLPAggreg(id), value(value){
+MatrixNodeLPAggreg::MatrixNodeLPAggreg(int id, vector< vector<double> > value): NodeLPAggreg(id), value(value){
 
 }
 
-MatrixNodeLPAggreg::MatrixNodeLPAggreg(MatrixNodeLPAggreg* parent, int id, vector<vector<double>> value): NodeLPAggreg(parent, id), value(value){
+MatrixNodeLPAggreg::MatrixNodeLPAggreg(MatrixNodeLPAggreg* parent, int id, vector< vector<double> > value): NodeLPAggreg(parent, id), value(value){
 	parent->addChild(this);
 }
 
@@ -28,7 +28,7 @@ MatrixNodeLPAggreg::~MatrixNodeLPAggreg() {
 	// TODO Auto-generated destructor stub
 }
 
-void MatrixNodeLPAggreg::setValue(vector<vector<double>> value) {
+void MatrixNodeLPAggreg::setValue(vector< vector<double> > value) {
 	if (!hasChild()){
 		this->value = value;
 	}
@@ -46,7 +46,7 @@ void MatrixNodeLPAggreg::computeQuality(int i, int j) {
 		eval->incrQCounter(3);
 		for CHILDS{
 			static_cast<MatrixNodeLPAggreg*>(CHILD)->computeQuality(i,j);
-			value[i]+=static_cast<MatrixNodeLPAggreg*>(CHILD)->getValue()[i][j];
+			value[i][j]+=static_cast<MatrixNodeLPAggreg*>(CHILD)->getValue()[i][j];
 			entSum+=CHILD->getEntSum();
 			size+=CHILD->getSize();
 			eval->incrQCounter(3);
@@ -62,8 +62,8 @@ void MatrixNodeLPAggreg::computeQuality(int i, int j) {
 }
 
 void MatrixNodeLPAggreg::computeQuality() {
-	for (int i=0; i<value.size(); i++)
-		for (int j=0; j<value.size(); j++)
+	for (unsigned int i=0; i<value.size(); i++)
+		for (unsigned int j=0; j<value[i].size(); j++)
 			computeQuality(i,j);
 }
 
