@@ -69,6 +69,7 @@ void MatrixLPAggreg::computeQualities(bool normalization) {
 			sumValues[i][j] = new double*[m];
 			entValues[i][j] = new double*[m];
 			qualities[i].push_back(new Quality(0,0));
+			eval.incrQCounter(2);
 			for (int k = 0; k<m; k++){
 				sumValues[i][j][k] = new double[l];
 				entValues[i][j][k] = new double[l];
@@ -81,6 +82,7 @@ void MatrixLPAggreg::computeQualities(bool normalization) {
 			for (int o = 0; o < l; o++){
 				sumValues[0][j][k][o] = values[j][k][o];
 				entValues[0][j][k][o] = entropyReduction(sumValues[0][j][k][o], 0);
+				eval.incrQCounter(2);
 			}
 		}
 	}
@@ -93,6 +95,7 @@ void MatrixLPAggreg::computeQualities(bool normalization) {
 					entValues[i][j][k][o] = entValues[i - 1][j][k][o] + entValues[0][i + j][k][o];
 					qualities[i][j]->addToGain(entropyReduction(sumValues[i][j][k][o], entValues[i][j][k][o]));
 					qualities[i][j]->addToLoss(divergence(i + 1, sumValues[i][j][k][o], entValues[i][j][k][o]));
+					eval.incrQCounter(4);
 				}
 			}
 		}
@@ -103,6 +106,7 @@ void MatrixLPAggreg::computeQualities(bool normalization) {
 			for (int j = 0; j < n - i; j++) {
 				qualities[i][j]->setGain(qualities[i][j]->getGain()/maxQuality->getGain());
 				qualities[i][j]->setLoss(qualities[i][j]->getLoss()/maxQuality->getLoss());
+				eval.incrQCounter(2);
 			}
 		}
 	}

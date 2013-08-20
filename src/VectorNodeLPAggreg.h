@@ -17,10 +17,8 @@ class VectorNodeLPAggreg: public NodeLPAggreg {
 		VectorNodeLPAggreg();
 		VectorNodeLPAggreg(int id, vector<double> value);
 		VectorNodeLPAggreg(VectorNodeLPAggreg* parent, int id, vector<double> value);
-		void addChild(VectorNodeLPAggreg* child);
-		void setParent(VectorNodeLPAggreg* parent);
-		const vector<VectorNodeLPAggreg*>& getChildNodes() const;
 		void computeQuality();
+		void computeQuality(int index);
 		virtual ~VectorNodeLPAggreg();
 		const vector<double>& getValue() const;
 		void setValue(vector<double> value);

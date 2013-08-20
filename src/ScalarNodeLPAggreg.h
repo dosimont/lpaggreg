@@ -15,11 +15,8 @@ class ScalarNodeLPAggreg: public NodeLPAggreg {
 		double value;
 	public:
 		ScalarNodeLPAggreg();
-		ScalarNodeLPAggreg(int id, int value);
-		ScalarNodeLPAggreg(ScalarNodeLPAggreg* parent, int id, int value);
-		void addChild(ScalarNodeLPAggreg* child);
-		void setParent(ScalarNodeLPAggreg* parent);
-		const vector<ScalarNodeLPAggreg*>& getChildNodes() const;
+		ScalarNodeLPAggreg(int id, double value);
+		ScalarNodeLPAggreg(ScalarNodeLPAggreg* parent, int id, double value);
 		double getValue() const;
 		void setValue(double value);
 		void computeQuality();

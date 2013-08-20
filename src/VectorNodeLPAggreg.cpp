@@ -44,27 +44,36 @@ void VectorNodeLPAggreg::setValue(vector<double> value) {
 	}
 }
 //TODO vectoriser
-void VectorNodeLPAggreg::computeQuality() {
+void VectorNodeLPAggreg::computeQuality(int index) {
 	if (!hasChild()){
-		entSum=entropyReduction(value, 0);
+		entSum=entropyReduction(value[index], 0);
 		size=1;
 		eval->incrQCounter(2);
 	}else{
-		value=0;
+		value[index]=0;
 		entSum=0;
 		size=0;
 		eval->incrQCounter(3);
 		for CHILDS{
-			CHILD->computeQuality();
-			value+=static_cast<VectorNodeLPAggreg*>(CHILD)->getValue();
+			static_cast<VectorNodeLPAggreg*>(CHILD)->computeQuality(index);
+			value[index]+=static_cast<VectorNodeLPAggreg*>(CHILD)->getValue()[index];
 			entSum+=CHILD->getEntSum();
 			size+=CHILD->getSize();
 			eval->incrQCounter(3);
 		}
-		quality->setGain(entropyReduction(value, entSum));
-		quality->setLoss(divergence(size, value, entSum));
+		if (index==0){
+			quality->setGain(0);
+			quality->setLoss(0);
+		}
+		quality->addToGain(entropyReduction(value[index], entSum));
+		quality->addToLoss(divergence(size, value[index], entSum));
 		eval->incrQCounter(2);
 	}
+}
+
+void VectorNodeLPAggreg::computeQuality() {
+	for (int i=0; i<value.size(); i++)
+		computeQuality(i);
 }
 
 

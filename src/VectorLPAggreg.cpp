@@ -68,6 +68,7 @@ void VectorLPAggreg::computeQualities(bool normalization) {
 			sumValues[i][j] = new double[m];
 			entValues[i][j] = new double[m];
 			qualities[i].push_back(new Quality(0,0));
+			eval.incrQCounter(2);
 		}
 	}
 	//Microscopic level
@@ -75,6 +76,7 @@ void VectorLPAggreg::computeQualities(bool normalization) {
 		for (int k =0; k< m; k++){
 			sumValues[0][j][k] = values[j][k];
 			entValues[0][j][k] = entropyReduction(sumValues[0][j][k], 0);
+			eval.incrQCounter(2);
 		}
 	}
 	//Other levels
@@ -85,6 +87,7 @@ void VectorLPAggreg::computeQualities(bool normalization) {
 			entValues[i][j][k] = entValues[i - 1][j][k] + entValues[0][i + j][k];
 			qualities[i][j]->addToGain(entropyReduction(sumValues[i][j][k], entValues[i][j][k]));
 			qualities[i][j]->addToLoss(divergence(i + 1, sumValues[i][j][k], entValues[i][j][k]));
+			eval.incrQCounter(4);
 			}
 		}
 	}
@@ -94,6 +97,7 @@ void VectorLPAggreg::computeQualities(bool normalization) {
 			for (int j = 0; j < n - i; j++) {
 				qualities[i][j]->setGain(qualities[i][j]->getGain()/maxQuality->getGain());
 				qualities[i][j]->setLoss(qualities[i][j]->getLoss()/maxQuality->getLoss());
+				eval.incrQCounter(2);
 			}
 		}
 	}

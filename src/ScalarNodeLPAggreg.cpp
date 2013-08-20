@@ -12,11 +12,11 @@ ScalarNodeLPAggreg::ScalarNodeLPAggreg(): NodeLPAggreg(), value(0){
 	
 }
 
-ScalarNodeLPAggreg::ScalarNodeLPAggreg(int id, int value=0): NodeLPAggreg(id), value(value){
+ScalarNodeLPAggreg::ScalarNodeLPAggreg(int id, double value=0): NodeLPAggreg(id), value(value){
 
 }
 
-ScalarNodeLPAggreg::ScalarNodeLPAggreg(ScalarNodeLPAggreg* parent, int id=0, int value=0): NodeLPAggreg(parent, id), value(value){
+ScalarNodeLPAggreg::ScalarNodeLPAggreg(ScalarNodeLPAggreg* parent, int id=0, double value=0): NodeLPAggreg(parent, id), value(value){
 	parent->addChild(this);
 }
 
