@@ -53,12 +53,14 @@
 
 using namespace std;
 
-class LPAggreg { //ABC
+
+template <typename Value>
+class LPAggreg{
 	private:
 
 		/*Number of vector of scalar of input matrix*/
+		typedef Value values;
 		int size;
-
 
 	protected:
 
@@ -74,18 +76,25 @@ class LPAggreg { //ABC
 		/*Vector that contains a list of relevant parameters obtained
 		 * by dichomoty computation
 		 */
-		vector<float> parametersD;
+		vector<float> parameters;
 
-		/*Vector that contains qualities related to parametersD list*/
-		vector<Quality*> qualitiesD;
+		/*Vector that contains qualities related to parameter list*/
+		vector<Quality*> qualityList;
 
 		Eval eval;
 
-	protected:
+	private:
 		/*This method has to be overridden. It computes quality matrix.
 		 * bool normalization: if true, quality measures are normalized
 		 */
-		virtual void computeQualities(bool normalization)=0;
+
+		void computeQualities(bool normalization, vector<double> values);
+		void computeQualities(bool normalization, vector< vector<double> > values);
+		void computeQualities(bool normalization, vector< vector < vector<double> > > values);
+
+		int getSize(vector<double> values);
+		int getSize(vector< vector <double> > values);
+		int getSize(vector< vector < vector<double> > > values);
 
 		/*Deallocate quality matrix*/
 		void deleteQualities();
@@ -124,22 +133,24 @@ class LPAggreg { //ABC
 		void addBestQualities(float parameter1, float parameter2, Quality *bestQuality1, Quality *bestQuality2, float threshold);
 
 		/*Deallocate quality list*/
-		void deleteQualitiesD();
+		void deleteQualityList();
 
 		/*Deallocate parameters list*/
 		void deleteParameters();
+
 	public:
 
 		/*Constructor*/
 		LPAggreg();
-
+		LPAggreg(Value values);
 		/*Destructor*/
 		virtual ~LPAggreg();
+		void setValues(const Value& values);
 		int getSize() const;
-		void init(bool normalization);
+		void computeQualities(bool normalization);
 		vector<int> getParts(float parameter);
 		vector<float> getParameters(float threshold);
-		const vector<Quality*>& getQualities() const;
+		const vector<Quality*>& getQualityList() const;
 		int getQualityDuration(); //ms
 		int getBestCutDuration(); //ms
 		int getBestPartitionDuration(); //ms
