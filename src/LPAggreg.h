@@ -62,8 +62,6 @@ class LPAggreg{
 		typedef Value values;
 		int size;
 
-	protected:
-
 		/*Matrix that contains quality measures for each aggregate*/
 		vector< vector<Quality*> > qualities;
 

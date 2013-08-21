@@ -63,7 +63,7 @@ void LPAggreg<Value>::computeQualities(bool normalization,
 	//Microscopic level
 	for (int j = 0; j < n; j++) {
 		sumValues[0][j] = values[j];//WRITE
-		entValues[0][j] = entropyReduction(sumValues[0][j], 0);//WRITE
+		entValues[0][j] = entropyReduction<double>(sumValues[0][j], 0);//WRITE
 		eval.incrQCounter(2);
 	}
 	//Other levels
@@ -118,7 +118,7 @@ void LPAggreg<Value>::computeQualities(bool normalization,
 	for (int j = 0; j < n; j++) {
 		for (int k =0; k< m; k++){
 			sumValues[0][j][k] = values[j][k];
-			entValues[0][j][k] = entropyReduction(sumValues[0][j][k], 0);
+			entValues[0][j][k] = entropyReduction<double>(sumValues[0][j][k], 0);
 			eval.incrQCounter(2);
 		}
 	}
@@ -185,7 +185,7 @@ void LPAggreg<Value>::computeQualities(bool normalization,
 		for (int k = 0; k < m; k++){
 			for (int o = 0; o < l; o++){
 				sumValues[0][j][k][o] = values[j][k][o];
-				entValues[0][j][k][o] = entropyReduction(sumValues[0][j][k][o], 0);
+				entValues[0][j][k][o] = entropyReduction<double>(sumValues[0][j][k][o], 0);
 				eval.incrQCounter(2);
 			}
 		}

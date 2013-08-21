@@ -10,8 +10,8 @@
 
 #include <math.h>
 
-double entropy(double val);
-double entropyReduction(double val, double ent);
-double divergence(int size, double value, double ent);
+template <typename T> T entropy(T val);
+template <typename T> T entropyReduction(T val, T ent);
+template <typename T> T divergence(int size, T value, T ent);
 
 #endif /* COMPLEXITY_H_ */

@@ -20,12 +20,14 @@
 
 using namespace std;
 
+template <typename Value>
 class NodeLPAggreg{
-	protected:
+	private:
+		typedef Value values;
 		int id;
 		int rank;
-		NodeLPAggreg *parent;
-		vector<NodeLPAggreg*> childNodes;
+		NodeLPAggreg<Value> *parent;
+		vector<NodeLPAggreg<Value>*> childNodes;
 		Quality *quality;
 		bool aggregated;
 		int size;
@@ -36,31 +38,38 @@ class NodeLPAggreg{
 
 	public:
 		NodeLPAggreg();
-		NodeLPAggreg(int id);
-		NodeLPAggreg(NodeLPAggreg* parent, int id);
-		virtual ~NodeLPAggreg();
-		NodeLPAggreg* getParent();
+		NodeLPAggreg(int id, Value values);
+		NodeLPAggreg(NodeLPAggreg<Value>* parent, int id, Value values);
+		virtual ~NodeLPAggreg<Value>();
+		Value getValue();
+		void setValue(Value value);
+		NodeLPAggreg<Value>* getParent();
 		Quality* getQuality();
 		void setQuality(Quality *quality);
-		virtual void computeQuality()=0;
+		void computeQuality();
+		void computeQuality(double value);
+		void computeQuality(vector<double> values);
+		void computeQuality(vector< vector<double> > values);
+		void computeQuality_Vector(int index);
+		void computeQuality_Matrix(int i, int j);
 		bool hasChild();
 		bool hasParent();
-		void addChild(NodeLPAggreg* child);
-		void setParent(NodeLPAggreg* parent);
-		const vector<NodeLPAggreg*>& getChildNodes() const;
+		void addChild(NodeLPAggreg<Value>* child);
+		void setParent(NodeLPAggreg<Value>* parent);
+		const vector<NodeLPAggreg<Value>*>& getChildNodes() const;
 		bool isAggregated() const;
 		int getId() const;
 		void setId(int id);
 		double getEntSum() const;
 		int getSize() const;
-		void normalize(double maxGain, double maxLoss);
+		void normalize(double maxGain=0, double maxLoss=0);
 		double computeAggregation(float parameter);
 		void computeBestPartitions();
 		int fillBestPartitions(vector<int>*bestPartition, int p);
 		void setAggregated(bool aggregated);
 		Eval* getEval();
 		void setEval(Eval* eval);
-		void init(bool normalization);
+		void computeQualities(bool normalization);
 		vector<int> * getAggregation(float parameter);
 		int getQualityDuration(); //ms
 		int getBestCutDuration(); //ms
@@ -70,7 +79,7 @@ class NodeLPAggreg{
 		int getBestPartitionCount();
 		int getRank() const;
 		void setRank(int rank);
-		bool ownsNode(NodeLPAggreg* node);
+		bool ownsNode(NodeLPAggreg<Value>* node);
 		unsigned int childNodeSize();
 };
 

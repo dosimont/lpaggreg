@@ -7,19 +7,19 @@
 
 #include "Complexity.h"
 
-inline double entropy(double val) {
+template <typename T> T entropy(T val) {
 	return val * log(val) / log(2);
 }
 
 
-double entropyReduction(double val, double ent) {
+template <typename T> T entropyReduction(T val, T ent) {
 	if (val > 0)
 		return entropy(val) - ent;
 	else
 		return 0;
 }
 
-double divergence(int size, double value, double ent) {
+template <typename T> T divergence(int size, T value, T ent) {
 	return value * log(size) / log(2)  - entropyReduction(value, ent);
 }
 

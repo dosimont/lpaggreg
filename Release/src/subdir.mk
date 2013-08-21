@@ -9,16 +9,9 @@ CPP_SRCS += \
 ../src/LPAggreg.cpp \
 ../src/LPAggregWrapper.cpp \
 ../src/MLPAggregWrapper.cpp \
-../src/MatrixLPAggreg.cpp \
-../src/MatrixNodeLPAggreg.cpp \
 ../src/NodeLPAggreg.cpp \
-../src/NodeLPAggregWrapper.cpp \
 ../src/Quality.cpp \
-../src/ScalarLPAggreg.cpp \
-../src/ScalarNodeLPAggreg.cpp \
-../src/VLPAggregWrapper.cpp \
-../src/VectorLPAggreg.cpp \
-../src/VectorNodeLPAggreg.cpp 
+../src/VLPAggregWrapper.cpp 
 
 OBJS += \
 ./src/Complexity.o \
@@ -26,16 +19,9 @@ OBJS += \
 ./src/LPAggreg.o \
 ./src/LPAggregWrapper.o \
 ./src/MLPAggregWrapper.o \
-./src/MatrixLPAggreg.o \
-./src/MatrixNodeLPAggreg.o \
 ./src/NodeLPAggreg.o \
-./src/NodeLPAggregWrapper.o \
 ./src/Quality.o \
-./src/ScalarLPAggreg.o \
-./src/ScalarNodeLPAggreg.o \
-./src/VLPAggregWrapper.o \
-./src/VectorLPAggreg.o \
-./src/VectorNodeLPAggreg.o 
+./src/VLPAggregWrapper.o 
 
 CPP_DEPS += \
 ./src/Complexity.d \
@@ -43,16 +29,9 @@ CPP_DEPS += \
 ./src/LPAggreg.d \
 ./src/LPAggregWrapper.d \
 ./src/MLPAggregWrapper.d \
-./src/MatrixLPAggreg.d \
-./src/MatrixNodeLPAggreg.d \
 ./src/NodeLPAggreg.d \
-./src/NodeLPAggregWrapper.d \
 ./src/Quality.d \
-./src/ScalarLPAggreg.d \
-./src/ScalarNodeLPAggreg.d \
-./src/VLPAggregWrapper.d \
-./src/VectorLPAggreg.d \
-./src/VectorNodeLPAggreg.d 
+./src/VLPAggregWrapper.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
