@@ -374,6 +374,11 @@ void NodeLPAggreg<Value>::computeQuality_Matrix(int i, int j) {
 	}
 }
 
+template<typename Value>
+void NodeLPAggreg<Value>::computeQuality(Value values) {
+	cerr<<"ComputeQuality() not implemented for this type yet"<<endl;
+}
+
 template <typename Value>
 unsigned int NodeLPAggreg<Value>::childNodeSize() {
 	return childNodes.size();

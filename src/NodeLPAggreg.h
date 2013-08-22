@@ -47,6 +47,7 @@ class NodeLPAggreg{
 		Quality* getQuality();
 		void setQuality(Quality *quality);
 		void computeQuality();
+		void computeQuality(Value values);
 		void computeQuality(double value);
 		void computeQuality(vector<double> values);
 		void computeQuality(vector< vector<double> > values);

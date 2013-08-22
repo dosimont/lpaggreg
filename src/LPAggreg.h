@@ -89,10 +89,8 @@ class LPAggreg{
 		void computeQualities(bool normalization, vector<double> values);
 		void computeQualities(bool normalization, vector< vector<double> > values);
 		void computeQualities(bool normalization, vector< vector < vector<double> > > values);
+		void computeQualities(bool normalization, Value values);
 
-		int getSize(vector<double> values);
-		int getSize(vector< vector <double> > values);
-		int getSize(vector< vector < vector<double> > > values);
 
 		/*Deallocate quality matrix*/
 		void deleteQualities();
@@ -144,7 +142,7 @@ class LPAggreg{
 		/*Destructor*/
 		virtual ~LPAggreg();
 		void setValues(const Value& values);
-		int getSize() const;
+		int getSize();
 		void computeQualities(bool normalization);
 		vector<int> getParts(float parameter);
 		vector<float> getParameters(float threshold);

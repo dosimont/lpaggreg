@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../src/Eval.cpp \
 ../src/LPAggreg.cpp \
 ../src/LPAggregWrapper.cpp \
+../src/LPValues.cpp \
 ../src/MLPAggregWrapper.cpp \
 ../src/NodeLPAggreg.cpp \
 ../src/Quality.cpp \
@@ -18,6 +19,7 @@ OBJS += \
 ./src/Eval.o \
 ./src/LPAggreg.o \
 ./src/LPAggregWrapper.o \
+./src/LPValues.o \
 ./src/MLPAggregWrapper.o \
 ./src/NodeLPAggreg.o \
 ./src/Quality.o \
@@ -28,6 +30,7 @@ CPP_DEPS += \
 ./src/Eval.d \
 ./src/LPAggreg.d \
 ./src/LPAggregWrapper.d \
+./src/LPValues.d \
 ./src/MLPAggregWrapper.d \
 ./src/NodeLPAggreg.d \
 ./src/Quality.d \

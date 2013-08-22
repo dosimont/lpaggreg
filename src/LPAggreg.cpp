@@ -422,27 +422,6 @@ void LPAggreg<Value>::setValues(const Value& values) {
 }
 
 template<typename Value>
-int LPAggreg<Value>::getSize() const {
-	return getSize(this->values);
-}
-
-
-template<typename Value>
-int LPAggreg<Value>::getSize(vector<double> values) {
-	return values.size();
-}
-
-template<typename Value>
-int LPAggreg<Value>::getSize(vector<vector<double> > values) {
-	return values.size();
-}
-
-template<typename Value>
-int LPAggreg<Value>::getSize(vector<vector<vector<double> > > values) {
-	return values.size();
-}
-
-template<typename Value>
 void LPAggreg<Value>::computeQualities(bool normalization) {
 	deleteQualities();
 	eval.resetQCounter();
@@ -503,6 +482,18 @@ int LPAggreg<Value>::getQualityCount() {
 template<typename Value>
 int LPAggreg<Value>::getBestCutCount() {
 	return eval.getBCCount();
+}
+
+template<typename Value>
+void LPAggreg<Value>::computeQualities(bool normalization,
+		Value values) {
+	cerr<<"ComputeQualities() not implemented for this type yet"<<endl;
+
+}
+
+template<typename Value>
+int LPAggreg<Value>::getSize() {
+	return this->values.size();
 }
 
 template<typename Value>
