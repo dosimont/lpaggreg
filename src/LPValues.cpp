@@ -137,13 +137,13 @@ void LPValues<3, Type>::addMatrix()
 template<typename Type>
 void LPValues<3, Type>::addVector()
 {
-	this->values[this->values.size()-1].push_back(vector<Type>);
+	this->values[this->values.size()-1].push_back(vector<Type>());
 }
 
 template<typename Type>
 void LPValues<3, Type>::addVector(int i)
 {
-	this->values[i].push_back(vector<Type>);
+	this->values[i].push_back(vector<Type>());
 }
 
 template<typename Type>

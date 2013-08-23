@@ -42,7 +42,10 @@
 
 
 #include "Quality.h"
+#include "LPAggreg.h"
+#include "LPValues.h"
 #include <vector>
+
 
 using namespace std;
 
@@ -58,24 +61,29 @@ class LPAggregWrapper {
 		/*List of associated qualities to parameter list*/
 		vector<Quality*> qualities;
 
+		int dimension;
 
+		LPValues<1, double> values1;
+		LPValues<2, double> values2;
+		LPValues<3, double> values3;
+
+		LPAggreg<vector<double> > aggreg1;
+		LPAggreg<vector <vector<double> > >aggreg2;
+		LPAggreg<vector <vector <vector<double> > > >aggreg3;
+
+
+	private:
+		void computeQualities(int dim, bool normalization);
+		void computeParts(int dim, float parameter);
+		void computeDichotomy(int dim, float threshold);
 
 	public:
 
 		/*Constructor*/
-		LPAggregWrapper();
+		LPAggregWrapper(int dimension);
 
 		/*Destructor*/
 		virtual ~LPAggregWrapper();
-
-		/*Algo step 1 : compute qualities*/
-		virtual void computeQualities(bool normalization)=0;
-
-		/*Algo step 2 : compute parts for a parameter*/
-		virtual void computeParts(float parameter)=0;
-
-		/*Algo step 2 : compute relevant parameter list by using dichotomy*/
-		virtual void computeDichotomy(float threshold)=0;
 
 		/*Get the part with in index "index"*/
 		int getPart(int index);
@@ -100,6 +108,23 @@ class LPAggregWrapper {
 
 		/*Get the loss by parameter*/
 		double getLossByParameter(float parameter);
+
+		/*Algo step 1 : compute qualities*/
+		void computeQualities(bool normalization);
+
+		/*Algo step 2 : compute parts for a parameter*/
+		void computeParts(float parameter);
+
+		/*Algo step 2 : compute relevant parameter list by using dichotomy*/
+		void computeDichotomy(float threshold);
+
+//1
+		void addVector();
+		void setValue(int i, double value);
+		void setValue(int i, int j, double value);
+		void push_back(int i, double value);
+		void push_back(double value);
+
 
 };
 

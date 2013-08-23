@@ -56,7 +56,7 @@ using namespace std;
 
 template <typename Value>
 class LPAggreg{
-	private:
+	protected:
 
 		/*Number of vector of scalar of input matrix*/
 		typedef Value values;
@@ -89,7 +89,7 @@ class LPAggreg{
 		void computeQualities(bool normalization, vector<double> values);
 		void computeQualities(bool normalization, vector< vector<double> > values);
 		void computeQualities(bool normalization, vector< vector < vector<double> > > values);
-		void computeQualities(bool normalization, Value values);
+		//void computeQualities(bool normalization, Value values);
 
 
 		/*Deallocate quality matrix*/

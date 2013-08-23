@@ -32,8 +32,25 @@
 #include "LPAggregWrapper.h"
 
 
-LPAggregWrapper::LPAggregWrapper() :
-parts(vector<int>()){
+LPAggregWrapper::LPAggregWrapper(int dimension) :
+parts(vector<int>()), dimension(dimension){
+	switch(dimension){
+	case 1:{
+		values1=LPValues<1, double>();
+		aggreg1=LPAggreg<vector<double> >();
+		break;
+	}
+	case 2:{
+		values2=LPValues<2, double>();
+		aggreg2=LPAggreg<vector< vector<double> > >();
+		break;
+	}
+	case 3:{
+		values3=LPValues<3, double>();
+		aggreg3=LPAggreg<vector< vector< vector<double> > > >();
+		break;
+	}
+	}
 }
 
 LPAggregWrapper::~LPAggregWrapper() {
@@ -84,4 +101,57 @@ double LPAggregWrapper::getLossByParameter(float parameter) {
 		if (parameter==parameters[i])
 		   return qualities[i]->getLoss();
 	return -1;
+}
+
+
+void LPAggregWrapper::computeParts(float parameter) {
+	parts.clear();
+	switch(dimension){
+	case 1:
+		parts=aggreg1.getParts(parameter); break;
+	case 2:
+		parts=aggreg2.getParts(parameter); break;
+	case 3:
+		parts=aggreg1.getParts(parameter); break;
+	}
+}
+
+void LPAggregWrapper::computeQualities(bool normalization) {
+	switch(dimension){
+	case 1:{
+		aggreg1.setValues(values1.getValues());
+		aggreg1.computeQualities(normalization);
+		break;
+	}
+	case 2:{
+		aggreg2.setValues(values2.getValues());
+		aggreg2.computeQualities(normalization);
+		break;
+	}
+	case 3:{
+		aggreg3.setValues(values3.getValues());
+		aggreg3.computeQualities(normalization);
+		break;
+	}
+	}
+}
+
+void LPAggregWrapper::computeDichotomy(float threshold) {
+	switch(dimension){
+	case 1:{
+		parameters=aggreg1.getParameters(threshold);
+		qualities=aggreg1.getQualityList();
+		break;
+	}
+	case 2:{
+		parameters=aggreg2.getParameters(threshold);
+		qualities=aggreg2.getQualityList();
+		break;
+	}
+	case 3:{
+		parameters=aggreg3.getParameters(threshold);
+		qualities=aggreg3.getQualityList();
+		break;
+	}
+	}
 }
