@@ -119,40 +119,49 @@ LPValues<3, Type>::LPValues()
 template<typename Type>
 vector<vector<vector<Type> > > LPValues<3, Type>::getValues() const
 {
+	return this->values;
 }
 
 template<typename Type>
 void LPValues<3, Type>::setValue(int i, int j, int k, Type value)
 {
+	this->values[i][j][k]=value;
 }
 
 template<typename Type>
-inline void LPValues<3, Type><Type>::addMatrix()
+void LPValues<3, Type>::addMatrix()
 {
+	this->values.push_back(vector< vector<Type> >());
 }
 
 template<typename Type>
-inline void LPValues<3, Type><Type>::addVector()
+void LPValues<3, Type>::addVector()
 {
+	this->values[this->values.size()-1].push_back(vector<Type>);
 }
 
 template<typename Type>
-inline void LPValues<3, Type><Type>::addVector(int i)
+void LPValues<3, Type>::addVector(int i)
 {
+	this->values[i].push_back(vector<Type>);
 }
 
 template<typename Type>
-inline void LPValues<3, Type><Type>::push_back(int i, int j, Type value)
+void LPValues<3, Type>::push_back(int i, int j, Type value)
 {
+	this->values[i][j].push_back(value);
 }
 
 template<typename Type>
-inline void LPValues<3, Type><Type>::push_back(Type value)
+void LPValues<3, Type>::push_back(Type value)
 {
+	unsigned indexi=this->values.size()-1;
+	unsigned indexj=this->values[indexi].size()-1;
+	this->values[indexi][indexj].push_back(value);
 }
 
 template<typename Type>
-inline LPValues<3, Type><Type>::~LPValues()
+LPValues<3, Type>::~LPValues()
 {
 }
 
