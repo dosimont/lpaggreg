@@ -155,3 +155,96 @@ void LPAggregWrapper::computeDichotomy(float threshold) {
 	}
 	}
 }
+
+void LPAggregWrapper::setValue(int i, double value) {
+	switch(dimension){
+	case 1:{
+		values1.setValue(i, value);
+		break;
+	}
+	}
+}
+
+void LPAggregWrapper::push_back(double value) {
+	switch(dimension){
+	case 1:{
+		values1.push_back(value);
+		break;
+	}
+	case 2:{
+		values2.push_back(value);
+		break;
+	}
+	case 3:{
+		values3.push_back(value);
+		break;
+	}
+	}
+}
+
+void LPAggregWrapper::addVector() {
+	switch(dimension){
+	case 2:{
+		values2.addVector();
+		break;
+	}
+	case 3:{
+		values3.addVector();
+		break;
+	}
+	}
+}
+
+void LPAggregWrapper::setValue(int i, int j, double value) {
+	switch(dimension){
+	case 2:{
+		values2.setValue(i, j, value);
+		break;
+	}
+	}
+}
+
+void LPAggregWrapper::push_back(int i, double value) {
+	switch(dimension){
+	case 2:{
+		values2.push_back(i, value);
+		break;
+	}
+	}
+}
+
+void LPAggregWrapper::addMatrix() {
+	switch(dimension){
+	case 3:{
+		values3.addMatrix();
+		break;
+	}
+	}
+}
+
+void LPAggregWrapper::setValue(int i, int j, int k, double value) {
+	switch(dimension){
+	case 3:{
+		values3.setValue(i, j, k, value);
+		break;
+	}
+	}
+}
+
+void LPAggregWrapper::addVector(int i) {
+	switch(dimension){
+	case 3:{
+		values3.addVector(i);
+		break;
+	}
+	}
+}
+
+void LPAggregWrapper::push_back(int i, int j, double value) {
+	switch(dimension){
+	case 3:{
+		values3.push_back(i, j, value);
+		break;
+	}
+	}
+}

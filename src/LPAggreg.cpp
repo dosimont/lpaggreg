@@ -485,13 +485,6 @@ int LPAggreg<Value>::getBestCutCount() {
 }
 
 template<typename Value>
-void LPAggreg<Value>::computeQualities(bool normalization,
-		Value values) {
-	cerr<<"ComputeQualities() not implemented for this type yet"<<endl;
-
-}
-
-template<typename Value>
 int LPAggreg<Value>::getSize() {
 	return this->values.size();
 }

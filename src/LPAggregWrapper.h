@@ -71,12 +71,6 @@ class LPAggregWrapper {
 		LPAggreg<vector <vector<double> > >aggreg2;
 		LPAggreg<vector <vector <vector<double> > > >aggreg3;
 
-
-	private:
-		void computeQualities(int dim, bool normalization);
-		void computeParts(int dim, float parameter);
-		void computeDichotomy(int dim, float threshold);
-
 	public:
 
 		/*Constructor*/
@@ -119,11 +113,21 @@ class LPAggregWrapper {
 		void computeDichotomy(float threshold);
 
 //1
-		void addVector();
 		void setValue(int i, double value);
+		void push_back(double value);
+
+//2
+		void addVector();
 		void setValue(int i, int j, double value);
 		void push_back(int i, double value);
-		void push_back(double value);
+
+
+
+//3
+		void addMatrix();
+		void setValue(int i, int j, int k, double value);
+		void addVector(int i);
+		void push_back(int i, int j, double value);
 
 
 };
