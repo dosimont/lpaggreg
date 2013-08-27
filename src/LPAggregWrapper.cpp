@@ -37,17 +37,17 @@ parts(vector<int>()), dimension(dimension){
 	switch(dimension){
 	case 1:{
 		values1=LPValues<1, double>();
-		aggreg=LPAggreg<vector<double> >();
+		aggreg1=LPAggreg<vector<double> >();
 		break;
 	}
 	case 2:{
 		values2=LPValues<2, double>();
-		aggreg=LPAggreg<vector< vector<double> > >();
+		aggreg2=LPAggreg<vector< vector<double> > >();
 		break;
 	}
 	case 3:{
 		values3=LPValues<3, double>();
-		aggreg=LPAggreg<vector< vector< vector<double> > > >();
+		aggreg3=LPAggreg<vector< vector< vector<double> > > >();
 		break;
 	}
 	}
@@ -106,33 +106,54 @@ double LPAggregWrapper::getLossByParameter(float parameter) {
 
 void LPAggregWrapper::computeParts(float parameter) {
 	parts.clear();
-	parts=aggreg.getParts(parameter);
+	switch(dimension){
+	case 1:
+		parts=aggreg1.getParts(parameter); break;
+	case 2:
+		parts=aggreg2.getParts(parameter); break;
+	case 3:
+		parts=aggreg3.getParts(parameter); break;
+	}
 }
 
 void LPAggregWrapper::computeQualities(bool normalization) {
 	switch(dimension){
 	case 1:{
-		static_cast< LPAggreg< vector <double> > >(aggreg).setValues(values1.getValues());
-		aggreg.computeQualities(normalization);
+		aggreg1.setValues(values1.getValues());
+		aggreg1.computeQualities(normalization);
 		break;
 	}
 	case 2:{
-		static_cast< LPAggreg< vector< vector <double> > > >(aggreg).setValues(values2.getValues());
-		aggreg.computeQualities(normalization);
+		aggreg2.setValues(values2.getValues());
+		aggreg2.computeQualities(normalization);
 		break;
 	}
 	case 3:{
-		static_cast< LPAggreg< vector< vector <vector <double> > > > >(aggreg).setValues(values3.getValues());
-		aggreg.computeQualities(normalization);
+		aggreg3.setValues(values3.getValues());
+		aggreg3.computeQualities(normalization);
 		break;
 	}
 	}
 }
 
 void LPAggregWrapper::computeDichotomy(float threshold) {
-	parameters=aggreg.getParameters(threshold);
-	qualities=aggreg.getQualityList();
-
+	switch(dimension){
+	case 1:{
+		parameters=aggreg1.getParameters(threshold);
+		qualities=aggreg1.getQualityList();
+		break;
+	}
+	case 2:{
+		parameters=aggreg2.getParameters(threshold);
+		qualities=aggreg2.getQualityList();
+		break;
+	}
+	case 3:{
+		parameters=aggreg3.getParameters(threshold);
+		qualities=aggreg3.getQualityList();
+		break;
+	}
+	}
 }
 
 void LPAggregWrapper::setValue(int i, double value) {

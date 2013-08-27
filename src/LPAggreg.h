@@ -142,11 +142,6 @@ void LPAggreg<Value>::computeBestCuts(float parameter) {
 	double * bestQuality = new double[n];
 	bestCuts[0] = 0; //WRITE
 	bestQuality[0] = 0; //WRITE	int n = getSize();
-	for (int i = 0; i < n; i++) {
-		bestPartitions.push_back(-1); //WRITE
-		eval.incrBPCounter();
-	}
-	fillPartition(n - 1, 0);
 	eval.incrBCCounter(2);
 	for (int i = 1; i < n; i++) {
 		long currentCut = 0; //WRITE
@@ -556,10 +551,6 @@ LPAggreg<Value>::LPAggreg(Value values):
 size(0), qualities(vector< vector<Quality*> >()), bestCuts(0), bestPartitions(vector<int>()), parameters(vector<float>()), qualityList(vector<Quality*>()), eval(Eval())
 {
 	this->values=values;
-}
-
-template<typename Value>
-LPAggreg<Value>::~LPAggreg() {
 }
 
 template<typename Value>
