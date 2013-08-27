@@ -235,4 +235,3 @@ LPValues<3, Type>::~LPValues()
 
 #endif /* LPVALUES_H_ */
 
-#include "LPValues.tpp"

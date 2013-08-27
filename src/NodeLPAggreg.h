@@ -471,5 +471,3 @@ unsigned int NodeLPAggreg<Value>::childNodeSize() {
 
 
 #endif /* NODE_H_ */
-
-#include "NodeLPAggreg.tpp"
