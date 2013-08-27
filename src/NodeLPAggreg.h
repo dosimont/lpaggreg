@@ -23,7 +23,7 @@ using namespace std;
 template <typename Value>
 class NodeLPAggreg{
 	private:
-		typedef Value values;
+		Value values;
 		int id;
 		int rank;
 		NodeLPAggreg<Value> *parent;
@@ -48,9 +48,6 @@ class NodeLPAggreg{
 		void setQuality(Quality *quality);
 		void computeQuality();
 		void computeQuality(Value values);
-		void computeQuality(double value);
-		void computeQuality(vector<double> values);
-		void computeQuality(vector< vector<double> > values);
 		void computeQuality_Vector(int index);
 		void computeQuality_Matrix(int i, int j);
 		bool hasChild();
@@ -365,8 +362,8 @@ void NodeLPAggreg<Value>::computeQuality(){
 	computeQuality(this->values);
 }
 
-template<typename Value>
-void NodeLPAggreg<Value>::computeQuality(double value) {
+template<>
+void NodeLPAggreg<double>::computeQuality() {
 	if (!hasChild()){
 		entSum=entropyReduction(this->values, 0.0);
 		size=1;
@@ -389,8 +386,8 @@ void NodeLPAggreg<Value>::computeQuality(double value) {
 	}
 }
 
-template<typename Value>
-void NodeLPAggreg<Value>::computeQuality(vector<double> values) {
+template<>
+void NodeLPAggreg< vector<double> >::computeQuality() {
 	for (int i=0; i<this->values.size(); i++)
 		computeQuality_Vector(i);
 }
@@ -423,9 +420,9 @@ void NodeLPAggreg<Value>::computeQuality_Vector(int index) {
 	}
 }
 
-template<typename Value>
-void NodeLPAggreg<Value>::computeQuality(
-		vector<vector<double> > values) {
+template<>
+void NodeLPAggreg< vector< vector<double> > >::computeQuality(
+		vector< vector<double> > values) {
 	for (unsigned int i=0; i<this->values.size(); i++)
 		for (unsigned int j=0; j<this->values[i].size(); j++)
 			computeQuality_Matrix(i,j);
