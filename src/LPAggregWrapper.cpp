@@ -112,7 +112,7 @@ void LPAggregWrapper::computeParts(float parameter) {
 	case 2:
 		parts=aggreg2.getParts(parameter); break;
 	case 3:
-		parts=aggreg1.getParts(parameter); break;
+		parts=aggreg3.getParts(parameter); break;
 	}
 }
 

@@ -76,3 +76,5 @@ class LPValues<3, Type> {
 
 
 #endif /* LPVALUES_H_ */
+
+#include "LPValues.tpp"

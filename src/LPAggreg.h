@@ -50,89 +50,20 @@
 #include "Quality.h"
 #include "Eval.h"
 #include "Complexity.h"
+#include "ILPAggreg.h"
 
 using namespace std;
 
 
 template <typename Value>
-class LPAggreg{
+class LPAggreg: public ILPAggreg{
 	protected:
 
-		/*Number of vector of scalar of input matrix*/
-		typedef Value values;
-		int size;
-
-		/*Matrix that contains quality measures for each aggregate*/
-		vector< vector<Quality*> > qualities;
-
-		/*Tab that contains best cuts for current parameter*/
-		int * bestCuts;
-
-		/*Vector that contains best partitions for current parameter*/
-		vector<int> bestPartitions;
-
-		/*Vector that contains a list of relevant parameters obtained
-		 * by dichomoty computation
-		 */
-		vector<float> parameters;
-
-		/*Vector that contains qualities related to parameter list*/
-		vector<Quality*> qualityList;
-
-		Eval eval;
+		Value values;
 
 	private:
-		/*This method has to be overridden. It computes quality matrix.
-		 * bool normalization: if true, quality measures are normalized
-		 */
 
-		void computeQualities(bool normalization, vector<double> values);
-		void computeQualities(bool normalization, vector< vector<double> > values);
-		void computeQualities(bool normalization, vector< vector < vector<double> > > values);
-		//void computeQualities(bool normalization, Value values);
-
-
-		/*Deallocate quality matrix*/
-		void deleteQualities();
-
-		/*Size reduction formula method*/
-		int sizeReduction(int size);
-
-		/*Compute best cuts for a given parameter p*/
-		void computeBestCuts(float parameter);
-
-		/*Deallocate bestCuts pointer*/
-		void deleteBestCuts();
-
-		/*Compute aggregation best partitions*/
-		void computeBestPartitions();
-
-		/*Delete bestPartitions pointer*/
-		void deleteBestPartitions();
-
-		/*Fill partitions TODO params*/
-		int fillPartition(int i, int p);
-
-		/*Define aggregation matrix size (number of vectors/scalars*/
-		void setSize(int size);
-
-		/*Compute best qualities (and parameter list) by dichotomy for a given threshold*/
-		void computeBestQualities(float threshold);
-
-		/*Compute best quality*/
-		void computeBestQuality(Quality *bestQuality);
-
-		/*Fill quality vector TODO params*/
-		void fillQuality(int i, Quality *bestQuality);
-
-		/*Add best qualities*/
-		void addBestQualities(float parameter1, float parameter2, Quality *bestQuality1, Quality *bestQuality2, float threshold);
-
-		/*Deallocate quality list*/
-		void deleteQualityList();
-
-		/*Deallocate parameters list*/
-		void deleteParameters();
+		void computeQualitiesSpe(bool normalization);
 
 	public:
 
@@ -142,17 +73,165 @@ class LPAggreg{
 		/*Destructor*/
 		virtual ~LPAggreg();
 		void setValues(const Value& values);
-		int getSize();
-		void computeQualities(bool normalization);
-		vector<int> getParts(float parameter);
-		vector<float> getParameters(float threshold);
-		const vector<Quality*>& getQualityList() const;
-		int getQualityDuration(); //ms
-		int getBestCutDuration(); //ms
-		int getBestPartitionDuration(); //ms
-		int getQualityCount();
-		int getBestCutCount();
-		int getBestPartitionCount();
+		unsigned int getSize();
 };
 
+//template<>
+//class LPAggreg< vector<double> >: public ILPAggreg{
+//	protected:
+//
+//		/*Number of vector of scalar of input matrix*/
+//		vector<double> values;
+//
+//	private:
+//
+//		void computeQualitiesSpe(bool normalization);
+//
+//	public:
+//
+//		/*Constructor*/
+//		LPAggreg();
+//		LPAggreg(vector<double> values);
+//		/*Destructor*/
+//		virtual ~LPAggreg();
+//		void setValues(const vector<double>& values);
+//		int getSize();
+//};
+//
+//template<>
+//class LPAggreg< vector< vector<double> > >: public ILPAggreg{
+//	protected:
+//
+//		/*Number of vector of scalar of input matrix*/
+//		vector <vector<double> > values;
+//
+//	private:
+//
+//		void computeQualitiesSpe(bool normalization);
+//
+//	public:
+//
+//		/*Constructor*/
+//		LPAggreg();
+//		LPAggreg(vector <vector<double> > values);
+//		/*Destructor*/
+//		virtual ~LPAggreg();
+//		void setValues(const vector <vector<double> >& values);
+//		int getSize();
+//};
+//
+//template<>
+//class LPAggreg< vector <vector< vector<double> > > >: public ILPAggreg{
+//	protected:
+//
+//		/*Number of vector of scalar of input matrix*/
+//		vector <vector <vector<double> > > values;
+//
+//	private:
+//
+//		void computeQualitiesSpe(bool normalization);
+//
+//	public:
+//
+//		/*Constructor*/
+//		LPAggreg();
+//		LPAggreg(vector <vector <vector<double> > > values);
+//		/*Destructor*/
+//		virtual ~LPAggreg();
+//		void setValues(const vector <vector <vector<double> > >& values);
+//		int getSize();
+//};
+
+
+
+//template<>
+//LPAggreg< vector<double> >::LPAggreg()
+//{
+//	ILPAggreg();
+//}
+
+//template<>
+//LPAggreg< vector<double> >::LPAggreg(vector<double> values): values(values)
+//{
+//	ILPAggreg();
+//}
+//
+//template<>
+//LPAggreg< vector<double> >::~LPAggreg()
+//{
+//}
+//
+//template<>
+//void LPAggreg< vector<double> >::setValues(const vector<double>& values)
+//{
+//	this->values=values;
+//}
+//
+//template<>
+//int LPAggreg< vector<double> >::getSize()
+//{
+//	return this->values.size();
+//}
+//
+//template<>
+//LPAggreg< vector< vector<double> > >::LPAggreg()
+//{
+//	ILPAggreg();
+//}
+//
+//template<>
+//LPAggreg< vector< vector<double> > >::LPAggreg(vector<vector<double> > values): values(values)
+//{
+//	ILPAggreg();
+//}
+//
+//template<>
+//LPAggreg< vector< vector<double> > >::~LPAggreg()
+//{
+//}
+//
+//template<>
+//void LPAggreg< vector< vector<double> > >::setValues(const vector<vector<double> >& values)
+//{
+//	this->values=values;
+//}
+//
+//template<>
+//int LPAggreg< vector< vector<double> > >::getSize()
+//{
+//	return this->values.size();
+//}
+//
+//template<>
+//LPAggreg< vector <vector< vector<double> > > >::LPAggreg(): values(values)
+//{
+//	ILPAggreg();
+//}
+//
+//template<>
+//LPAggreg< vector <vector< vector<double> > > >::LPAggreg(vector<vector<vector<double> > > values): values(values)
+//{
+//	ILPAggreg();
+//}
+//
+//template<>
+//LPAggreg< vector <vector< vector<double> > > >::~LPAggreg()
+//{
+//}
+//
+//template<>
+//void LPAggreg< vector <vector< vector<double> > > >::setValues(const vector<vector<vector<double> > >& values)
+//{
+//	this->values=values;
+//}
+//
+//template<>
+//int LPAggreg< vector <vector< vector<double> > > >::getSize()
+//{
+//	return this->values.size();
+//}
+
+
 #endif /* LPAGGREG_H_ */
+
+#include "LPAggreg.tpp"

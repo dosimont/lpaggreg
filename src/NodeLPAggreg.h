@@ -85,3 +85,5 @@ class NodeLPAggreg{
 };
 
 #endif /* NODE_H_ */
+
+#include "NodeLPAggreg.tpp"

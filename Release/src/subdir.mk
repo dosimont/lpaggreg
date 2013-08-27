@@ -6,28 +6,22 @@
 CPP_SRCS += \
 ../src/Complexity.cpp \
 ../src/Eval.cpp \
-../src/LPAggreg.cpp \
+../src/ILPAggreg.cpp \
 ../src/LPAggregWrapper.cpp \
-../src/LPValues.cpp \
-../src/NodeLPAggreg.cpp \
 ../src/Quality.cpp 
 
 OBJS += \
 ./src/Complexity.o \
 ./src/Eval.o \
-./src/LPAggreg.o \
+./src/ILPAggreg.o \
 ./src/LPAggregWrapper.o \
-./src/LPValues.o \
-./src/NodeLPAggreg.o \
 ./src/Quality.o 
 
 CPP_DEPS += \
 ./src/Complexity.d \
 ./src/Eval.d \
-./src/LPAggreg.d \
+./src/ILPAggreg.d \
 ./src/LPAggregWrapper.d \
-./src/LPValues.d \
-./src/NodeLPAggreg.d \
 ./src/Quality.d 
 
 

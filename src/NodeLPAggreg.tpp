@@ -5,7 +5,6 @@
  *      Author: dosimont
  */
 
-#include "NodeLPAggreg.h"
 
 template <typename Value>
 NodeLPAggreg<Value>::NodeLPAggreg(): id(0), rank(0), parent(0), childNodes(vector<NodeLPAggreg*>()), quality(new Quality(0,0)), aggregated(false), size(0), entSum(0), eval(0), bestPartitions(0){

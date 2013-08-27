@@ -5,7 +5,6 @@
  *      Author: dosimont
  */
 
-#include "LPValues.h"
 
 template<int Dimension, typename Type>
 LPValues<Dimension, Type>::LPValues() {
@@ -113,7 +112,7 @@ LPValues<2, Type>::~LPValues()
 template<typename Type>
 LPValues<3, Type>::LPValues()
 {
-	this->values=vector< vector<Type> >();
+	this->values=vector <vector< vector<Type> > >();
 }
 
 template<typename Type>
