@@ -13,6 +13,7 @@ OLPAggreg1::OLPAggreg1(): OLPAggreg(){
 
 void OLPAggreg1::computeQualitiesSpe(bool normalization) {
 	//Init and allocation
+		setSize(values.size());
 		int n = this->getSize();
 		double ** sumValues = new double*[n];
 		double ** entValues = new double*[n];
@@ -76,6 +77,15 @@ OLPAggreg1::~OLPAggreg1() {
 	// TODO Auto-generated destructor stub
 }
 
+
 unsigned int OLPAggreg1::getSize() {
 	return values.size();
+}
+
+void OLPAggreg1::computeQualities(bool normalization) {
+	deleteQualities();
+	eval.resetQCounter();
+	eval.startQTimer();
+	computeQualitiesSpe(normalization);
+	eval.stopQTimer();
 }

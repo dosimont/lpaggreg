@@ -14,6 +14,7 @@ OLPAggreg2::OLPAggreg2(): OLPAggreg() {
 
 void OLPAggreg2::computeQualitiesSpe(bool normalization) {
 	//Init and allocation
+	setSize(values.size());
 	int n = this->getSize();
 	int m = this->values[0].size();
 	double *** sumValues = new double**[n];
@@ -91,6 +92,15 @@ OLPAggreg2::~OLPAggreg2() {
 	// TODO Auto-generated destructor stub
 }
 
+
 unsigned int OLPAggreg2::getSize() {
 	return values.size();
+}
+
+void OLPAggreg2::computeQualities(bool normalization) {
+	deleteQualities();
+	eval.resetQCounter();
+	eval.startQTimer();
+	computeQualitiesSpe(normalization);
+	eval.stopQTimer();
 }

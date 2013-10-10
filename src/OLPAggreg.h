@@ -89,7 +89,6 @@ class OLPAggreg {//ABC
 		/*Deallocate parameters list*/
 		void deleteParameters();
 
-		virtual void computeQualitiesSpe(bool normalization)=0;
 
 	public:
 
@@ -98,9 +97,6 @@ class OLPAggreg {//ABC
 
 		/*Destructor*/
 		virtual ~OLPAggreg();
-
-		virtual unsigned int getSize()=0;
-		void computeQualities(bool normalization);
 		vector<int> getParts(float parameter);
 		vector<float> getParameters(float threshold);
 		const vector<Quality*>& getQualityList() const;
@@ -110,6 +106,7 @@ class OLPAggreg {//ABC
 		int getQualityCount();
 		int getBestCutCount();
 		int getBestPartitionCount();
+		unsigned int getSize();
 
 
 };

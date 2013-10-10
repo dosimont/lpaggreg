@@ -24,6 +24,7 @@ class OLPAggreg2: public OLPAggreg {
 		virtual ~OLPAggreg2();
 		void setValues(const vector<vector<double> >& values);
 		unsigned int getSize();
+		void computeQualities(bool normalization);
 };
 
 #endif /* OLPAGGREG2_H_ */

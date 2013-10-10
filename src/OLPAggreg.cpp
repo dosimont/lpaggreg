@@ -169,13 +169,7 @@ OLPAggreg::~OLPAggreg() {
 	deleteQualityList();
 }
 
-void OLPAggreg::computeQualities(bool normalization) {
-	deleteQualities();
-	eval.resetQCounter();
-	eval.startQTimer();
-	computeQualitiesSpe(normalization);
-	eval.stopQTimer();
-}
+
 
 vector<int> OLPAggreg::getParts(float parameter) {
 	deleteBestPartitions();
@@ -448,3 +442,6 @@ int OLPAggreg::getBestPartitionCount() {
 //	return this->values.size();
 //}
 
+unsigned int OLPAggreg::getSize() {
+	return size;
+}

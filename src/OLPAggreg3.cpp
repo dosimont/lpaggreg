@@ -14,6 +14,7 @@ OLPAggreg3::OLPAggreg3(): OLPAggreg() {
 
 void OLPAggreg3::computeQualitiesSpe(bool normalization) {
 	//Init and allocation
+	setSize(values.size());
 	int n = this->getSize();
 	int m = this->values[0].size();
 	int l = this->values[0][0].size();
@@ -107,4 +108,12 @@ OLPAggreg3::~OLPAggreg3() {
 
 unsigned int OLPAggreg3::getSize() {
 	return values.size();
+}
+
+void OLPAggreg3::computeQualities(bool normalization) {
+	deleteQualities();
+	eval.resetQCounter();
+	eval.startQTimer();
+	computeQualitiesSpe(normalization);
+	eval.stopQTimer();
 }

@@ -36,17 +36,17 @@ LPAggregWrapper::LPAggregWrapper(int dimension) :
 	switch (dimension) {
 	case 1: {
 		values1 = LPValues<1, double>();
-		aggreg1 = LPAggreg<vector<double> >();
+		aggreg = new OLPAggreg1();
 		break;
 	}
 	case 2: {
 		values2 = LPValues<2, double>();
-		aggreg2 = LPAggreg<vector<vector<double> > >();
+		aggreg = new OLPAggreg2();
 		break;
 	}
 	case 3: {
 		values3 = LPValues<3, double>();
-		aggreg3 = LPAggreg<vector<vector<vector<double> > > >();
+		aggreg = new OLPAggreg3();
 		break;
 	}
 	}
@@ -104,57 +104,36 @@ double LPAggregWrapper::getLossByParameter(float parameter) {
 
 void LPAggregWrapper::computeParts(float parameter) {
 	parts.clear();
-	switch (dimension) {
-	case 1:
-		parts = aggreg1.getParts(parameter);
-		break;
-	case 2:
-		parts = aggreg2.getParts(parameter);
-		break;
-	case 3:
-		parts = aggreg3.getParts(parameter);
-		break;
-	}
+	parts = aggreg->getParts(parameter);
 }
 
 void LPAggregWrapper::computeQualities(bool normalization) {
 	switch (dimension) {
 	case 1: {
-		aggreg1.setValues(values1.getValues());
-		aggreg1.computeQualities(normalization);
+		OLPAggreg1 *aggreg1 = static_cast<OLPAggreg1*>(aggreg);
+		aggreg1->setValues(values1.getValues());
+		aggreg1->computeQualities(normalization);
 		break;
 	}
 	case 2: {
-		aggreg2.setValues(values2.getValues());
-		aggreg2.computeQualities(normalization);
+		OLPAggreg2 *aggreg2 = static_cast<OLPAggreg2*>(aggreg);
+		aggreg2->setValues(values2.getValues());
+		aggreg2->computeQualities(normalization);
 		break;
 	}
 	case 3: {
-		aggreg3.setValues(values3.getValues());
-		aggreg3.computeQualities(normalization);
+		OLPAggreg3 *aggreg3 = static_cast<OLPAggreg3*>(aggreg);
+		aggreg3->setValues(values3.getValues());
+		aggreg3->computeQualities(normalization);
 		break;
 	}
 	}
 }
 
 void LPAggregWrapper::computeDichotomy(float threshold) {
-	switch (dimension) {
-	case 1: {
-		parameters = aggreg1.getParameters(threshold);
-		qualities = aggreg1.getQualityList();
-		break;
-	}
-	case 2: {
-		parameters = aggreg2.getParameters(threshold);
-		qualities = aggreg2.getQualityList();
-		break;
-	}
-	case 3: {
-		parameters = aggreg3.getParameters(threshold);
-		qualities = aggreg3.getQualityList();
-		break;
-	}
-	}
+	parameters = aggreg->getParameters(threshold);
+	qualities = aggreg->getQualityList();
+
 }
 
 void LPAggregWrapper::setValue(int i, double value) {

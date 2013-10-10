@@ -40,8 +40,10 @@
 #ifndef WRAPPER_H_
 #define WRAPPER_H_
 
-#include "Quality.h"
-#include "LPAggreg.h"
+
+#include "OLPAggreg1.h"
+#include "OLPAggreg2.h"
+#include "OLPAggreg3.h"
 #include "LPValues.h"
 #include <vector>
 
@@ -65,9 +67,7 @@ class LPAggregWrapper {
 		LPValues<2, double> values2;
 		LPValues<3, double> values3;
 
-		LPAggreg<vector<double> > aggreg1;
-		LPAggreg<vector<vector<double> > > aggreg2;
-		LPAggreg<vector<vector<vector<double> > > > aggreg3;
+		OLPAggreg *aggreg;
 
 	public:
 		
