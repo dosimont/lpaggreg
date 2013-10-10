@@ -41,7 +41,7 @@
 
 class Quality {
 	private:
-
+		
 		/*Gain*/
 		double gain;
 
@@ -49,7 +49,7 @@ class Quality {
 		double loss;
 
 	public:
-
+		
 		/*Constructor, initialize gain and loss with value 0*/
 		Quality();
 

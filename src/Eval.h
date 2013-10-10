@@ -12,7 +12,7 @@
 #include <sys/time.h>
 
 class Eval {
-
+		
 	private:
 		timeval timeQ1, timeQ2, timeBC1, timeBC2, timeBP1, timeBP2;
 		int counterQ, counterBC, counterBP;
@@ -32,9 +32,9 @@ class Eval {
 		void resetBCCounter();
 		void resetBPCounter();
 		void resetCounters();
-		void incrQCounter(int i=1);
-		void incrBCCounter(int i=1);
-		void incrBPCounter(int i=1);
+		void incrQCounter(int i = 1);
+		void incrBCCounter(int i = 1);
+		void incrBPCounter(int i = 1);
 		int getQCount();
 		int getBCCount();
 		int getBPCount();

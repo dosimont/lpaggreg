@@ -15,19 +15,18 @@
 #include "Eval.h"
 #include "Complexity.h"
 
-
 using namespace std;
 
-template <typename Value>
+template<typename Value>
 class LPAggreg {
-
+		
 	protected:
-
+		
 		/*Number of vector of scalar of input matrix*/
 		int size;
 
 		/*Matrix that contains quality measures for each aggregate*/
-		vector< vector<Quality*> > qualities;
+		vector<vector<Quality*> > qualities;
 
 		/*Tab that contains best cuts for current parameter*/
 		int * bestCuts;
@@ -49,7 +48,7 @@ class LPAggreg {
 		Value values;
 
 	public:
-
+		
 		/*Deallocate quality matrix*/
 		void deleteQualities();
 
@@ -84,7 +83,8 @@ class LPAggreg {
 		void fillQuality(int i, Quality *bestQuality);
 
 		/*Add best qualities*/
-		void addBestQualities(float parameter1, float parameter2, Quality *bestQuality1, Quality *bestQuality2, float threshold);
+		void addBestQualities(float parameter1, float parameter2,
+				Quality *bestQuality1, Quality *bestQuality2, float threshold);
 
 		/*Deallocate quality list*/
 		void deleteQualityList();
@@ -95,7 +95,7 @@ class LPAggreg {
 		void computeQualitiesSpe(bool normalization);
 
 	public:
-
+		
 		/*Constructor*/
 		LPAggreg();
 		LPAggreg(Value values);
@@ -115,7 +115,7 @@ class LPAggreg {
 		int getQualityCount();
 		int getBestCutCount();
 		int getBestPartitionCount();
-
+		
 };
 
 template<typename Value>
@@ -203,7 +203,7 @@ int LPAggreg<Value>::fillPartition(int i, int p) {
 
 template<typename Value>
 void LPAggreg<Value>::setSize(int size) {
-	this->size=size;
+	this->size = size;
 }
 
 template<typename Value>
@@ -282,8 +282,10 @@ void LPAggreg<Value>::deleteParameters() {
 }
 
 template<typename Value>
-LPAggreg<Value>::LPAggreg():
-		size(0), qualities(vector< vector<Quality*> >()), bestCuts(0), bestPartitions(vector<int>()), parameters(vector<float>()), qualityList(vector<Quality*>()), eval(Eval()) {
+LPAggreg<Value>::LPAggreg() :
+		size(0), qualities(vector<vector<Quality*> >()), bestCuts(0), bestPartitions(
+				vector<int>()), parameters(vector<float>()), qualityList(
+				vector<Quality*>()), eval(Eval()) {
 }
 
 template<typename Value>
@@ -324,7 +326,7 @@ vector<float> LPAggreg<Value>::getParameters(float threshold) {
 	deleteQualityList();
 	computeBestQualities(threshold);
 	return parameters;
-
+	
 }
 
 template<typename Value>
@@ -363,7 +365,7 @@ int LPAggreg<Value>::getBestPartitionCount() {
 }
 
 template<>
-void LPAggreg< vector<double> >::computeQualitiesSpe(bool normalization) {
+void LPAggreg<vector<double> >::computeQualitiesSpe(bool normalization) {
 	//Init and allocation
 	int n = this->getSize();
 	double ** sumValues = new double*[n];
@@ -372,34 +374,39 @@ void LPAggreg< vector<double> >::computeQualitiesSpe(bool normalization) {
 		sumValues[i] = new double[n];
 		entValues[i] = new double[n];
 		qualities.push_back(vector<Quality*>());
-		for (int j=0; j<n; j++){
-			qualities[i].push_back(new Quality(0,0));//WRITE*2
+		for (int j = 0; j < n; j++) {
+			qualities[i].push_back(new Quality(0, 0)); //WRITE*2
 			eval.incrQCounter(2);
 		}
 	}
 	//Microscopic level
 	for (int j = 0; j < n; j++) {
-		sumValues[0][j] = this->values[j];//WRITE
-		entValues[0][j] = entropyReduction(sumValues[0][j], 0);//WRITE
+		sumValues[0][j] = this->values[j]; //WRITE
+		entValues[0][j] = entropyReduction(sumValues[0][j], 0); //WRITE
 		eval.incrQCounter(2);
 	}
 	//Other levels
 	for (int i = 1; i < n; i++) {
-		for (int j = 0; j < n - i; j++) {//WRITE*4
+		for (int j = 0; j < n - i; j++) { //WRITE*4
 			sumValues[i][j] = sumValues[i - 1][j] + sumValues[0][i + j];
 			entValues[i][j] = entValues[i - 1][j] + entValues[0][i + j];
-			qualities[i][j]->setGain(entropyReduction(sumValues[i][j], entValues[i][j]));
-			qualities[i][j]->setLoss(divergence(i + 1, sumValues[i][j], entValues[i][j]));
+			qualities[i][j]->setGain(
+					entropyReduction(sumValues[i][j], entValues[i][j]));
+			qualities[i][j]->setLoss(
+					divergence(i + 1, sumValues[i][j], entValues[i][j]));
 			eval.incrQCounter(4);
 		}
 	}
 	if (normalization) {
-		Quality * maxQuality = new Quality(qualities[n-1][0]->getGain(), qualities[n-1][0]->getLoss());//WRITE
+		Quality * maxQuality = new Quality(qualities[n - 1][0]->getGain(),
+				qualities[n - 1][0]->getLoss()); //WRITE
 		eval.incrQCounter();
 		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n - i; j++) {//WRITE*2
-				qualities[i][j]->setGain(qualities[i][j]->getGain()/maxQuality->getGain());
-				qualities[i][j]->setLoss(qualities[i][j]->getLoss()/maxQuality->getLoss());
+			for (int j = 0; j < n - i; j++) { //WRITE*2
+				qualities[i][j]->setGain(
+						qualities[i][j]->getGain() / maxQuality->getGain());
+				qualities[i][j]->setLoss(
+						qualities[i][j]->getLoss() / maxQuality->getLoss());
 				eval.incrQCounter(2);
 			}
 		}
@@ -413,7 +420,8 @@ void LPAggreg< vector<double> >::computeQualitiesSpe(bool normalization) {
 }
 
 template<>
-void LPAggreg< vector< vector<double> > >::computeQualitiesSpe(bool normalization) {
+void LPAggreg<vector<vector<double> > >::computeQualitiesSpe(
+		bool normalization) {
 	//Init and allocation
 	int n = this->getSize();
 	int m = this->values[0].size();
@@ -423,16 +431,16 @@ void LPAggreg< vector< vector<double> > >::computeQualitiesSpe(bool normalizatio
 		sumValues[i] = new double*[n];
 		entValues[i] = new double*[n];
 		qualities.push_back(vector<Quality*>());
-		for (int j = 0; j<n; j++){
+		for (int j = 0; j < n; j++) {
 			sumValues[i][j] = new double[m];
 			entValues[i][j] = new double[m];
-			qualities[i].push_back(new Quality(0,0));
+			qualities[i].push_back(new Quality(0, 0));
 			eval.incrQCounter(2);
 		}
 	}
 	//Microscopic level
 	for (int j = 0; j < n; j++) {
-		for (int k =0; k< m; k++){
+		for (int k = 0; k < m; k++) {
 			sumValues[0][j][k] = this->values[j][k];
 			entValues[0][j][k] = entropyReduction(sumValues[0][j][k], 0);
 			eval.incrQCounter(2);
@@ -441,27 +449,36 @@ void LPAggreg< vector< vector<double> > >::computeQualitiesSpe(bool normalizatio
 	//Other levels
 	for (int i = 1; i < n; i++) {
 		for (int j = 0; j < n - i; j++) {
-			for (int k =0; k< m; k++){
-			sumValues[i][j][k] = sumValues[i - 1][j][k] + sumValues[0][i + j][k];
-			entValues[i][j][k] = entValues[i - 1][j][k] + entValues[0][i + j][k];
-			qualities[i][j]->addToGain(entropyReduction(sumValues[i][j][k], entValues[i][j][k]));
-			qualities[i][j]->addToLoss(divergence(i + 1, sumValues[i][j][k], entValues[i][j][k]));
-			eval.incrQCounter(4);
+			for (int k = 0; k < m; k++) {
+				sumValues[i][j][k] = sumValues[i - 1][j][k]
+						+ sumValues[0][i + j][k];
+				entValues[i][j][k] = entValues[i - 1][j][k]
+						+ entValues[0][i + j][k];
+				qualities[i][j]->addToGain(
+						entropyReduction(sumValues[i][j][k],
+								entValues[i][j][k]));
+				qualities[i][j]->addToLoss(
+						divergence(i + 1, sumValues[i][j][k],
+								entValues[i][j][k]));
+				eval.incrQCounter(4);
 			}
 		}
 	}
 	if (normalization) {
-		Quality * maxQuality = new Quality(qualities[n-1][0]->getGain(), qualities[n-1][0]->getLoss());
+		Quality * maxQuality = new Quality(qualities[n - 1][0]->getGain(),
+				qualities[n - 1][0]->getLoss());
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n - i; j++) {
-				qualities[i][j]->setGain(qualities[i][j]->getGain()/maxQuality->getGain());
-				qualities[i][j]->setLoss(qualities[i][j]->getLoss()/maxQuality->getLoss());
+				qualities[i][j]->setGain(
+						qualities[i][j]->getGain() / maxQuality->getGain());
+				qualities[i][j]->setLoss(
+						qualities[i][j]->getLoss() / maxQuality->getLoss());
 				eval.incrQCounter(2);
 			}
 		}
 	}
 	for (int i = 0; i < n; i++) {
-		for (int j=0; j < n; j++){
+		for (int j = 0; j < n; j++) {
 			delete[] sumValues[i][j];
 			delete[] entValues[i][j];
 		}
@@ -473,7 +490,8 @@ void LPAggreg< vector< vector<double> > >::computeQualitiesSpe(bool normalizatio
 }
 
 template<>
-void LPAggreg< vector <vector< vector<double> > > >::computeQualitiesSpe(bool normalization) {
+void LPAggreg<vector<vector<vector<double> > > >::computeQualitiesSpe(
+		bool normalization) {
 	//Init and allocation
 	int n = this->getSize();
 	int m = this->values[0].size();
@@ -484,12 +502,12 @@ void LPAggreg< vector <vector< vector<double> > > >::computeQualitiesSpe(bool no
 		sumValues[i] = new double**[n];
 		entValues[i] = new double**[n];
 		qualities.push_back(vector<Quality*>());
-		for (int j = 0; j<n; j++){
+		for (int j = 0; j < n; j++) {
 			sumValues[i][j] = new double*[m];
 			entValues[i][j] = new double*[m];
-			qualities[i].push_back(new Quality(0,0));
+			qualities[i].push_back(new Quality(0, 0));
 			eval.incrQCounter(2);
-			for (int k = 0; k<m; k++){
+			for (int k = 0; k < m; k++) {
 				sumValues[i][j][k] = new double[l];
 				entValues[i][j][k] = new double[l];
 			}
@@ -497,10 +515,11 @@ void LPAggreg< vector <vector< vector<double> > > >::computeQualitiesSpe(bool no
 	}
 	//Microscopic level
 	for (int j = 0; j < n; j++) {
-		for (int k = 0; k < m; k++){
-			for (int o = 0; o < l; o++){
+		for (int k = 0; k < m; k++) {
+			for (int o = 0; o < l; o++) {
 				sumValues[0][j][k][o] = this->values[j][k][o];
-				entValues[0][j][k][o] = entropyReduction(sumValues[0][j][k][o], 0);
+				entValues[0][j][k][o] = entropyReduction(sumValues[0][j][k][o],
+						0);
 				eval.incrQCounter(2);
 			}
 		}
@@ -508,30 +527,39 @@ void LPAggreg< vector <vector< vector<double> > > >::computeQualitiesSpe(bool no
 	//Other levels
 	for (int i = 1; i < n; i++) {
 		for (int j = 0; j < n - i; j++) {
-			for (int k =0; k< m; k++){
-				for (int o = 0; o < l; o++){
-					sumValues[i][j][k][o] = sumValues[i - 1][j][k][o] + sumValues[0][i + j][k][o];
-					entValues[i][j][k][o] = entValues[i - 1][j][k][o] + entValues[0][i + j][k][o];
-					qualities[i][j]->addToGain(entropyReduction(sumValues[i][j][k][o], entValues[i][j][k][o]));
-					qualities[i][j]->addToLoss(divergence(i + 1, sumValues[i][j][k][o], entValues[i][j][k][o]));
+			for (int k = 0; k < m; k++) {
+				for (int o = 0; o < l; o++) {
+					sumValues[i][j][k][o] = sumValues[i - 1][j][k][o]
+							+ sumValues[0][i + j][k][o];
+					entValues[i][j][k][o] = entValues[i - 1][j][k][o]
+							+ entValues[0][i + j][k][o];
+					qualities[i][j]->addToGain(
+							entropyReduction(sumValues[i][j][k][o],
+									entValues[i][j][k][o]));
+					qualities[i][j]->addToLoss(
+							divergence(i + 1, sumValues[i][j][k][o],
+									entValues[i][j][k][o]));
 					eval.incrQCounter(4);
 				}
 			}
 		}
 	}
 	if (normalization) {
-		Quality * maxQuality = new Quality(qualities[n-1][0]->getGain(), qualities[n-1][0]->getLoss());
+		Quality * maxQuality = new Quality(qualities[n - 1][0]->getGain(),
+				qualities[n - 1][0]->getLoss());
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n - i; j++) {
-				qualities[i][j]->setGain(qualities[i][j]->getGain()/maxQuality->getGain());
-				qualities[i][j]->setLoss(qualities[i][j]->getLoss()/maxQuality->getLoss());
+				qualities[i][j]->setGain(
+						qualities[i][j]->getGain() / maxQuality->getGain());
+				qualities[i][j]->setLoss(
+						qualities[i][j]->getLoss() / maxQuality->getLoss());
 				eval.incrQCounter(2);
 			}
 		}
 	}
 	for (int i = 0; i < n; i++) {
-		for (int j=0; j < n; j++){
-			for (int k=0; k<m; k++){
+		for (int j = 0; j < n; j++) {
+			for (int k = 0; k < m; k++) {
 				delete[] sumValues[i][j][k];
 				delete[] entValues[i][j][k];
 			}
@@ -545,23 +573,22 @@ void LPAggreg< vector <vector< vector<double> > > >::computeQualitiesSpe(bool no
 	delete[] entValues;
 }
 
-
 template<typename Value>
-LPAggreg<Value>::LPAggreg(Value values):
-size(0), qualities(vector< vector<Quality*> >()), bestCuts(0), bestPartitions(vector<int>()), parameters(vector<float>()), qualityList(vector<Quality*>()), eval(Eval())
-{
-	this->values=values;
+LPAggreg<Value>::LPAggreg(Value values) :
+		size(0), qualities(vector<vector<Quality*> >()), bestCuts(0), bestPartitions(
+				vector<int>()), parameters(vector<float>()), qualityList(
+				vector<Quality*>()), eval(Eval()) {
+	this->values = values;
 }
 
 template<typename Value>
 void LPAggreg<Value>::setValues(const Value& values) {
-	this->values=values;
+	this->values = values;
 }
 
 template<typename Value>
 unsigned int LPAggreg<Value>::getSize() {
 	return this->values.size();
 }
-
 
 #endif /* LPAGGREG */

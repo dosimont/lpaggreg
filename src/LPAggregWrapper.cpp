@@ -31,23 +31,22 @@
 
 #include "LPAggregWrapper.h"
 
-
 LPAggregWrapper::LPAggregWrapper(int dimension) :
-parts(vector<int>()), dimension(dimension){
-	switch(dimension){
-	case 1:{
-		values1=LPValues<1, double>();
-		aggreg1=LPAggreg<vector<double> >();
+		parts(vector<int>()), dimension(dimension) {
+	switch (dimension) {
+	case 1: {
+		values1 = LPValues<1, double>();
+		aggreg1 = LPAggreg<vector<double> >();
 		break;
 	}
-	case 2:{
-		values2=LPValues<2, double>();
-		aggreg2=LPAggreg<vector< vector<double> > >();
+	case 2: {
+		values2 = LPValues<2, double>();
+		aggreg2 = LPAggreg<vector<vector<double> > >();
 		break;
 	}
-	case 3:{
-		values3=LPValues<3, double>();
-		aggreg3=LPAggreg<vector< vector< vector<double> > > >();
+	case 3: {
+		values3 = LPValues<3, double>();
+		aggreg3 = LPAggreg<vector<vector<vector<double> > > >();
 		break;
 	}
 	}
@@ -64,11 +63,11 @@ int LPAggregWrapper::getPart(int index) {
 }
 
 int LPAggregWrapper::getPartNumber() {
-	return (int)parts.size();
+	return (int) parts.size();
 }
 
 int LPAggregWrapper::getParameterNumber() {
-	return (int)parameters.size();
+	return (int) parameters.size();
 }
 
 float LPAggregWrapper::getParameter(int index) {
@@ -78,57 +77,59 @@ float LPAggregWrapper::getParameter(int index) {
 }
 
 double LPAggregWrapper::getGainByIndex(int index) {
-	if (index<(int) qualities.size())
+	if (index < (int) qualities.size())
 		return qualities[index]->getGain();
 	return -1;
 }
 
 double LPAggregWrapper::getGainByParameter(float parameter) {
-	for (int i=0; i<(int) parameters.size(); i++)
-		if (parameter==parameters[i])
-		   return qualities[i]->getGain();
+	for (int i = 0; i < (int) parameters.size(); i++)
+		if (parameter == parameters[i])
+			return qualities[i]->getGain();
 	return -1;
 }
 
 double LPAggregWrapper::getLossByIndex(int index) {
-	if (index<(int) qualities.size())
+	if (index < (int) qualities.size())
 		return qualities[index]->getLoss();
 	return -1;
 }
 
 double LPAggregWrapper::getLossByParameter(float parameter) {
-	for (int i=0; i<(int) parameters.size(); i++)
-		if (parameter==parameters[i])
-		   return qualities[i]->getLoss();
+	for (int i = 0; i < (int) parameters.size(); i++)
+		if (parameter == parameters[i])
+			return qualities[i]->getLoss();
 	return -1;
 }
 
-
 void LPAggregWrapper::computeParts(float parameter) {
 	parts.clear();
-	switch(dimension){
+	switch (dimension) {
 	case 1:
-		parts=aggreg1.getParts(parameter); break;
+		parts = aggreg1.getParts(parameter);
+		break;
 	case 2:
-		parts=aggreg2.getParts(parameter); break;
+		parts = aggreg2.getParts(parameter);
+		break;
 	case 3:
-		parts=aggreg3.getParts(parameter); break;
+		parts = aggreg3.getParts(parameter);
+		break;
 	}
 }
 
 void LPAggregWrapper::computeQualities(bool normalization) {
-	switch(dimension){
-	case 1:{
+	switch (dimension) {
+	case 1: {
 		aggreg1.setValues(values1.getValues());
 		aggreg1.computeQualities(normalization);
 		break;
 	}
-	case 2:{
+	case 2: {
 		aggreg2.setValues(values2.getValues());
 		aggreg2.computeQualities(normalization);
 		break;
 	}
-	case 3:{
+	case 3: {
 		aggreg3.setValues(values3.getValues());
 		aggreg3.computeQualities(normalization);
 		break;
@@ -137,28 +138,28 @@ void LPAggregWrapper::computeQualities(bool normalization) {
 }
 
 void LPAggregWrapper::computeDichotomy(float threshold) {
-	switch(dimension){
-	case 1:{
-		parameters=aggreg1.getParameters(threshold);
-		qualities=aggreg1.getQualityList();
+	switch (dimension) {
+	case 1: {
+		parameters = aggreg1.getParameters(threshold);
+		qualities = aggreg1.getQualityList();
 		break;
 	}
-	case 2:{
-		parameters=aggreg2.getParameters(threshold);
-		qualities=aggreg2.getQualityList();
+	case 2: {
+		parameters = aggreg2.getParameters(threshold);
+		qualities = aggreg2.getQualityList();
 		break;
 	}
-	case 3:{
-		parameters=aggreg3.getParameters(threshold);
-		qualities=aggreg3.getQualityList();
+	case 3: {
+		parameters = aggreg3.getParameters(threshold);
+		qualities = aggreg3.getQualityList();
 		break;
 	}
 	}
 }
 
 void LPAggregWrapper::setValue(int i, double value) {
-	switch(dimension){
-	case 1:{
+	switch (dimension) {
+	case 1: {
 		values1.setValue(i, value);
 		break;
 	}
@@ -166,16 +167,16 @@ void LPAggregWrapper::setValue(int i, double value) {
 }
 
 void LPAggregWrapper::push_back(double value) {
-	switch(dimension){
-	case 1:{
+	switch (dimension) {
+	case 1: {
 		values1.push_back(value);
 		break;
 	}
-	case 2:{
+	case 2: {
 		values2.push_back(value);
 		break;
 	}
-	case 3:{
+	case 3: {
 		values3.push_back(value);
 		break;
 	}
@@ -183,12 +184,12 @@ void LPAggregWrapper::push_back(double value) {
 }
 
 void LPAggregWrapper::addVector() {
-	switch(dimension){
-	case 2:{
+	switch (dimension) {
+	case 2: {
 		values2.addVector();
 		break;
 	}
-	case 3:{
+	case 3: {
 		values3.addVector();
 		break;
 	}
@@ -196,8 +197,8 @@ void LPAggregWrapper::addVector() {
 }
 
 void LPAggregWrapper::setValue(int i, int j, double value) {
-	switch(dimension){
-	case 2:{
+	switch (dimension) {
+	case 2: {
 		values2.setValue(i, j, value);
 		break;
 	}
@@ -205,8 +206,8 @@ void LPAggregWrapper::setValue(int i, int j, double value) {
 }
 
 void LPAggregWrapper::push_back(int i, double value) {
-	switch(dimension){
-	case 2:{
+	switch (dimension) {
+	case 2: {
 		values2.push_back(i, value);
 		break;
 	}
@@ -214,8 +215,8 @@ void LPAggregWrapper::push_back(int i, double value) {
 }
 
 void LPAggregWrapper::addMatrix() {
-	switch(dimension){
-	case 3:{
+	switch (dimension) {
+	case 3: {
 		values3.addMatrix();
 		break;
 	}
@@ -223,8 +224,8 @@ void LPAggregWrapper::addMatrix() {
 }
 
 void LPAggregWrapper::setValue(int i, int j, int k, double value) {
-	switch(dimension){
-	case 3:{
+	switch (dimension) {
+	case 3: {
 		values3.setValue(i, j, k, value);
 		break;
 	}
@@ -232,8 +233,8 @@ void LPAggregWrapper::setValue(int i, int j, int k, double value) {
 }
 
 void LPAggregWrapper::addVector(int i) {
-	switch(dimension){
-	case 3:{
+	switch (dimension) {
+	case 3: {
 		values3.addVector(i);
 		break;
 	}
@@ -241,8 +242,8 @@ void LPAggregWrapper::addVector(int i) {
 }
 
 void LPAggregWrapper::push_back(int i, int j, double value) {
-	switch(dimension){
-	case 3:{
+	switch (dimension) {
+	case 3: {
 		values3.push_back(i, j, value);
 		break;
 	}

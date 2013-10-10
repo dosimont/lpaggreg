@@ -39,8 +39,7 @@
 #include "Quality.h"
 
 Quality::Quality() :
-	gain(0), loss(0)
-{
+		gain(0), loss(0) {
 }
 
 double Quality::getGain() const {
@@ -55,8 +54,8 @@ double Quality::getLoss() const {
 	return loss;
 }
 
-Quality::Quality(double gain, double loss):
-	gain(gain), loss(loss){
+Quality::Quality(double gain, double loss) :
+		gain(gain), loss(loss) {
 }
 
 void Quality::setLoss(double loss) {
@@ -67,9 +66,9 @@ Quality::~Quality() {
 }
 
 void Quality::addToGain(double gain) {
-	this->gain+=gain;
+	this->gain += gain;
 }
 
 void Quality::addToLoss(double loss) {
-	this->loss+=loss;
+	this->loss += loss;
 }
