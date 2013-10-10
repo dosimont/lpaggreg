@@ -10,24 +10,28 @@
 
 #include <math.h>
 
-template <typename T> T entropy(T val);
-template <typename T> T entropyReduction(T val, T ent);
-template <typename T> T divergence(int size, T value, T ent);
+double entropy(double val);
+double entropyReduction(double val, double ent);
+double divergence(int size, double value, double ent);
 
-template <typename T> T entropy(T val) {
-	return val * log(val) / log(2);
+static const double ln=log(2);
+
+
+double entropy(double val) {
+	return val * log(val) / ln;
 }
 
 
-template <typename T> T entropyReduction(T val, T ent) {
+double entropyReduction(double val, double ent) {
 	if (val > 0)
 		return entropy(val) - ent;
 	else
 		return 0;
 }
 
-template <typename T> T divergence(int size, T value, T ent) {
-	return value * log(size) / log(2)  - entropyReduction(value, ent);
+double divergence(int size, double value, double ent) {
+	return value * log(size) / ln  - entropyReduction(value, ent);
 }
+
 
 #endif /* COMPLEXITY_H_ */
