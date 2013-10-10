@@ -7,6 +7,10 @@ CPP_SRCS += \
 ../src/Complexity.cpp \
 ../src/Eval.cpp \
 ../src/LPAggregWrapper.cpp \
+../src/NLPAggreg.cpp \
+../src/NLPAggreg1.cpp \
+../src/NLPAggreg2.cpp \
+../src/NLPAggreg3.cpp \
 ../src/OLPAggreg.cpp \
 ../src/OLPAggreg1.cpp \
 ../src/OLPAggreg2.cpp \
@@ -17,6 +21,10 @@ OBJS += \
 ./src/Complexity.o \
 ./src/Eval.o \
 ./src/LPAggregWrapper.o \
+./src/NLPAggreg.o \
+./src/NLPAggreg1.o \
+./src/NLPAggreg2.o \
+./src/NLPAggreg3.o \
 ./src/OLPAggreg.o \
 ./src/OLPAggreg1.o \
 ./src/OLPAggreg2.o \
@@ -27,6 +35,10 @@ CPP_DEPS += \
 ./src/Complexity.d \
 ./src/Eval.d \
 ./src/LPAggregWrapper.d \
+./src/NLPAggreg.d \
+./src/NLPAggreg1.d \
+./src/NLPAggreg2.d \
+./src/NLPAggreg3.d \
 ./src/OLPAggreg.d \
 ./src/OLPAggreg1.d \
 ./src/OLPAggreg2.d \
