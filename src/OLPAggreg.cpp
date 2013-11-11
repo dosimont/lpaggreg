@@ -39,7 +39,7 @@ void OLPAggreg::computeBestCuts(float parameter) {
 					+ parameter * qualities[i - k][k]->getGain()
 					- (1 - parameter) * qualities[i - k][k]->getLoss();
 			eval.incrBCCounter();
-			if (quality > currentQuality) {
+			if (quality >= currentQuality) {//TODO influence p
 				currentCut = k; //WRITE*2
 				currentQuality = quality;
 				eval.incrBCCounter(2);
