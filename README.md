@@ -37,4 +37,6 @@ __Install__
 		$ make install
 		
 __Clean__
+		
+		$ make clean
 
