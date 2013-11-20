@@ -30,11 +30,11 @@ USA.
 
 __Compile__
 
-		$ cd Release
 		$ make
 		
 __Install__
 
-		$ cd ..
-		$ ./install.sh
+		$ make install
+		
+__Clean__
 
