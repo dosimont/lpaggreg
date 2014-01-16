@@ -16,16 +16,15 @@ double NLPAggreg1::getValues() const {
 }
 
 void NLPAggreg1::setValues(double values) {
-	if (!hasChild())
 		this->values = values;
 }
 
 NLPAggreg1::NLPAggreg1(NLPAggreg1* parent, int id, double values): NLPAggreg(parent, id){
-	this->values=0;
+	setValues(values);
 }
 
 NLPAggreg1::NLPAggreg1(int id, double values): NLPAggreg(0, id){
-	this->values=0;
+	setValues(values);
 }
 
 NLPAggreg1::~NLPAggreg1() {

@@ -10,10 +10,12 @@
 NLPAggreg3::NLPAggreg3(): NLPAggreg(){
 }
 
-NLPAggreg3::NLPAggreg3(int id, double values): NLPAggreg(0, id){
+NLPAggreg3::NLPAggreg3(int id, vector< vector<double> > values): NLPAggreg(0, id){
+	setValues(values);
 }
 
 NLPAggreg3::NLPAggreg3(NLPAggreg3* parent, int id, vector< vector<double> > values): NLPAggreg(parent, id){
+	setValues(values);
 }
 
 NLPAggreg3::~NLPAggreg3() {

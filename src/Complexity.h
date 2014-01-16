@@ -14,6 +14,7 @@ double entropy(double val);
 double entropyReduction(double val, double ent);
 double divergence(int size, double value, double ent);
 
+
 static const double ln = log(2);
 
 
