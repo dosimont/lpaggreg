@@ -267,6 +267,17 @@ const vector<vector<Quality*> >& DLPAggreg::getQualities() const {
 	return qualities;
 }
 
+double DLPAggreg::sumOptimalCompromise(int i, int j) {
+	double sum=0;
+	for DCHILDS
+		sum+=DCHILD->getOptimalCompromise();
+	return sum;
+}
+
+double DLPAggreg::computePIC(float parameter, int i, int j) {
+	return (((double) parameter ) * qualities[i][j]->getGain() - ((1 - (double) parameter) * qualities[i][j]->getLoss()));
+}
+
 int DLPAggreg::getValueSize() const {
 	return value_size;
 }
