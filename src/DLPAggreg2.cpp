@@ -7,10 +7,10 @@
 
 #include "DLPAggreg2.h"
 
-DLPAggreg2::DLPAggreg2(): DLPAggreg(), values(0){
+DLPAggreg2::DLPAggreg2(): DLPAggreg(), values(0), sumValue(0), microInfo(0){
 }
 
-DLPAggreg2::DLPAggreg2(int id, vector<double> values): DLPAggreg(0, id){
+DLPAggreg2::DLPAggreg2(int id, vector<double> values): DLPAggreg(0, id), sumValue(0), microInfo(0){
 	setValues(values);
 }
 
@@ -27,16 +27,16 @@ const vector<double>& DLPAggreg2::getValues() const {
 }
 
 void DLPAggreg2::computeQuality() {
-	if (hasChild){
+	if (hasChild()){
 		size=0;
 		for DCHILDS{
-			DCHILD->computeQuality();
-			size+=DCHILD->getSize();
+			DCHILD2->computeQuality();
+			size+=DCHILD2->getSize();
 		}
+		value_size=static_cast<DLPAggreg2*>(childNodes)[0].getValues().size();
 	}else{
 		value_size=values.size();
 		size=1;
-		value_size=childNodes[0]->getValues().size();
 	}
 	sumValue=new double*[value_size];
 	microInfo=new double*[value_size];
@@ -47,7 +47,7 @@ void DLPAggreg2::computeQuality() {
 		for (unsigned int j=0; j<value_size; j++)
 			qualities[i].push_back(new Quality());
 	}
-		if(!hasChild){
+		if(!hasChild()){
 			for (unsigned int i=0; i<value_size; i++){
 				sumValue[i][0]=values[i];
 				microInfo[i][0]=entropyReduction(values[i], 0);
@@ -58,15 +58,46 @@ void DLPAggreg2::computeQuality() {
 					microInfo[i][j]=microInfo[i][j-1]+microInfo[i+j][0];
 					qualities[i][j]->setGain(entropyReduction(sumValue[i][j], microInfo[i][j]));
 					qualities[i][j]->setLoss(divergence(j+1, sumValue[i][j], microInfo[i][j]));
-
 				}
-
 			}
-
+		}else{
+			for (unsigned int j=0; j<value_size; j++){
+				for (unsigned int i=0; i<value_size-j; j++){
+					sumValue[i][j]=0;
+					microInfo[i][j]=0;
+					for DCHILDS{
+						sumValue[i][j]+=DCHILD2->getSumValue()[i][j];
+						microInfo[i][j]+=DCHILD2->getMicroInfo()[i][j];
+					}
+					qualities[i][j]->setGain(entropyReduction(sumValue[i][j], microInfo[i][j]));
+					qualities[i][j]->setLoss(divergence((j+1)*size, sumValue[i][j], microInfo[i][j]));
+				}
+			}
 	}
 }
 
 void DLPAggreg2::computeQualities(bool normalization) {
+	if (!hasParent()) {
+		setEval(new Eval);
+		eval->resetQCounter();
+		eval->startQTimer();
+		computeQuality();
+		if (normalization)
+			normalize();
+		eval->stopQTimer();
+	}
+}
+
+double** DLPAggreg2::getMicroInfo() const {
+	return microInfo;
+}
+
+const vector<vector<Quality*> >& DLPAggreg2::getQualities() const {
+	return qualities;
+}
+
+double** DLPAggreg2::getSumValue() const {
+	return sumValue;
 }
 
 void DLPAggreg2::setValues(const vector<double>& values) {

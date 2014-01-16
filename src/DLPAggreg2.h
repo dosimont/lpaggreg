@@ -9,6 +9,7 @@
 #define DLPAGGREG2_H_
 
 #include "DLPAggreg.h"
+#define DCHILD2 static_cast<DLPAggreg2*>(DCHILD)
 
 class DLPAggreg2: public DLPAggreg {
 	private:
@@ -28,6 +29,8 @@ class DLPAggreg2: public DLPAggreg {
 		void computeQualities(bool normalization);
 		const vector<double>& getValues() const;
 		void setValues(const vector<double>& values);
+		double** getMicroInfo() const;
+		double** getSumValue() const;
 };
 
 #endif /* DLPAGGREG2_H_ */

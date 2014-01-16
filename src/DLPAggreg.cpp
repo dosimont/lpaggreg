@@ -16,9 +16,9 @@
 
 #include "DLPAggreg.h"
 
-DLPAggreg::DLPAggreg() :
-		id(0), rank(0), parent(0), childNodes(vector<DLPAggreg*>()), quality(
-				new Quality(0, 0)), size(0), eval(
+DLPAggreg::DLPAggreg():
+		id(0), rank(0), parent(0), childNodes(vector<DLPAggreg*>()), qualities(
+				0), optimalCompromise(0), pIC(0), size(0), value_size(0), eval(
 				0) {
 
 }
@@ -26,8 +26,7 @@ DLPAggreg::DLPAggreg() :
 
 
 DLPAggreg::DLPAggreg(DLPAggreg* parent, int id) :
-		id(id), rank(0), parent(parent), childNodes(vector<DLPAggreg*>()), quality(
-				new Quality(0, 0)), size(0), eval(
+				id(id), rank(0), parent(parent), childNodes(vector<DLPAggreg*>()), qualities(0), optimalCompromise(0), pIC(0), size(0), value_size(0), eval(
 				0) {
 	parent->addChild(this);
 }
@@ -40,15 +39,6 @@ void DLPAggreg::addChild(DLPAggreg *child) {
 }
 
 
-void DLPAggreg::setQuality(Quality *quality) {
-	this->quality = quality;
-}
-
-
-Quality* DLPAggreg::getQuality() {
-	return quality;
-}
-
 
 DLPAggreg* DLPAggreg::getParent() {
 	return parent;
@@ -58,7 +48,13 @@ DLPAggreg* DLPAggreg::getParent() {
 DLPAggreg::~DLPAggreg() {
 	for DCHILDS
 	delete DCHILD;
-	delete quality;
+	for (int i=value_size-1; i>=0; i++){
+		for (int j=value_size-1; j>=0; j++){
+			delete qualities[i][j];
+		}
+		qualities[i].clear();
+	}
+	qualities.clear();
 	if (!hasParent())
 	delete eval;
 }
@@ -94,23 +90,27 @@ bool DLPAggreg::hasChild() {
 }
 
 
-//void DLPAggreg::normalize(double maxGain, double maxLoss) {
-//	if (maxGain == 0 && maxLoss == 0) {
-//		maxGain = quality->getGain();
-//		maxLoss = quality->getLoss();
-//		eval->incrQCounter(2);
-//	}
-//	if (maxGain > 0) {
-//		quality->setGain(quality->getGain() / maxGain);
-//		eval->incrQCounter();
-//	}
-//	if (maxLoss > 0) {
-//		quality->setLoss(quality->getLoss() / maxLoss);
-//		eval->incrQCounter();
-//	}
-//	for DCHILDS
-//	DCHILD->normalize(maxGain, maxLoss);
-//}
+void DLPAggreg::normalize(double maxGain, double maxLoss) {
+	if (maxGain == 0 && maxLoss == 0) {
+		maxGain = qualities[value_size-1][value_size-1]->getGain();
+		maxLoss = qualities[value_size-1][value_size-1]->getLoss();
+		eval->incrQCounter(2);
+	}
+	for (unsigned j=0; j< value_size; j++){
+		for (unsigned i=0; i<value_size-j; i++){
+			if (maxGain > 0) {
+				qualities[i][j]->setGain(qualities[i][j]->getGain() / maxGain);
+				eval->incrQCounter();
+			}
+			if (maxLoss > 0) {
+				qualities[i][j]->setLoss(qualities[i][j]->getLoss() / maxLoss);
+				eval->incrQCounter();
+	}
+	for DCHILDS
+		DCHILD->normalize(maxGain, maxLoss);
+		}
+	}
+}
 
 
 Eval* DLPAggreg::getEval() {
@@ -251,6 +251,25 @@ bool DLPAggreg::ownsNode(DLPAggreg* node) {
 	return false;
 }
 
+double** DLPAggreg::getOptimalCompromise() const {
+	return optimalCompromise;
+}
+
+const vector<vector<DLPPartition*> >& DLPAggreg::getOptimalPartition() const {
+	return optimalPartition;
+}
+
+double** DLPAggreg::getPIC() const {
+	return pIC;
+}
+
+const vector<vector<Quality*> >& DLPAggreg::getQualities() const {
+	return qualities;
+}
+
+int DLPAggreg::getValueSize() const {
+	return value_size;
+}
 
 unsigned int DLPAggreg::childNodeSize() {
 	return childNodes.size();

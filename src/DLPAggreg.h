@@ -27,7 +27,10 @@ class DLPAggreg {
 		int rank;
 		DLPAggreg *parent;
 		vector<DLPAggreg*> childNodes;
-		Quality *quality;
+		vector<vector<Quality*>> qualities;
+		double ** optimalCompromise;
+		vector<vector<DLPPartition*>> optimalPartition;
+		double ** pIC;
 		int size;
 		int value_size;
 		Eval *eval;
@@ -37,9 +40,7 @@ class DLPAggreg {
 		DLPAggreg(DLPAggreg* parent, int id);
 		virtual ~DLPAggreg();
 		DLPAggreg* getParent();
-		Quality* getQuality();
 		int getSize() const;
-		void setQuality(Quality *quality);
 		bool hasChild();
 		bool hasParent();
 		void addChild(DLPAggreg* child);
@@ -65,6 +66,13 @@ class DLPAggreg {
 		void setRank(int rank);
 		bool ownsNode(DLPAggreg* node);
 		unsigned int childNodeSize();
+		double sumOptimalCompromise(int i, int j);
+		double computePIC(float parameter, int i, int j);
+		double** getOptimalCompromise() const;
+		const vector<vector<DLPPartition*> >& getOptimalPartition() const;
+		double** getPIC() const;
+		const vector<vector<Quality*> >& getQualities() const;
+		int getValueSize() const;
 };
 
 #endif /* DLPAGGREG_H_ */
