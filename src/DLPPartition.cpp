@@ -32,3 +32,7 @@ void DLPPartition::setPartition(int partition) {
 DLPPartition::~DLPPartition() {
 }
 
+void DLPPartition::setAll(int partition, bool aggregated) {
+	this->partition=partition;
+	this->aggregated=aggregated;
+}

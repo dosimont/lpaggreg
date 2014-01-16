@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include "Quality.h"
 #include "Complexity.h"
 #include "Eval.h"
@@ -49,13 +50,14 @@ class DLPAggreg {
 		int getId() const;
 		void setId(int id);
 		void normalize(double maxGain = 0, double maxLoss = 0);
-		double computeAggregation(float parameter);
-		void computeBestPartitions();
+		//double computeAggregation(float parameter);
+		//void computeBestPartitions();
+		void computeBestPartition(float parameter);
 		//int fillBestPartitions(vector<int>*bestPartition, int p);
 		Eval* getEval();
 		void setEval(Eval* eval);
-		void computeQualities(bool normalization);
-		vector<int> * getAggregation(float parameter);
+		//void computeQualities(bool normalization);
+		//vector<int> * getAggregation(float parameter);
 		int getQualityDuration(); //ms
 		int getBestCutDuration(); //ms
 		int getBestPartitionDuration(); //ms

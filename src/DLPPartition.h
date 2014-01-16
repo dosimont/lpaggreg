@@ -21,6 +21,7 @@ class DLPPartition {
 		void setAggregated(bool aggregated);
 		int getPartition() const;
 		void setPartition(int partition);
+		void setAll(int partition, bool aggregated);
 };
 
 #endif /* DLPPARTITION_H_ */

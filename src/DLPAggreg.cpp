@@ -278,6 +278,65 @@ double DLPAggreg::computePIC(float parameter, int i, int j) {
 	return (((double) parameter ) * qualities[i][j]->getGain() - ((1 - (double) parameter) * qualities[i][j]->getLoss()));
 }
 
+void DLPAggreg::computeBestPartition(float parameter) {
+	optimalCompromise=new double*[value_size];
+	optimalPartition=vector<vector<DLPPartition*> >();
+	pIC=new double*[value_size];
+	int i;
+	for (i=0; i<value_size-1; i++){
+		optimalCompromise[i]=new double[value_size];
+		pIC[i]=new double[value_size];
+		optimalPartition.push_back(vector<DLPPartition*>());
+		for (int j=0; j<value_size; j++){
+			optimalPartition[i][j]=new DLPPartition();
+		}
+	}
+	pIC[i]=new double[value_size];
+	if (!hasChild()){
+		for (int k=value_size-1; k>=0; k--){
+			pIC[k][0]=computePIC(parameter, k, 0);
+			optimalCompromise[k][0]=pIC[k][0];
+			optimalPartition[k][0]->setAll(k, true);
+			for (int j=1; j<value_size-k; j++){
+				DLPPartition currentCut = DLPPartition(k, true);
+				pIC[k][j]=computePIC(parameter, k, j);
+				double currentCompromise = pIC[k][j];
+				for (int cut=1; cut<=j; cut++){
+					double compromise = optimalCompromise[k][cut-1]+pIC[cut+k][j-cut];
+					if (compromise>currentCompromise){
+						currentCompromise=compromise;
+						currentCut.setAll(cut+k, true);
+					}
+				}
+				optimalCompromise[k][j]=currentCompromise;
+				optimalPartition[k][j]->setAll(currentCut.getPartition(), currentCut.isAggregated());
+			}
+		}
+	}else{
+		for DCHILDS
+			DCHILD->computeBestPartition(parameter);
+		for (int k=value_size; k>=0; k--){
+			pIC[k][0]= computePIC(parameter, k, 0);
+			optimalCompromise[k][0]=max(pIC[k][0], sumOptimalCompromise(k,0));
+			optimalPartition[k][0]->setAll(k, pIC[k,0]==optimalCompromise[k][0]);
+			for (int j=1; j<value_size-k; j++){
+				pIC[k][j]=computePIC(parameter, k, j);
+				double currentCompromise=max(pIC[k][j], sumOptimalCompromise(k,j));
+				DLPPartition currentCut = DLPPartition(k, pIC[k][0]==optimalCompromise[k][0]);
+				for (int cut=1; cut<=j; cut++){
+					double compromise=optimalCompromise[k][cut-1]+max(pIC[cut+k][j-cut], sumOptimalCompromise(cut+k, j-cut));
+					if (compromise>currentCompromise){
+						currentCompromise=compromise;
+						currentCut.setAll(cut+k, pIC[cut+k, j-cut]==compromise);
+					}
+				}
+				optimalCompromise[k][j]=currentCompromise;
+				optimalPartition[k][j]->setAll(currentCut.getPartition(), currentCut.isAggregated());
+			}
+		}
+	}
+}
+
 int DLPAggreg::getValueSize() const {
 	return value_size;
 }

@@ -19,7 +19,7 @@ DLPAggreg2::DLPAggreg2(DLPAggreg2* parent, int id, vector<double> values): DLPAg
 }
 
 DLPAggreg2::~DLPAggreg2() {
-	// TODO Auto-generated destructor stub
+
 }
 
 const vector<double>& DLPAggreg2::getValues() const {
