@@ -133,7 +133,7 @@ void LPAggregWrapper::computeQualities(bool normalization) {
 void LPAggregWrapper::computeDichotomy(float threshold) {
 	parameters = aggreg->getParameters(threshold);
 	qualities = aggreg->getQualityList();
-
+	
 }
 
 void LPAggregWrapper::setValue(int i, double value) {

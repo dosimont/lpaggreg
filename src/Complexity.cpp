@@ -5,7 +5,6 @@
  *      Author: dosimont
  */
 
-
 #include "Complexity.h"
 
 double entropy(double val) {
@@ -22,5 +21,4 @@ double entropyReduction(double val, double ent) {
 double divergence(int size, double value, double ent) {
 	return value * log(size) / ln - entropyReduction(value, ent);
 }
-
 

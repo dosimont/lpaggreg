@@ -12,8 +12,8 @@
 
 class NLPAggreg3: public NLPAggreg {
 	private:
-
-		vector< vector<double> > values;
+		
+		vector<vector<double> > values;
 
 	private:
 		void computeQuality();
@@ -22,8 +22,8 @@ class NLPAggreg3: public NLPAggreg {
 	public:
 		NLPAggreg3();
 		virtual ~NLPAggreg3();
-		NLPAggreg3(int id, vector< vector<double> > values);
-		NLPAggreg3(NLPAggreg3* parent, int id, vector< vector<double> > values);
+		NLPAggreg3(int id, vector<vector<double> > values);
+		NLPAggreg3(NLPAggreg3* parent, int id, vector<vector<double> > values);
 		void computeQualities(bool normalization);
 		const vector<vector<double> >& getValues() const;
 		void setValues(const vector<vector<double> >& values);

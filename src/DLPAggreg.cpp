@@ -7,30 +7,17 @@
 
 #include "DLPAggreg.h"
 
-/*
- * DLPAggreg.cpp
- *
- *  Created on: 10 oct. 2013
- *      Author: dosimont
- */
-
-#include "DLPAggreg.h"
-
-DLPAggreg::DLPAggreg():
+DLPAggreg::DLPAggreg() :
 		id(0), rank(0), parent(0), childNodes(vector<DLPAggreg*>()), qualities(
-				0), optimalCompromise(0), pIC(0), nodeSize(0), valueSize(0), partCounter(0), eval(
-				0) {
-
+				0), optimalCompromises(0), pIC(0), nodeSize(0), valueSize(0), eval(0) {
+	
 }
-
-
 
 DLPAggreg::DLPAggreg(DLPAggreg* parent, int id) :
-				id(id), rank(0), parent(parent), childNodes(vector<DLPAggreg*>()), qualities(0), optimalCompromise(0), pIC(0), nodeSize(0), valueSize(0), partCounter(0), eval(
-				0) {
+		id(id), rank(0), parent(parent), childNodes(vector<DLPAggreg*>()), qualities(
+				0), optimalCompromises(0), pIC(0), nodeSize(0), valueSize(0), eval(0) {
 	parent->addChild(this);
 }
-
 
 void DLPAggreg::addChild(DLPAggreg *child) {
 	childNodes.push_back(child);
@@ -38,66 +25,50 @@ void DLPAggreg::addChild(DLPAggreg *child) {
 	child->setRank(rank + 1);
 }
 
-
-
 DLPAggreg* DLPAggreg::getParent() {
 	return parent;
 }
 
-
 DLPAggreg::~DLPAggreg() {
-	for DCHILDS
-	delete DCHILD;
-	for (int i=valueSize-1; i>=0; i++){
-		for (int j=valueSize-1; j>=0; j++){
-			delete qualities[i][j];
-		}
-		qualities[i].clear();
-	}
-	qualities.clear();
+	deleteChildNodes();
+	clean();
+	deleteQualities();
 	if (!hasParent())
-	delete eval;
+	deleteEval();
 }
-
 
 int DLPAggreg::getId() const {
 	return id;
 }
 
-
 void DLPAggreg::setId(int id) {
 	this->id = id;
 }
-
 
 const vector<DLPAggreg*>& DLPAggreg::getChildNodes() const {
 	return childNodes;
 }
 
-
 int DLPAggreg::getNodeSize() const {
 	return nodeSize;
 }
-
 
 void DLPAggreg::setParent(DLPAggreg* parent) {
 	this->parent = parent;
 }
 
-
 bool DLPAggreg::hasChild() {
 	return !childNodes.empty();
 }
 
-
 void DLPAggreg::normalize(double maxGain, double maxLoss) {
 	if (maxGain == 0 && maxLoss == 0) {
-		maxGain = qualities[valueSize-1][valueSize-1]->getGain();
-		maxLoss = qualities[valueSize-1][valueSize-1]->getLoss();
+		maxGain = qualities[valueSize - 1][valueSize - 1]->getGain();
+		maxLoss = qualities[valueSize - 1][valueSize - 1]->getLoss();
 		eval->incrQCounter(2);
 	}
-	for (unsigned j=0; j< valueSize; j++){
-		for (unsigned i=0; i<valueSize-j; i++){
+	for (unsigned j = 0; j < valueSize; j++) {
+		for (unsigned i = 0; i < valueSize - j; i++) {
 			if (maxGain > 0) {
 				qualities[i][j]->setGain(qualities[i][j]->getGain() / maxGain);
 				eval->incrQCounter();
@@ -105,23 +76,20 @@ void DLPAggreg::normalize(double maxGain, double maxLoss) {
 			if (maxLoss > 0) {
 				qualities[i][j]->setLoss(qualities[i][j]->getLoss() / maxLoss);
 				eval->incrQCounter();
-	}
-	for DCHILDS
-		DCHILD->normalize(maxGain, maxLoss);
+			}
+			for DCHILDS
+			DCHILD->normalize(maxGain, maxLoss);
 		}
 	}
 }
-
 
 Eval* DLPAggreg::getEval() {
 	return eval;
 }
 
-
 bool DLPAggreg::hasParent() {
 	return (parent != 0);
 }
-
 
 void DLPAggreg::setEval(Eval* eval) {
 	this->eval = eval;
@@ -129,53 +97,19 @@ void DLPAggreg::setEval(Eval* eval) {
 	DCHILD->setEval(eval);
 }
 
-
-
-
-//void DLPAggreg::computeBestPartitions() {
-//	bestPartitions = new vector<int>();
-//	eval->incrBPCounter();
-//	fillBestPartitions(bestPartitions, 0);
-//}
-//
-//
-//int DLPAggreg::fillBestPartitions(vector<int>*bestPartitions, int p) {
-//	this->bestPartitions = bestPartitions;
-//	eval->incrBPCounter();
-//	if (aggregated) {
-//		for (int i = 0; i < size; i++) {
-//			this->bestPartitions->push_back(p);
-//			eval->incrBPCounter();
-//		}
-//	}
-//	else {
-//		for DCHILDS {
-//			p = DCHILD->fillBestPartitions(this->bestPartitions, p);
-//			eval->incrBPCounter();
-//		}
-//	}
-//	return p + 1;
-//}
-
-
-
-
-//vector<int>* DLPAggreg::getAggregation(float parameter) {
-//	if (!hasParent()) {
-//		//delete bestPartitions;
-//		eval->resetBCCounter();
-//		eval->startBCTimer();
-//		computeAggregation(parameter);
-//		eval->stopBCTimer();
-//		eval->resetBPCounter();
-//		eval->startBPTimer();
-//		computeBestPartitions();
-//		eval->stopBPTimer();
-//		return bestPartitions;
-//	}
-//	return 0;
-//}
-
+void DLPAggreg::computeAggregation(float parameter) {
+	if (!hasParent()) {
+		clean();
+		eval->resetBCCounter();
+		eval->startBCTimer();
+		computeBestCut(parameter);
+		eval->stopBCTimer();
+		eval->resetBPCounter();
+		eval->startBPTimer();
+		computeBestPartitions();
+		eval->stopBPTimer();
+	}
+}
 
 void DLPAggreg::computeBestPartitions() {
 	for (int i = 0; i < valueSize; i++) {
@@ -183,70 +117,78 @@ void DLPAggreg::computeBestPartitions() {
 		eval->incrBPCounter();
 	}
 	for DCHILDS
-		DCHILD->computeBestPartitions();
-	if (!hasParent())
+	DCHILD->computeBestPartitions();
+	if (!hasParent()){
+		int *partCounter=new int;
+		*partCounter=0;
+		eval->incrBPCounter();
 		fillPartition(0, valueSize - 1, partCounter);
+		delete partCounter;
+	}
 }
-//
-//void DLPAggreg::deleteBestPartitions() {
-//	bestPartitions.clear();
-//}
-//
-int DLPAggreg::fillPartition(int start, int end, int * counter) {
-	int c = bestCuts[i]; //WRITE
-	eval.incrBPCounter();
-	if (c > 0) {
-		p = fillPartition(c - 1, p); //WRITE
-		eval.incrBPCounter();
+
+void DLPAggreg::fillPartition(int start, int end, int * counter) {
+	DLPCut c = optimalCuts[start][end-start]; //WRITE
+	eval->incrBPCounter();
+	if (c.isAggregated()){
+		setPartitions(c.getCut(), end, *counter);//TODO verificar
+		(*counter)++;
+		eval->incrBPCounter();
+		if (c.getCut()>start)
+			fillPartition(start, c.getCut()-1, counter);
+	}else{
+		setPartitions(c.getCut(), end, -1);
+		for DCHILDS
+		DCHILD->fillPartition(c.getCut(), end, counter);
+		if (c.getCut()>start)
+			fillPartition(start, c.getCut()-1, counter);
 	}
-	for (int k = c; k < i + 1; k++) {
-		optimalPartitions[k] = p; //WRITE
-		eval.incrBPCounter();
+}
+
+void DLPAggreg::setPartitions(int start, int end, int value){
+	for (int i=start; i<=end; i++){
+		optimalPartitions[i]=value;
+		eval->incrBPCounter();
 	}
-	return p + 1;
+	if (value>-1){
+		for DCHILDS
+		DCHILD->setPartitions(start, end, value);
+	}
 }
 
 int DLPAggreg::getQualityDuration() {
 	return eval->getQDuration();
 }
 
-
 int DLPAggreg::getBestCutDuration() {
 	return eval->getBCDuration();
 }
-
 
 int DLPAggreg::getBestPartitionDuration() {
 	return eval->getBPDuration();
 }
 
-
 int DLPAggreg::getQualityCount() {
 	return eval->getQCount();
 }
-
 
 int DLPAggreg::getBestCutCount() {
 	return eval->getBCCount();
 }
 
-
 int DLPAggreg::getBestPartitionCount() {
 	return eval->getBPCount();
 }
 
-
 int DLPAggreg::getRank() const {
 	return rank;
 }
-
 
 void DLPAggreg::setRank(int rank) {
 	this->rank = rank;
 	for DCHILDS
 	DCHILD->setRank(rank+1);
 }
-
 
 bool DLPAggreg::ownsNode(DLPAggreg* node) {
 	if (this == node)
@@ -259,8 +201,8 @@ bool DLPAggreg::ownsNode(DLPAggreg* node) {
 	return false;
 }
 
-double** DLPAggreg::getOptimalCompromise() const {
-	return optimalCompromise;
+double** DLPAggreg::getOptimalCompromises() const {
+	return optimalCompromises;
 }
 
 const vector<vector<DLPCut*> >& DLPAggreg::getOptimalCuts() const {
@@ -276,70 +218,73 @@ const vector<vector<Quality*> >& DLPAggreg::getQualities() const {
 }
 
 double DLPAggreg::sumOptimalCompromise(int i, int j) {
-	double sum=0;
+	double sum = 0;
 	for DCHILDS
-		sum+=DCHILD->getOptimalCompromise();
+	sum+=DCHILD->getOptimalCompromises();
 	return sum;
 }
 
 double DLPAggreg::computePIC(float parameter, int i, int j) {
-	return (((double) parameter ) * qualities[i][j]->getGain() - ((1 - (double) parameter) * qualities[i][j]->getLoss()));
+	return (((double) parameter) * qualities[i][j]->getGain()
+			- ((1 - (double) parameter) * qualities[i][j]->getLoss()));
 }
 
 void DLPAggreg::computeBestCut(float parameter) {
-	optimalCompromise=new double*[valueSize];
-	optimalCuts=vector<vector<DLPCut*> >();
-	pIC=new double*[valueSize];
+	optimalCompromises = new double*[valueSize];
+	optimalCuts = vector<vector<DLPCut*> >();
+	pIC = new double*[valueSize];
 	int i;
-	for (i=0; i<valueSize-1; i++){
-		optimalCompromise[i]=new double[valueSize];
-		pIC[i]=new double[valueSize];
+	for (i = 0; i < valueSize; i++) {
+		optimalCompromises[i] = new double[valueSize];
+		pIC[i] = new double[valueSize];
 		optimalCuts.push_back(vector<DLPCut*>());
-		for (int j=0; j<valueSize; j++){
-			optimalCuts[i][j]=new DLPCut();
+		for (int j = 0; j < valueSize; j++) {
+			optimalCuts[i][j] = new DLPCut();
 		}
 	}
-	pIC[i]=new double[valueSize];
-	if (!hasChild()){
-		for (int k=valueSize-1; k>=0; k--){
-			pIC[k][0]=computePIC(parameter, k, 0);
-			optimalCompromise[k][0]=pIC[k][0];
+	if (!hasChild()) {
+		for (int k = valueSize - 1; k >= 0; k--) {
+			pIC[k][0] = computePIC(parameter, k, 0);
+			optimalCompromises[k][0] = pIC[k][0];
 			optimalCuts[k][0]->setAll(k, true);
-			for (int j=1; j<valueSize-k; j++){
+			for (int j = 1; j < valueSize - k; j++) {
 				DLPCut currentCut = DLPCut(k, true);
-				pIC[k][j]=computePIC(parameter, k, j);
+				pIC[k][j] = computePIC(parameter, k, j);
 				double currentCompromise = pIC[k][j];
-				for (int cut=1; cut<=j; cut++){
-					double compromise = optimalCompromise[k][cut-1]+pIC[cut+k][j-cut];
-					if (compromise>currentCompromise){
-						currentCompromise=compromise;
-						currentCut.setAll(cut+k, true);
+				for (int cut = 1; cut <= j; cut++) {
+					double compromise = optimalCompromises[k][cut - 1]
+							+ pIC[cut + k][j - cut];
+					if (compromise > currentCompromise) {
+						currentCompromise = compromise;
+						currentCut.setAll(cut + k, true);
 					}
 				}
-				optimalCompromise[k][j]=currentCompromise;
-				optimalCuts[k][j]->setAll(currentCut.getPartition(), currentCut.isAggregated());
+				optimalCompromises[k][j] = currentCompromise;
+				optimalCuts[k][j]->setAll(currentCut.getCut(),
+						currentCut.isAggregated());
 			}
 		}
-	}else{
+	}
+	else {
 		for DCHILDS
-			DCHILD->computeBestCut(parameter);
-		for (int k=valueSize-1; k>=0; k--){
+		DCHILD->computeBestCut(parameter);
+		for (int k=valueSize-1; k>=0; k--) {
 			pIC[k][0]= computePIC(parameter, k, 0);
-			optimalCompromise[k][0]=max(pIC[k][0], sumOptimalCompromise(k,0));
-			optimalCuts[k][0]->setAll(k, pIC[k,0]==optimalCompromise[k][0]);
-			for (int j=1; j<valueSize-k; j++){
+			optimalCompromises[k][0]=max(pIC[k][0], sumOptimalCompromise(k,0));
+			optimalCuts[k][0]->setAll(k, pIC[k,0]==optimalCompromises[k][0]);
+			for (int j=1; j<valueSize-k; j++) {
 				pIC[k][j]=computePIC(parameter, k, j);
 				double currentCompromise=max(pIC[k][j], sumOptimalCompromise(k,j));
-				DLPCut currentCut = DLPCut(k, pIC[k][0]==optimalCompromise[k][0]);
-				for (int cut=1; cut<=j; cut++){
-					double compromise=optimalCompromise[k][cut-1]+max(pIC[cut+k][j-cut], sumOptimalCompromise(cut+k, j-cut));
-					if (compromise>currentCompromise){
+				DLPCut currentCut = DLPCut(k, pIC[k][0]==optimalCompromises[k][0]);
+				for (int cut=1; cut<=j; cut++) {
+					double compromise=optimalCompromises[k][cut-1]+max(pIC[cut+k][j-cut], sumOptimalCompromise(cut+k, j-cut));
+					if (compromise>currentCompromise) {
 						currentCompromise=compromise;
 						currentCut.setAll(cut+k, pIC[cut+k][j-cut]==compromise);
 					}
 				}
-				optimalCompromise[k][j]=currentCompromise;
-				optimalCuts[k][j]->setAll(currentCut.getPartition(), currentCut.isAggregated());
+				optimalCompromises[k][j]=currentCompromise;
+				optimalCuts[k][j]->setAll(currentCut.getCut(), currentCut.isAggregated());
 			}
 		}
 	}
@@ -353,5 +298,40 @@ unsigned int DLPAggreg::childNodeSize() {
 	return childNodes.size();
 }
 
+void DLPAggreg::deleteChildNodes(){
+	if (hasChild()){
+	for DCHILDS
+	delete DCHILD;
+	childNodes.clear();
+	}
+}
+
+void DLPAggreg::deleteQualities(){
+	for (int i=valueSize-1; i>=0; i--) {
+		for (int j=valueSize-1; j>=0; j--) {
+			delete qualities[i][j];
+		}
+		qualities[i].clear();
+	}
+	qualities.clear();
+}
 
 
+
+void DLPAggreg::clean(){
+	for (int i=valueSize-1; i>=0; i--) {
+		for (int j=valueSize-1; j>=0; j--) {
+			delete optimalCuts[i][j];
+		}
+		optimalCuts[i].clear();
+		delete pIC[i];
+		delete optimalCompromises[i];
+	}
+	optimalCuts.clear();
+	delete pIC;
+	delete optimalCompromises;
+}
+
+void DLPAggreg::deleteEval(){
+	delete eval;
+}

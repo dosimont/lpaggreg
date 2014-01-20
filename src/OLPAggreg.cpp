@@ -39,7 +39,7 @@ void OLPAggreg::computeBestCuts(float parameter) {
 					+ parameter * qualities[i - k][k]->getGain()
 					- (1 - parameter) * qualities[i - k][k]->getLoss();
 			eval.incrBCCounter();
-			if (quality >= currentQuality) {//TODO influence p
+			if (quality >= currentQuality) { //TODO influence p
 				currentCut = k; //WRITE*2
 				currentQuality = quality;
 				eval.incrBCCounter(2);
@@ -168,8 +168,6 @@ OLPAggreg::~OLPAggreg() {
 	deleteParameters();
 	deleteQualityList();
 }
-
-
 
 vector<int> OLPAggreg::getParts(float parameter) {
 	deleteBestPartitions();

@@ -7,8 +7,9 @@
 
 #include "NLPAggreg1.h"
 
-NLPAggreg1::NLPAggreg1(): NLPAggreg(){
-	this->values=0;
+NLPAggreg1::NLPAggreg1() :
+		NLPAggreg() {
+	this->values = 0;
 }
 
 double NLPAggreg1::getValues() const {
@@ -16,14 +17,16 @@ double NLPAggreg1::getValues() const {
 }
 
 void NLPAggreg1::setValues(double values) {
-		this->values = values;
+	this->values = values;
 }
 
-NLPAggreg1::NLPAggreg1(NLPAggreg1* parent, int id, double values): NLPAggreg(parent, id){
+NLPAggreg1::NLPAggreg1(NLPAggreg1* parent, int id, double values) :
+		NLPAggreg(parent, id) {
 	setValues(values);
 }
 
-NLPAggreg1::NLPAggreg1(int id, double values): NLPAggreg(0, id){
+NLPAggreg1::NLPAggreg1(int id, double values) :
+		NLPAggreg(0, id) {
 	setValues(values);
 }
 
@@ -42,7 +45,7 @@ void NLPAggreg1::computeQuality() {
 		entSum = 0;
 		size = 0;
 		eval->incrQCounter(3);
-		for CHILDS {
+		forCHILDS {
 			static_cast<NLPAggreg1*>(CHILD)->computeQuality();
 			this->values+=static_cast<NLPAggreg1*>(CHILD)->getValues();
 			entSum+=CHILD->getEntSum();
@@ -54,7 +57,6 @@ void NLPAggreg1::computeQuality() {
 		eval->incrQCounter(2);
 	}
 }
-
 
 void NLPAggreg1::computeQualities(bool normalization) {
 	if (!hasParent()) {

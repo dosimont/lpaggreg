@@ -8,7 +8,6 @@
 #ifndef OLPAGGREG_H_
 #define OLPAGGREG_H_
 
-
 #include <math.h>
 #include "Quality.h"
 #include "Eval.h"
@@ -17,10 +16,10 @@
 
 using namespace std;
 
-class OLPAggreg {//ABC
+class OLPAggreg { //ABC
 
 	protected:
-
+		
 		/*Number of vector of scalar of input matrix*/
 		int size;
 
@@ -45,7 +44,7 @@ class OLPAggreg {//ABC
 		Eval eval;
 
 	protected:
-
+		
 		/*Deallocate quality matrix*/
 		void deleteQualities();
 
@@ -89,9 +88,8 @@ class OLPAggreg {//ABC
 		/*Deallocate parameters list*/
 		void deleteParameters();
 
-
 	public:
-
+		
 		/*Constructor*/
 		OLPAggreg();
 
@@ -107,8 +105,7 @@ class OLPAggreg {//ABC
 		int getBestCutCount();
 		int getBestPartitionCount();
 		unsigned int getSize();
-
-
+		
 };
 
 #endif /* OLPAGGREG_H_ */

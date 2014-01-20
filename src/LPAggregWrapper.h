@@ -40,7 +40,6 @@
 #ifndef WRAPPER_H_
 #define WRAPPER_H_
 
-
 #include "OLPAggreg1.h"
 #include "OLPAggreg2.h"
 #include "OLPAggreg3.h"

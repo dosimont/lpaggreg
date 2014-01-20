@@ -29,51 +29,95 @@ class DLPAggreg {
 		DLPAggreg *parent;
 		vector<DLPAggreg*> childNodes;
 		vector<vector<Quality*>> qualities;
-		double ** optimalCompromise;
+		double ** optimalCompromises;
 		vector<vector<DLPCut*>> optimalCuts;
 		vector<int> optimalPartitions;
 		double ** pIC;
 		int nodeSize;
 		int valueSize;
-		int * partCounter;
 		Eval *eval;
 
 	public:
+		/*Constructors/Destructors*/
 		DLPAggreg();
 		DLPAggreg(DLPAggreg* parent, int id);
 		virtual ~DLPAggreg();
+
+		//delete
+		void deleteChildNodes();
+		void deleteQualities();
+		void clean();
+		void deleteEval();
+
+		/*Node Management*/
+
+		//Parent
 		DLPAggreg* getParent();
-		int getNodeSize() const;
-		bool hasChild();
 		bool hasParent();
-		void addChild(DLPAggreg* child);
 		void setParent(DLPAggreg* parent);
+
+		//Childs
+
+		int getNodeSize() const;
+		void addChild(DLPAggreg* child);
+		bool hasChild();
 		const vector<DLPAggreg*>& getChildNodes() const;
+		bool ownsNode(DLPAggreg* node);
+		unsigned int childNodeSize();
+
+		//Id
 		int getId() const;
 		void setId(int id);
-		void normalize(double maxGain = 0, double maxLoss = 0);
-		void computeBestPartitions();
-		void computeBestCut(float parameter);
-		int fillPartition(int start, int end, int *counter);
+
+		//Rank
+		int getRank() const;
+		void setRank(int rank);
+
+		/*Evaluation stuffs*/
+
+		//Eval
 		Eval* getEval();
 		void setEval(Eval* eval);
-		int getQualityDuration(); //ms
-		int getBestCutDuration(); //ms
-		int getBestPartitionDuration(); //ms
+
+		//Counter getters
 		int getQualityCount();
 		int getBestCutCount();
 		int getBestPartitionCount();
-		int getRank() const;
-		void setRank(int rank);
-		bool ownsNode(DLPAggreg* node);
-		unsigned int childNodeSize();
+
+		//Timer getters
+		int getQualityDuration(); //ms
+		int getBestCutDuration(); //ms
+		int getBestPartitionDuration(); //ms
+
+		/*DLP algo*/
+
+		//Quality Computation//
+		//->To implement//
+		void normalize(double maxGain = 0, double maxLoss = 0);
+
+		//Best Cut Computation
+		void computeBestCut(float parameter);
 		double sumOptimalCompromise(int i, int j);
 		double computePIC(float parameter, int i, int j);
-		double** getOptimalCompromise() const;
+
+		//Best Partition Computation
+
+		void computeBestPartitions();
+		void fillPartition(int start, int end, int *counter);
+		void setPartitions(int start, int end, int value);
+
+
+		//BC & BP
+		void computeAggregation(float parameter);
+
+		//Getters and setters
+		int getValueSize() const;
+		const vector<vector<Quality*> >& getQualities() const;
+		double** getOptimalCompromises() const;
 		const vector<vector<DLPCut*> >& getOptimalCuts() const;
 		double** getPIC() const;
-		const vector<vector<Quality*> >& getQualities() const;
-		int getValueSize() const;
+
+
 };
 
 #endif /* DLPAGGREG_H_ */

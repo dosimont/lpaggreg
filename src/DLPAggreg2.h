@@ -16,10 +16,9 @@ class DLPAggreg2: public DLPAggreg {
 		vector<double> values;
 		double** sumValue;
 		double** microInfo;
-		vector<vector<Quality*>> qualities;
 
 	private:
-		void computeQuality();
+		void computeQualities();
 
 	public:
 		DLPAggreg2();

@@ -11,16 +11,16 @@
 #include "OLPAggreg.h"
 
 class OLPAggreg2: public OLPAggreg {
-
+		
 	private:
-		vector<vector<double> >values;
+		vector<vector<double> > values;
 
 	private:
 		void computeQualitiesSpe(bool normalization);
 
 	public:
 		OLPAggreg2();
-		OLPAggreg2(vector<vector<double> >values);
+		OLPAggreg2(vector<vector<double> > values);
 		virtual ~OLPAggreg2();
 		void setValues(const vector<vector<double> >& values);
 		unsigned int getSize();

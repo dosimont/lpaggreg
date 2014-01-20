@@ -7,7 +7,8 @@
 
 #include "OLPAggreg3.h"
 
-OLPAggreg3::OLPAggreg3(): OLPAggreg() {
+OLPAggreg3::OLPAggreg3() :
+		OLPAggreg() {
 	// TODO Auto-generated constructor stub
 	
 }
@@ -95,7 +96,8 @@ void OLPAggreg3::computeQualitiesSpe(bool normalization) {
 	delete[] entValues;
 }
 
-OLPAggreg3::OLPAggreg3(vector<vector<vector<double> > > values) : OLPAggreg(), values(values){
+OLPAggreg3::OLPAggreg3(vector<vector<vector<double> > > values) :
+		OLPAggreg(), values(values) {
 }
 
 void OLPAggreg3::setValues(const vector<vector<vector<double> > >& values) {

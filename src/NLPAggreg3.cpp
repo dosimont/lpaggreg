@@ -7,14 +7,18 @@
 
 #include "NLPAggreg3.h"
 
-NLPAggreg3::NLPAggreg3(): NLPAggreg(){
+NLPAggreg3::NLPAggreg3() :
+		NLPAggreg() {
 }
 
-NLPAggreg3::NLPAggreg3(int id, vector< vector<double> > values): NLPAggreg(0, id){
+NLPAggreg3::NLPAggreg3(int id, vector<vector<double> > values) :
+		NLPAggreg(0, id) {
 	setValues(values);
 }
 
-NLPAggreg3::NLPAggreg3(NLPAggreg3* parent, int id, vector< vector<double> > values): NLPAggreg(parent, id){
+NLPAggreg3::NLPAggreg3(NLPAggreg3* parent, int id,
+		vector<vector<double> > values) :
+		NLPAggreg(parent, id) {
 	setValues(values);
 }
 
@@ -48,7 +52,6 @@ void NLPAggreg3::computeQuality() {
 			computeQuality_Matrix(i, j);
 }
 
-
 void NLPAggreg3::computeQuality_Matrix(int i, int j) {
 	if (!hasChild()) {
 		entSum = entropyReduction(this->values[i][j], 0);
@@ -60,7 +63,7 @@ void NLPAggreg3::computeQuality_Matrix(int i, int j) {
 		entSum = 0;
 		size = 0;
 		eval->incrQCounter(3);
-		for CHILDS {
+		forCHILDS {
 			static_cast<NLPAggreg3*>(CHILD)->computeQuality_Matrix(i, j);
 			this->values[i][j]+=static_cast<NLPAggreg3*>(CHILD)->getValues()[i][j];
 			entSum+=CHILD->getEntSum();
@@ -76,5 +79,4 @@ void NLPAggreg3::computeQuality_Matrix(int i, int j) {
 		eval->incrQCounter(2);
 	}
 }
-
 

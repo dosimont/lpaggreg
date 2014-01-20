@@ -12,7 +12,7 @@
 
 class NLPAggreg1: public NLPAggreg {
 	private:
-
+		
 		double values;
 
 	private:

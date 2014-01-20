@@ -18,12 +18,10 @@
 #define CHILD childNodes[i_child]
 #define NCHILD(n) n->getChildNodes()[i_child]
 
-
 using namespace std;
 
-
 class NLPAggreg {
-
+		
 	protected:
 		int id;
 		int rank;
@@ -86,8 +84,5 @@ class NLPAggreg {
  *  Created on: 25 juil. 2013
  *      Author: dosimont
  */
-
-
-
 
 #endif /* NODE_H_ */

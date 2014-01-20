@@ -12,7 +12,7 @@
 
 class NLPAggreg2: public NLPAggreg {
 	private:
-
+		
 		vector<double> values;
 
 	private:

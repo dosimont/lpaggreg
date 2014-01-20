@@ -7,14 +7,17 @@
 
 #include "NLPAggreg2.h"
 
-NLPAggreg2::NLPAggreg2(): NLPAggreg(){
+NLPAggreg2::NLPAggreg2() :
+		NLPAggreg() {
 }
 
-NLPAggreg2::NLPAggreg2(int id, vector<double> values): NLPAggreg(0, id){
+NLPAggreg2::NLPAggreg2(int id, vector<double> values) :
+		NLPAggreg(0, id) {
 	setValues(values);
 }
 
-NLPAggreg2::NLPAggreg2(NLPAggreg2* parent, int id, vector<double> values): NLPAggreg(parent, id){
+NLPAggreg2::NLPAggreg2(NLPAggreg2* parent, int id, vector<double> values) :
+		NLPAggreg(parent, id) {
 	setValues(values);
 }
 
@@ -27,7 +30,7 @@ const vector<double>& NLPAggreg2::getValues() const {
 }
 
 void NLPAggreg2::setValues(const vector<double>& values) {
-		this->values = values;
+	this->values = values;
 }
 
 void NLPAggreg2::computeQualities(bool normalization) {
@@ -42,12 +45,10 @@ void NLPAggreg2::computeQualities(bool normalization) {
 	}
 }
 
-
 void NLPAggreg2::computeQuality() {
 	for (unsigned int i = 0; i < this->values.size(); i++)
 		computeQuality_Vector(i);
 }
-
 
 void NLPAggreg2::computeQuality_Vector(int index) {
 	if (!hasChild()) {
@@ -60,7 +61,7 @@ void NLPAggreg2::computeQuality_Vector(int index) {
 		entSum = 0;
 		size = 0;
 		eval->incrQCounter(3);
-		for CHILDS {
+		forCHILDS {
 			static_cast<NLPAggreg2*>(CHILD)->computeQuality_Vector(index);
 			this->values[index]+=static_cast<NLPAggreg2*>(CHILD)->getValues()[index];
 			entSum+=CHILD->getEntSum();
