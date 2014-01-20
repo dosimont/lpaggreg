@@ -30,11 +30,12 @@ class DLPAggreg {
 		vector<DLPAggreg*> childNodes;
 		vector<vector<Quality*>> qualities;
 		double ** optimalCompromise;
-		vector<vector<DLPPartition*>> optimalPartition;
-		vector<int>bestPartitions;
+		vector<vector<DLPCut*>> optimalCuts;
+		vector<int> optimalPartitions;
 		double ** pIC;
-		int size;
-		int value_size;
+		int nodeSize;
+		int valueSize;
+		int * partCounter;
 		Eval *eval;
 
 	public:
@@ -42,7 +43,7 @@ class DLPAggreg {
 		DLPAggreg(DLPAggreg* parent, int id);
 		virtual ~DLPAggreg();
 		DLPAggreg* getParent();
-		int getSize() const;
+		int getNodeSize() const;
 		bool hasChild();
 		bool hasParent();
 		void addChild(DLPAggreg* child);
@@ -51,14 +52,11 @@ class DLPAggreg {
 		int getId() const;
 		void setId(int id);
 		void normalize(double maxGain = 0, double maxLoss = 0);
-		//double computeAggregation(float parameter);
 		void computeBestPartitions();
 		void computeBestCut(float parameter);
-		int fillPartition(int i, int p);
+		int fillPartition(int start, int end, int *counter);
 		Eval* getEval();
 		void setEval(Eval* eval);
-		//void computeQualities(bool normalization);
-		//vector<int> * getAggregation(float parameter);
 		int getQualityDuration(); //ms
 		int getBestCutDuration(); //ms
 		int getBestPartitionDuration(); //ms
@@ -72,7 +70,7 @@ class DLPAggreg {
 		double sumOptimalCompromise(int i, int j);
 		double computePIC(float parameter, int i, int j);
 		double** getOptimalCompromise() const;
-		const vector<vector<DLPPartition*> >& getOptimalPartition() const;
+		const vector<vector<DLPCut*> >& getOptimalCuts() const;
 		double** getPIC() const;
 		const vector<vector<Quality*> >& getQualities() const;
 		int getValueSize() const;

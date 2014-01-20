@@ -28,32 +28,32 @@ const vector<double>& DLPAggreg2::getValues() const {
 
 void DLPAggreg2::computeQuality() {
 	if (hasChild()){
-		size=0;
+		nodeSize=0;
 		for DCHILDS{
 			DCHILD2->computeQuality();
-			size+=DCHILD2->getSize();
+			nodeSize+=DCHILD2->getNodeSize();
 		}
-		value_size=static_cast<DLPAggreg2*>(childNodes)[0].getValues().size();
+		valueSize=static_cast<DLPAggreg2*>(childNodes)[0].getValues().size();
 	}else{
-		value_size=values.size();
-		size=1;
+		valueSize=values.size();
+		nodeSize=1;
 	}
-	sumValue=new double*[value_size];
-	microInfo=new double*[value_size];
-	for (unsigned int i=0; i<value_size; i++){
-		sumValue[i]=new double[value_size];
-		microInfo[i]=new double[value_size];
+	sumValue=new double*[valueSize];
+	microInfo=new double*[valueSize];
+	for (unsigned int i=0; i<valueSize; i++){
+		sumValue[i]=new double[valueSize];
+		microInfo[i]=new double[valueSize];
 		qualities.push_back(vector<Quality*>());
-		for (unsigned int j=0; j<value_size; j++)
+		for (unsigned int j=0; j<valueSize; j++)
 			qualities[i].push_back(new Quality());
 	}
 		if(!hasChild()){
-			for (unsigned int i=0; i<value_size; i++){
+			for (unsigned int i=0; i<valueSize; i++){
 				sumValue[i][0]=values[i];
 				microInfo[i][0]=entropyReduction(values[i], 0);
 			}
-			for (unsigned int j=1; j<value_size; j++){
-				for (unsigned int i=0; i<value_size-j; j++){
+			for (unsigned int j=1; j<valueSize; j++){
+				for (unsigned int i=0; i<valueSize-j; j++){
 					sumValue[i][j]=sumValue[i][j-1]+sumValue[i+j][0];
 					microInfo[i][j]=microInfo[i][j-1]+microInfo[i+j][0];
 					qualities[i][j]->setGain(entropyReduction(sumValue[i][j], microInfo[i][j]));
@@ -61,8 +61,8 @@ void DLPAggreg2::computeQuality() {
 				}
 			}
 		}else{
-			for (unsigned int j=0; j<value_size; j++){
-				for (unsigned int i=0; i<value_size-j; j++){
+			for (unsigned int j=0; j<valueSize; j++){
+				for (unsigned int i=0; i<valueSize-j; j++){
 					sumValue[i][j]=0;
 					microInfo[i][j]=0;
 					for DCHILDS{
@@ -70,7 +70,7 @@ void DLPAggreg2::computeQuality() {
 						microInfo[i][j]+=DCHILD2->getMicroInfo()[i][j];
 					}
 					qualities[i][j]->setGain(entropyReduction(sumValue[i][j], microInfo[i][j]));
-					qualities[i][j]->setLoss(divergence((j+1)*size, sumValue[i][j], microInfo[i][j]));
+					qualities[i][j]->setLoss(divergence((j+1)*nodeSize, sumValue[i][j], microInfo[i][j]));
 				}
 			}
 	}
