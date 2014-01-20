@@ -31,6 +31,7 @@ class DLPAggreg {
 		vector<vector<Quality*>> qualities;
 		double ** optimalCompromise;
 		vector<vector<DLPPartition*>> optimalPartition;
+		vector<int>bestPartitions;
 		double ** pIC;
 		int size;
 		int value_size;
@@ -51,9 +52,9 @@ class DLPAggreg {
 		void setId(int id);
 		void normalize(double maxGain = 0, double maxLoss = 0);
 		//double computeAggregation(float parameter);
-		//void computeBestPartitions();
-		void computeBestPartition(float parameter);
-		//int fillBestPartitions(vector<int>*bestPartition, int p);
+		void computeBestPartitions();
+		void computeBestCut(float parameter);
+		int fillPartition(int i, int p);
 		Eval* getEval();
 		void setEval(Eval* eval);
 		//void computeQualities(bool normalization);

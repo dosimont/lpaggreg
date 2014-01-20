@@ -131,27 +131,6 @@ void DLPAggreg::setEval(Eval* eval) {
 
 
 
-//double DLPAggreg::computeAggregation(float parameter) {
-//	if (!hasChild()) {
-//		aggregated = true;
-//		eval->incrBCCounter();
-//		return 0;
-//	}
-//	else {
-//		double nodeQuality = parameter * quality->getGain()
-//				- (1 - parameter) * quality->getLoss();
-//		double childQuality = 0.0;
-//		eval->incrBCCounter(2);
-//		for CHILDS {
-//			childQuality+=CHILD->computeAggregation(parameter);
-//			eval->incrBCCounter();
-//		}
-//		aggregated = (childQuality < nodeQuality);
-//		eval->incrBCCounter();
-//		return max(childQuality, nodeQuality);
-//	}
-//}
-
 
 //void DLPAggreg::computeBestPartitions() {
 //	bestPartitions = new vector<int>();
@@ -197,6 +176,35 @@ void DLPAggreg::setEval(Eval* eval) {
 //	return 0;
 //}
 
+
+void DLPAggreg::computeBestPartitions() {
+	for (int i = 0; i < value_size; i++) {
+		bestPartitions.push_back(-1); //WRITE
+		eval->incrBPCounter();
+	}
+	for DCHILDS
+		DCHILD->computeBestPartitions();
+	if (!hasParent())
+		fillPartition(value_size - 1, 0);
+}
+//
+//void DLPAggreg::deleteBestPartitions() {
+//	bestPartitions.clear();
+//}
+//
+int DLPAggreg::fillPartition(int i, int p) {
+	int c = bestCuts[i]; //WRITE
+	eval.incrBPCounter();
+	if (c > 0) {
+		p = fillPartition(c - 1, p); //WRITE
+		eval.incrBPCounter();
+	}
+	for (int k = c; k < i + 1; k++) {
+		bestPartitions[k] = p; //WRITE
+		eval.incrBPCounter();
+	}
+	return p + 1;
+}
 
 int DLPAggreg::getQualityDuration() {
 	return eval->getQDuration();
@@ -278,7 +286,7 @@ double DLPAggreg::computePIC(float parameter, int i, int j) {
 	return (((double) parameter ) * qualities[i][j]->getGain() - ((1 - (double) parameter) * qualities[i][j]->getLoss()));
 }
 
-void DLPAggreg::computeBestPartition(float parameter) {
+void DLPAggreg::computeBestCut(float parameter) {
 	optimalCompromise=new double*[value_size];
 	optimalPartition=vector<vector<DLPPartition*> >();
 	pIC=new double*[value_size];
@@ -314,8 +322,8 @@ void DLPAggreg::computeBestPartition(float parameter) {
 		}
 	}else{
 		for DCHILDS
-			DCHILD->computeBestPartition(parameter);
-		for (int k=value_size; k>=0; k--){
+			DCHILD->computeBestCut(parameter);
+		for (int k=value_size-1; k>=0; k--){
 			pIC[k][0]= computePIC(parameter, k, 0);
 			optimalCompromise[k][0]=max(pIC[k][0], sumOptimalCompromise(k,0));
 			optimalPartition[k][0]->setAll(k, pIC[k,0]==optimalCompromise[k][0]);
@@ -327,7 +335,7 @@ void DLPAggreg::computeBestPartition(float parameter) {
 					double compromise=optimalCompromise[k][cut-1]+max(pIC[cut+k][j-cut], sumOptimalCompromise(cut+k, j-cut));
 					if (compromise>currentCompromise){
 						currentCompromise=compromise;
-						currentCut.setAll(cut+k, pIC[cut+k, j-cut]==compromise);
+						currentCut.setAll(cut+k, pIC[cut+k][j-cut]==compromise);
 					}
 				}
 				optimalCompromise[k][j]=currentCompromise;
