@@ -45,7 +45,7 @@ void NLPAggreg1::computeQuality() {
 		entSum = 0;
 		size = 0;
 		eval->incrQCounter(3);
-		forCHILDS {
+		for CHILDS {
 			static_cast<NLPAggreg1*>(CHILD)->computeQuality();
 			this->values+=static_cast<NLPAggreg1*>(CHILD)->getValues();
 			entSum+=CHILD->getEntSum();

@@ -23,6 +23,7 @@ class DLPAggreg2: public DLPAggreg {
 	public:
 		DLPAggreg2();
 		virtual ~DLPAggreg2();
+		DLPAggreg2(int id);
 		DLPAggreg2(int id, vector<double> values);
 		DLPAggreg2(DLPAggreg2* parent, int id, vector<double> values);
 		void computeQualities(bool normalization);

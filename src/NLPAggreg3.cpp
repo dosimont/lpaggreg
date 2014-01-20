@@ -63,7 +63,7 @@ void NLPAggreg3::computeQuality_Matrix(int i, int j) {
 		entSum = 0;
 		size = 0;
 		eval->incrQCounter(3);
-		forCHILDS {
+		for CHILDS {
 			static_cast<NLPAggreg3*>(CHILD)->computeQuality_Matrix(i, j);
 			this->values[i][j]+=static_cast<NLPAggreg3*>(CHILD)->getValues()[i][j];
 			entSum+=CHILD->getEntSum();

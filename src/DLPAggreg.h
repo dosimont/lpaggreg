@@ -40,6 +40,7 @@ class DLPAggreg {
 	public:
 		/*Constructors/Destructors*/
 		DLPAggreg();
+		DLPAggreg(int id);
 		DLPAggreg(DLPAggreg* parent, int id);
 		virtual ~DLPAggreg();
 

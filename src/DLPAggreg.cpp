@@ -19,6 +19,11 @@ DLPAggreg::DLPAggreg(DLPAggreg* parent, int id) :
 	parent->addChild(this);
 }
 
+DLPAggreg::DLPAggreg(int id) :
+		id(id), rank(0), parent(0), childNodes(vector<DLPAggreg*>()), qualities(
+				0), optimalCompromises(0), pIC(0), nodeSize(0), valueSize(0), eval(0) {
+}
+
 void DLPAggreg::addChild(DLPAggreg *child) {
 	childNodes.push_back(child);
 	child->setParent(this);

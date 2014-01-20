@@ -11,6 +11,10 @@ DLPAggreg2::DLPAggreg2() :
 		DLPAggreg(), values(0), sumValue(0), microInfo(0) {
 }
 
+DLPAggreg2::DLPAggreg2(int id) :
+		DLPAggreg(id), values(0), sumValue(0), microInfo(0) {
+}
+
 DLPAggreg2::DLPAggreg2(int id, vector<double> values) :
 		DLPAggreg(0, id), sumValue(0), microInfo(0) {
 	setValues(values);

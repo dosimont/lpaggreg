@@ -47,7 +47,7 @@ NLPAggreg* NLPAggreg::getParent() {
 }
 
 NLPAggreg::~NLPAggreg() {
-	forCHILDS
+	for CHILDS
 	delete CHILD;
 	delete quality;
 	if (!hasParent())
@@ -100,7 +100,7 @@ void NLPAggreg::normalize(double maxGain, double maxLoss) {
 		quality->setLoss(quality->getLoss() / maxLoss);
 		eval->incrQCounter();
 	}
-	forCHILDS
+	for CHILDS
 	CHILD->normalize(maxGain, maxLoss);
 }
 
@@ -114,7 +114,7 @@ bool NLPAggreg::hasParent() {
 
 void NLPAggreg::setEval(Eval* eval) {
 	this->eval = eval;
-	forCHILDS
+	for CHILDS
 	CHILD->setEval(eval);
 }
 
@@ -133,7 +133,7 @@ double NLPAggreg::computeAggregation(float parameter) {
 				- (1 - parameter) * quality->getLoss();
 		double childQuality = 0.0;
 		eval->incrBCCounter(2);
-		forCHILDS {
+		for CHILDS {
 			childQuality+=CHILD->computeAggregation(parameter);
 			eval->incrBCCounter();
 		}
@@ -159,7 +159,7 @@ int NLPAggreg::fillBestPartitions(vector<int>*bestPartitions, int p) {
 		}
 	}
 	else {
-		forCHILDS {
+		for CHILDS {
 			p = CHILD->fillBestPartitions(this->bestPartitions, p);
 			eval->incrBPCounter();
 		}
@@ -213,7 +213,7 @@ int NLPAggreg::getRank() const {
 
 void NLPAggreg::setRank(int rank) {
 	this->rank = rank;
-	forCHILDS
+	for CHILDS
 	CHILD->setRank(rank+1);
 }
 
@@ -221,93 +221,14 @@ bool NLPAggreg::ownsNode(NLPAggreg* node) {
 	if (this == node)
 		return true;
 	if (hasChild()) {
-		forCHILDS
+		for CHILDS
 		if (CHILD->ownsNode(node))
 		return true;
 	}
 	return false;
 }
 
-//
-//Value NLPAggreg::getValue() {
-//	return this->values;
-//}
 
-//void NLPAggreg::setValue(Value values) {
-//	if (!hasChild())
-//		this->values = values;
-//}
-
-//
-//void NLPAggreg2::computeQuality() {
-//	for (int i = 0; i < this->values.size(); i++)
-//		computeQuality_Vector(i);
-//}
-//
-//
-//void NLPAggreg2::computeQuality_Vector(int index) {
-//	if (!hasChild()) {
-//		entSum = entropyReduction(this->values[index], 0);
-//		size = 1;
-//		eval->incrQCounter(2);
-//	}
-//	else {
-//		this->values[index] = 0;
-//		entSum = 0;
-//		size = 0;
-//		eval->incrQCounter(3);
-//		for CHILDS {
-//			CHILD->computeQuality_Vector(index);
-//			this->values[index]+=CHILD->getValue()[index];
-//			entSum+=CHILD->getEntSum();
-//			size+=CHILD->getSize();
-//			eval->incrQCounter(3);
-//		}
-//		if (index == 0) {
-//			quality->setGain(0);
-//			quality->setLoss(0);
-//		}
-//		quality->addToGain(entropyReduction(this->values[index], entSum));
-//		quality->addToLoss(divergence(size, this->values[index], entSum));
-//		eval->incrQCounter(2);
-//	}
-//}
-//
-//void NLPAggreg3::computeQuality(
-//		vector<vector<double> > values) {
-//	for (unsigned int i = 0; i < this->values.size(); i++)
-//		for (unsigned int j = 0; j < this->values[i].size(); j++)
-//			computeQuality_Matrix(i, j);
-//}
-//
-//
-//void NLPAggreg3::computeQuality_Matrix(int i, int j) {
-//	if (!hasChild()) {
-//		entSum = entropyReduction(this->values[i][j], 0);
-//		size = 1;
-//		eval->incrQCounter(2);
-//	}
-//	else {
-//		this->values[i][j] = 0;
-//		entSum = 0;
-//		size = 0;
-//		eval->incrQCounter(3);
-//		for CHILDS {
-//			CHILD->computeQuality(i,j);
-//			this->values[i][j]+=CHILD->getValue()[i][j];
-//			entSum+=CHILD->getEntSum();
-//			size+=CHILD->getSize();
-//			eval->incrQCounter(3);
-//		}
-//		if (i == 0 && j == 0) {
-//			quality->setGain(0);
-//			quality->setLoss(0);
-//		}
-//		quality->addToGain(entropyReduction(this->values[i][j], entSum));
-//		quality->addToLoss(divergence(size, this->values[i][j], entSum));
-//		eval->incrQCounter(2);
-//	}
-//}
 
 unsigned int NLPAggreg::childNodeSize() {
 	return childNodes.size();

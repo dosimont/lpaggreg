@@ -36,17 +36,11 @@ class NLPAggreg {
 
 	public:
 		NLPAggreg();
-		//NLPAggreg(int id, Value values);
-		//NLPAggreg(NLPAggreg* parent, int id, Value values);
 		NLPAggreg(NLPAggreg* parent, int id);
 		virtual ~NLPAggreg();
-		//Value getValue();
-		//void setValue(Value value);
 		NLPAggreg* getParent();
 		Quality* getQuality();
 		void setQuality(Quality *quality);
-//		void computeQuality_Vector(int index);
-//		void computeQuality_Matrix(int i, int j);
 		bool hasChild();
 		bool hasParent();
 		void addChild(NLPAggreg* child);

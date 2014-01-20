@@ -61,7 +61,7 @@ void NLPAggreg2::computeQuality_Vector(int index) {
 		entSum = 0;
 		size = 0;
 		eval->incrQCounter(3);
-		forCHILDS {
+		for CHILDS {
 			static_cast<NLPAggreg2*>(CHILD)->computeQuality_Vector(index);
 			this->values[index]+=static_cast<NLPAggreg2*>(CHILD)->getValues()[index];
 			entSum+=CHILD->getEntSum();
