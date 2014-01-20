@@ -356,3 +356,7 @@ void DLPAggreg::clean(){
 void DLPAggreg::deleteEval(){
 	delete eval;
 }
+
+const vector<int>& DLPAggreg::getOptimalPartitions() const {
+	return optimalPartitions;
+}

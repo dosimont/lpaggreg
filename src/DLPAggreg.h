@@ -118,8 +118,7 @@ class DLPAggreg {
 		double** getOptimalCompromises() const;
 		const vector<vector<DLPCut*> > & getOptimalCuts() const;
 		double** getPIC() const;
-
-
+		const vector<int>& getOptimalPartitions() const;
 };
 
 #endif /* DLPAGGREG_H_ */
