@@ -5,7 +5,7 @@
  *      Author: dosimont
  */
 
-#include "DLPPartition.h"
+#include "DLPCut.h"
 
 DLPCut::DLPCut() :
 		cut(0), aggregated(false) {

@@ -72,8 +72,8 @@ void DLPAggreg::normalize(double maxGain, double maxLoss) {
 		maxLoss = qualities[valueSize - 1][valueSize - 1]->getLoss();
 		eval->incrQCounter(2);
 	}
-	for (unsigned j = 0; j < valueSize; j++) {
-		for (unsigned i = 0; i < valueSize - j; i++) {
+	for (int j = 0; j < valueSize; j++) {
+		for (int i = 0; i < valueSize - j; i++) {
 			if (maxGain > 0) {
 				qualities[i][j]->setGain(qualities[i][j]->getGain() / maxGain);
 				eval->incrQCounter();
@@ -104,15 +104,19 @@ void DLPAggreg::setEval(Eval* eval) {
 
 void DLPAggreg::computeAggregation(float parameter) {
 	if (!hasParent()) {
-		clean();
+		cout<<"Before"<<endl;
+		cout<<"CA: init"<<endl;
 		eval->resetBCCounter();
 		eval->startBCTimer();
+		cout<<"CA: BC"<<endl;
 		computeBestCut(parameter);
 		eval->stopBCTimer();
 		eval->resetBPCounter();
+		cout<<"CA: BP"<<endl;
 		eval->startBPTimer();
 		computeBestPartitions();
 		eval->stopBPTimer();
+		clean();
 	}
 }
 
@@ -133,7 +137,7 @@ void DLPAggreg::computeBestPartitions() {
 }
 
 void DLPAggreg::fillPartition(int start, int end, int * counter) {
-	DLPCut c = optimalCuts[start][end-start]; //WRITE
+	DLPCut c = *optimalCuts[start][end-start]; //WRITE
 	eval->incrBPCounter();
 	if (c.isAggregated()){
 		setPartitions(c.getCut(), end, *counter);//TODO verificar
@@ -225,7 +229,7 @@ const vector<vector<Quality*> >& DLPAggreg::getQualities() const {
 double DLPAggreg::sumOptimalCompromise(int i, int j) {
 	double sum = 0;
 	for DCHILDS
-	sum+=DCHILD->getOptimalCompromises();
+	sum+=DCHILD->getOptimalCompromises()[i][j];
 	return sum;
 }
 
@@ -235,19 +239,26 @@ double DLPAggreg::computePIC(float parameter, int i, int j) {
 }
 
 void DLPAggreg::computeBestCut(float parameter) {
+	cout<<"--O--"<<endl;
+
 	optimalCompromises = new double*[valueSize];
 	optimalCuts = vector<vector<DLPCut*> >();
 	pIC = new double*[valueSize];
 	int i;
+	cout<<valueSize<<endl;
 	for (i = 0; i < valueSize; i++) {
 		optimalCompromises[i] = new double[valueSize];
 		pIC[i] = new double[valueSize];
 		optimalCuts.push_back(vector<DLPCut*>());
+		cout<<"agou"<<endl;
 		for (int j = 0; j < valueSize; j++) {
-			optimalCuts[i][j] = new DLPCut();
+			optimalCuts[i].push_back(new DLPCut());
+			cout<<"agougou"<<endl;
 		}
 	}
+	cout<<"--Out--"<<endl;
 	if (!hasChild()) {
+		cout<<"--A--"<<endl;
 		for (int k = valueSize - 1; k >= 0; k--) {
 			pIC[k][0] = computePIC(parameter, k, 0);
 			optimalCompromises[k][0] = pIC[k][0];
@@ -269,14 +280,17 @@ void DLPAggreg::computeBestCut(float parameter) {
 						currentCut.isAggregated());
 			}
 		}
+		cout<<"--A2--"<<endl;
 	}
 	else {
+		cout<<"--B--"<<endl;
 		for DCHILDS
 		DCHILD->computeBestCut(parameter);
+		cout<<"--Bout--"<<endl;
 		for (int k=valueSize-1; k>=0; k--) {
 			pIC[k][0]= computePIC(parameter, k, 0);
 			optimalCompromises[k][0]=max(pIC[k][0], sumOptimalCompromise(k,0));
-			optimalCuts[k][0]->setAll(k, pIC[k,0]==optimalCompromises[k][0]);
+			optimalCuts[k][0]->setAll(k, pIC[k][0]==optimalCompromises[k][0]);
 			for (int j=1; j<valueSize-k; j++) {
 				pIC[k][j]=computePIC(parameter, k, j);
 				double currentCompromise=max(pIC[k][j], sumOptimalCompromise(k,j));
@@ -290,6 +304,7 @@ void DLPAggreg::computeBestCut(float parameter) {
 				}
 				optimalCompromises[k][j]=currentCompromise;
 				optimalCuts[k][j]->setAll(currentCut.getCut(), currentCut.isAggregated());
+				cout<<"--B2--"<<endl;
 			}
 		}
 	}
@@ -324,6 +339,7 @@ void DLPAggreg::deleteQualities(){
 
 
 void DLPAggreg::clean(){
+	cout<<valueSize<<endl;
 	for (int i=valueSize-1; i>=0; i--) {
 		for (int j=valueSize-1; j>=0; j--) {
 			delete optimalCuts[i][j];

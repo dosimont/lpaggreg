@@ -16,8 +16,7 @@ DLPAggreg2::DLPAggreg2(int id) :
 }
 
 DLPAggreg2::DLPAggreg2(int id, vector<double> values) :
-		DLPAggreg(0, id), sumValue(0), microInfo(0) {
-	setValues(values);
+		DLPAggreg(0, id), values(values), sumValue(0), microInfo(0) {
 }
 
 DLPAggreg2::DLPAggreg2(DLPAggreg2* parent, int id, vector<double> values) :
@@ -45,7 +44,7 @@ void DLPAggreg2::computeQualities() {
 			DCHILD2->computeQualities();
 			nodeSize+=DCHILD2->getNodeSize();
 		}
-		valueSize = static_cast<DLPAggreg2*>(childNodes)[0].getValues().size();
+		valueSize = static_cast<DLPAggreg2*>(childNodes[0])->getValueSize();
 	}
 	else {
 		valueSize = values.size();
@@ -53,20 +52,20 @@ void DLPAggreg2::computeQualities() {
 	}
 	sumValue = new double*[valueSize];
 	microInfo = new double*[valueSize];
-	for (unsigned int i = 0; i < valueSize; i++) {
+	for (int i = 0; i < valueSize; i++) {
 		sumValue[i] = new double[valueSize];
 		microInfo[i] = new double[valueSize];
 		qualities.push_back(vector<Quality*>());
-		for (unsigned int j = 0; j < valueSize; j++)
+		for (int j = 0; j < valueSize; j++)
 			qualities[i].push_back(new Quality());
 	}
 	if (!hasChild()) {
-		for (unsigned int i = 0; i < valueSize; i++) {
+		for (int i = 0; i < valueSize; i++) {
 			sumValue[i][0] = values[i];
 			microInfo[i][0] = entropyReduction(values[i], 0);
 		}
-		for (unsigned int j = 1; j < valueSize; j++) {
-			for (unsigned int i = 0; i < valueSize - j; j++) {
+		for (int j = 1; j < valueSize; j++) {
+			for (int i = 0; i < valueSize - j; j++) {
 				sumValue[i][j] = sumValue[i][j - 1] + sumValue[i + j][0];
 				microInfo[i][j] = microInfo[i][j - 1] + microInfo[i + j][0];
 				qualities[i][j]->setGain(
@@ -77,8 +76,8 @@ void DLPAggreg2::computeQualities() {
 		}
 	}
 	else {
-		for (unsigned int j = 0; j < valueSize; j++) {
-			for (unsigned int i = 0; i < valueSize - j; j++) {
+		for (int j = 0; j < valueSize; j++) {
+			for (int i = 0; i < valueSize - j; j++) {
 				sumValue[i][j] = 0;
 				microInfo[i][j] = 0;
 				for DCHILDS {

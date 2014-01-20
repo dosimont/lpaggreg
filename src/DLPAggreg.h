@@ -14,6 +14,7 @@
 #include "Quality.h"
 #include "Complexity.h"
 #include "Eval.h"
+#include "DLPCut.h"
 
 #define DCHILDS (unsigned int i_child=0; i_child<childNodes.size(); i_child++)
 #define NDCHILDS(n) (unsigned int i_child=0; i_child<n->childNodeSize(); i_child++)
@@ -28,9 +29,9 @@ class DLPAggreg {
 		int rank;
 		DLPAggreg *parent;
 		vector<DLPAggreg*> childNodes;
-		vector<vector<Quality*>> qualities;
+		vector<vector<Quality*> > qualities;
 		double ** optimalCompromises;
-		vector<vector<DLPCut*>> optimalCuts;
+		vector<vector<DLPCut*> > optimalCuts;
 		vector<int> optimalPartitions;
 		double ** pIC;
 		int nodeSize;
@@ -113,9 +114,9 @@ class DLPAggreg {
 
 		//Getters and setters
 		int getValueSize() const;
-		const vector<vector<Quality*> >& getQualities() const;
+		const vector<vector<Quality*> > & getQualities() const;
 		double** getOptimalCompromises() const;
-		const vector<vector<DLPCut*> >& getOptimalCuts() const;
+		const vector<vector<DLPCut*> > & getOptimalCuts() const;
 		double** getPIC() const;
 
 

@@ -5,6 +5,9 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/Complexity.cpp \
+../src/DLPAggreg.cpp \
+../src/DLPAggreg2.cpp \
+../src/DLPCut.cpp \
 ../src/Eval.cpp \
 ../src/LPAggregWrapper.cpp \
 ../src/NLPAggreg.cpp \
@@ -19,6 +22,9 @@ CPP_SRCS += \
 
 OBJS += \
 ./src/Complexity.o \
+./src/DLPAggreg.o \
+./src/DLPAggreg2.o \
+./src/DLPCut.o \
 ./src/Eval.o \
 ./src/LPAggregWrapper.o \
 ./src/NLPAggreg.o \
@@ -33,6 +39,9 @@ OBJS += \
 
 CPP_DEPS += \
 ./src/Complexity.d \
+./src/DLPAggreg.d \
+./src/DLPAggreg2.d \
+./src/DLPCut.d \
 ./src/Eval.d \
 ./src/LPAggregWrapper.d \
 ./src/NLPAggreg.d \
