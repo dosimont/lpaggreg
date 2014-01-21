@@ -98,9 +98,9 @@ class DLPAggreg {
 		void normalize(double maxGain = 0, double maxLoss = 0);
 
 		//Best Cut Computation
-		void computeBestCut(float parameter);
+		void computeBestCut(double parameter);
 		double sumOptimalCompromise(int i, int j);
-		double computePIC(float parameter, int i, int j);
+		double computePIC(double parameter, int i, int j);
 
 		//Best Partition Computation
 
@@ -110,7 +110,7 @@ class DLPAggreg {
 
 
 		//BC & BP
-		void computeAggregation(float parameter);
+		void computeAggregation(double parameter);
 
 		//Getters and setters
 		int getValueSize() const;
