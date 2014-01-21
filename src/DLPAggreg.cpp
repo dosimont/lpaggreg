@@ -290,7 +290,7 @@ void DLPAggreg::computeBestCut(double parameter) {
 				DLPCut currentCut = DLPCut(k, pIC[k][j]==currentCompromise);
 				for (int cut=1; cut<=j; cut++) {
 					double compromise=optimalCompromises[k][cut-1]+max(pIC[cut+k][j-cut], sumOptimalCompromise(cut+k, j-cut));
-					bool tempAggreg=(pIC[cut+k][j-cut]==(compromise-optimalCompromises[k][cut-1]));
+					//bool tempAggreg=(pIC[cut+k][j-cut]==(compromise-optimalCompromises[k][cut-1]));
 					if (((compromise>currentCompromise)||(compromise>=currentCompromise&&(cut+k)>currentCut.getCut()))){
 						currentCompromise=compromise;
 						currentCut.setAll(cut+k, pIC[cut+k][j-cut]==(compromise-optimalCompromises[k][cut-1]));
