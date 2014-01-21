@@ -145,6 +145,7 @@ void DLPAggreg::fillPartition(int start, int end, int * counter) {
 		if (c.getCut()>start)
 			fillPartition(start, c.getCut()-1, counter);
 	}else{
+		//fillPartition(c.getCut(), end, counter);
 		setPartitions(c.getCut(), end, -1);
 		for DCHILDS
 		DCHILD->fillPartition(c.getCut(), end, counter);
@@ -265,7 +266,7 @@ void DLPAggreg::computeBestCut(double parameter) {
 					double compromise = optimalCompromises[k][cut - 1]
 							+ pIC[cut + k][j - cut];
 					cout<<compromise<<endl;
-					if (compromise >= currentCompromise) {
+					if (compromise>currentCompromise||(compromise>=currentCompromise&&(cut+k)>currentCut.getCut())) {
 						currentCompromise = compromise;
 						currentCut.setAll(cut + k, true);
 					}
@@ -289,7 +290,8 @@ void DLPAggreg::computeBestCut(double parameter) {
 				DLPCut currentCut = DLPCut(k, pIC[k][j]==currentCompromise);
 				for (int cut=1; cut<=j; cut++) {
 					double compromise=optimalCompromises[k][cut-1]+max(pIC[cut+k][j-cut], sumOptimalCompromise(cut+k, j-cut));
-					if (compromise>=currentCompromise) {
+					bool tempAggreg=(pIC[cut+k][j-cut]==(compromise-optimalCompromises[k][cut-1]));
+					if (((compromise>currentCompromise)||(compromise>=currentCompromise&&(cut+k)>currentCut.getCut()))){
 						currentCompromise=compromise;
 						currentCut.setAll(cut+k, pIC[cut+k][j-cut]==(compromise-optimalCompromises[k][cut-1]));
 					}

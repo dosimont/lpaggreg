@@ -65,7 +65,7 @@ void DLPAggreg2::computeQualities() {
 			microInfo[i][0] = entropyReduction(values[i], 0);
 		}
 		for (int j = 1; j < valueSize; j++) {
-			for (int i = 0; i < valueSize - j; j++) {
+			for (int i = 0; i < valueSize - j; i++) {
 				sumValue[i][j] = sumValue[i][j - 1] + sumValue[i + j][0];
 				microInfo[i][j] = microInfo[i][j - 1] + microInfo[i + j][0];
 				qualities[i][j]->setGain(
@@ -77,7 +77,7 @@ void DLPAggreg2::computeQualities() {
 	}
 	else {
 		for (int j = 0; j < valueSize; j++) {
-			for (int i = 0; i < valueSize - j; j++) {
+			for (int i = 0; i < valueSize - j; i++) {
 				sumValue[i][j] = 0;
 				microInfo[i][j] = 0;
 				for DCHILDS {
@@ -87,7 +87,7 @@ void DLPAggreg2::computeQualities() {
 				qualities[i][j]->setGain(
 						entropyReduction(sumValue[i][j], microInfo[i][j]));
 				qualities[i][j]->setLoss(
-						divergence((j + 1) * nodeSize, sumValue[i][j],
+						divergence((j + 1)*nodeSize, sumValue[i][j],
 								microInfo[i][j]));
 			}
 		}
