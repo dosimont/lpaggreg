@@ -7,6 +7,7 @@ CPP_SRCS += \
 ../src/Complexity.cpp \
 ../src/DLPAggreg.cpp \
 ../src/DLPAggreg1.cpp \
+../src/DLPAggreg2.cpp \
 ../src/DLPCut.cpp \
 ../src/Eval.cpp \
 ../src/LPAggregWrapper.cpp \
@@ -24,6 +25,7 @@ OBJS += \
 ./src/Complexity.o \
 ./src/DLPAggreg.o \
 ./src/DLPAggreg1.o \
+./src/DLPAggreg2.o \
 ./src/DLPCut.o \
 ./src/Eval.o \
 ./src/LPAggregWrapper.o \
@@ -41,6 +43,7 @@ CPP_DEPS += \
 ./src/Complexity.d \
 ./src/DLPAggreg.d \
 ./src/DLPAggreg1.d \
+./src/DLPAggreg2.d \
 ./src/DLPCut.d \
 ./src/Eval.d \
 ./src/LPAggregWrapper.d \

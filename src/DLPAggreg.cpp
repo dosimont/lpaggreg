@@ -400,7 +400,6 @@ void DLPAggreg::computeBestQuality(Quality* bestQuality) {
 
 void DLPAggreg::fillQuality(int start, int end, Quality* bestQuality) {
 	DLPCut c = *bestCuts[start][end-start]; //WRITE
-	eval->incrBPCounter();
 	if (c.isAggregated()){
 		if (c.getCut()>start)
 			fillQuality(start, c.getCut()-1, bestQuality);

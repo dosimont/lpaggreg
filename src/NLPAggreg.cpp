@@ -10,7 +10,8 @@
 NLPAggreg::NLPAggreg() :
 		id(0), rank(0), parent(0), childNodes(vector<NLPAggreg*>()), quality(
 				new Quality(0, 0)), aggregated(false), size(0), entSum(0), eval(
-				0), bestPartitions(0) {
+				0), bestPartitions(0), parameters(vector<float>()), qualityList(
+						vector<Quality*>()) {
 	
 }
 
@@ -18,7 +19,8 @@ NLPAggreg::NLPAggreg() :
 NLPAggreg::NLPAggreg(NLPAggreg* parent, int id) :
 		id(id), rank(0), parent(parent), childNodes(vector<NLPAggreg*>()), quality(
 				new Quality(0, 0)), aggregated(false), size(0), entSum(0), eval(
-				0), bestPartitions(0) {
+				0), bestPartitions(0), parameters(vector<float>()), qualityList(
+						vector<Quality*>()) {
 	parent->addChild(this);
 }
 
@@ -228,3 +230,81 @@ unsigned int NLPAggreg::childNodeSize() {
 	return childNodes.size();
 }
 
+void NLPAggreg::deleteParameters() {
+	parameters.clear();
+}
+
+void NLPAggreg::computeBestQualities(float threshold) {
+	Quality *bestQualityParam0 = new Quality();
+	Quality *bestQualityParam1 = new Quality();
+	computeAggregation(0);
+	computeBestQuality(bestQualityParam0);
+	parameters.push_back(0);
+	qualityList.push_back(bestQualityParam0);
+	computeAggregation(1);
+	computeBestQuality(bestQualityParam1);
+	addBestQualities(0, 1, bestQualityParam0, bestQualityParam1, threshold);
+	parameters.push_back(1);
+	qualityList.push_back(bestQualityParam1);
+	for (unsigned int i = qualityList.size() - 1; i > 0; i--) {
+		if ((qualityList[i]->getGain() == qualityList[i - 1]->getGain())
+				&& (qualityList[i]->getLoss() == qualityList[i - 1]->getLoss())) {
+			delete qualityList[i];
+			qualityList.erase(qualityList.begin() + i);
+			parameters.erase(parameters.begin() + i);
+		}
+	}
+}
+
+void NLPAggreg::computeBestQuality(Quality* bestQuality) {
+	bestQuality->setGain(0);
+	bestQuality->setLoss(0);
+	fillQuality(bestQuality);
+}
+
+void NLPAggreg::fillQuality(Quality* bestQuality) {
+	if (this->isAggregated()){
+		bestQuality->addToGain(quality->getGain());
+		bestQuality->addToLoss(quality->getLoss());
+	}else{
+		for CHILDS
+			CHILD->fillQuality(bestQuality);
+	}
+}
+
+void NLPAggreg::addBestQualities(float parameter1, float parameter2,
+		Quality* bestQuality1, Quality* bestQuality2, float threshold) {
+if (!(((bestQuality1->getGain() == bestQuality2->getGain())
+		&& (bestQuality1->getLoss() == bestQuality2->getLoss()))
+		|| (parameter2 - parameter1 <= threshold))) {
+	float parameter = parameter1 + ((parameter2 - parameter1) / 2);
+	Quality *bestQuality = new Quality();
+	computeAggregation(parameter);
+	computeBestQuality(bestQuality);
+	addBestQualities(parameter1, parameter, bestQuality1, bestQuality,
+			threshold);
+	parameters.push_back(parameter);
+	qualityList.push_back(bestQuality);
+	addBestQualities(parameter, parameter2, bestQuality, bestQuality2,
+			threshold);
+}
+}
+
+void NLPAggreg::deleteQualityList() {
+	for (unsigned int i = 0; i < qualityList.size(); i++)
+		delete qualityList[i];
+	qualityList.clear();
+}
+
+
+vector<float> NLPAggreg::getParameters(float threshold) {
+	deleteParameters();
+	deleteQualityList();
+	computeBestQualities(threshold);
+	return parameters;
+
+}
+
+const vector<Quality*>& NLPAggreg::getQualityList() const {
+	return qualityList;
+}

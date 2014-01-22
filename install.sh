@@ -7,5 +7,6 @@ DIR=/usr/lib
 rm $DIR/$LIB
 cp Release/$LSLIB $DIR
 ln -s $DIR/$LSLIB $DIR/$LIB
-cp src/*.h /usr/include/
+mkdir /usr/include/lpaggreg
+cp src/*.h /usr/include/lpaggreg
 exit 0

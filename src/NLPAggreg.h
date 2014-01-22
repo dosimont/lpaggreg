@@ -33,6 +33,8 @@ class NLPAggreg {
 		double entSum;
 		Eval *eval;
 		vector<int> *bestPartitions;
+		vector<float> parameters;
+		vector<Quality*> qualityList;
 
 	public:
 		NLPAggreg();
@@ -58,7 +60,6 @@ class NLPAggreg {
 		void setAggregated(bool aggregated);
 		Eval* getEval();
 		void setEval(Eval* eval);
-		void computeQualities(bool normalization);
 		vector<int> * getAggregation(float parameter);
 		int getQualityDuration(); //ms
 		int getBestCutDuration(); //ms
@@ -70,6 +71,16 @@ class NLPAggreg {
 		void setRank(int rank);
 		bool ownsNode(NLPAggreg* node);
 		unsigned int childNodeSize();
+		void deleteParameters();
+
+		void computeBestQualities(float threshold);
+		void computeBestQuality(Quality *bestQuality);
+		void fillQuality(Quality *bestQuality);
+		void addBestQualities(float parameter1, float parameter2,
+				Quality *bestQuality1, Quality *bestQuality2, float threshold);
+		void deleteQualityList();
+		vector<float> getParameters(float threshold);
+		const vector<Quality*>& getQualityList() const;
 };
 
 #endif /* NODE_H_ */
