@@ -58,6 +58,7 @@ void OLPAggreg::deleteBestCuts() {
 
 void OLPAggreg::computeBestPartitions() {
 	int n = getSize();
+	bestPartitions.clear();
 	for (int i = 0; i < n; i++) {
 		bestPartitions.push_back(-1); //WRITE
 		eval.incrBPCounter();

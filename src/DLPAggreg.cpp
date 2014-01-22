@@ -127,6 +127,7 @@ void DLPAggreg::computeAggregation(double parameter) {
 }
 
 void DLPAggreg::computeBestPartitions() {
+	bestPartitions.clear();
 	for (int i = 0; i < valueSize; i++) {
 		bestPartitions.push_back(-1); //WRITE
 		eval->incrBPCounter();
@@ -216,11 +217,11 @@ bool DLPAggreg::ownsNode(DLPAggreg* node) {
 	return false;
 }
 
-double** DLPAggreg::getOptimalCompromises() const {
+double** DLPAggreg::getBestCompromises() const {
 	return bestCompromises;
 }
 
-const vector<vector<DLPCut*> >& DLPAggreg::getOptimalCuts() const {
+const vector<vector<DLPCut*> >& DLPAggreg::getBestCuts() const {
 	return bestCuts;
 }
 
@@ -232,10 +233,10 @@ const vector<vector<Quality*> >& DLPAggreg::getQualities() const {
 	return qualities;
 }
 
-double DLPAggreg::sumOptimalCompromise(int i, int j) {
+double DLPAggreg::sumBestCompromises(int i, int j) {
 	double sum = 0;
 	for DCHILDS
-	sum+=DCHILD->getOptimalCompromises()[i][j];
+	sum+=DCHILD->getBestCompromises()[i][j];
 	eval->incrBCCounter(childNodeSize()+1);
 	return sum;
 }
@@ -292,16 +293,16 @@ void DLPAggreg::computeBestCuts(double parameter) {
 		DCHILD->computeBestCuts(parameter);
 		for (int k=valueSize-1; k>=0; k--) {
 			pIC[k][0]= computePIC(parameter, k, 0);
-			bestCompromises[k][0]=max(pIC[k][0], sumOptimalCompromise(k,0));
+			bestCompromises[k][0]=max(pIC[k][0], sumBestCompromises(k,0));
 			bestCuts[k][0]->setAll(k, pIC[k][0]==bestCompromises[k][0]);
 			eval->incrBCCounter(4);
 			for (int j=1; j<valueSize-k; j++) {
 				pIC[k][j]=computePIC(parameter, k, j);
-				double currentCompromise=max(pIC[k][j], sumOptimalCompromise(k,j));
+				double currentCompromise=max(pIC[k][j], sumBestCompromises(k,j));
 				DLPCut currentCut = DLPCut(k, pIC[k][j]==currentCompromise);
 				eval->incrBCCounter(4);
 				for (int cut=1; cut<=j; cut++) {
-					double compromise=bestCompromises[k][cut-1]+max(pIC[cut+k][j-cut], sumOptimalCompromise(cut+k, j-cut));
+					double compromise=bestCompromises[k][cut-1]+max(pIC[cut+k][j-cut], sumBestCompromises(cut+k, j-cut));
 					eval->incrBCCounter(1);
 					//bool tempAggreg=(pIC[cut+k][j-cut]==(compromise-optimalCompromises[k][cut-1]));
 					if (((compromise>currentCompromise))){//||(compromise>=currentCompromise&&(cut+k)>currentCut.getCut()))){
@@ -364,7 +365,7 @@ void DLPAggreg::deleteEval(){
 	delete eval;
 }
 
-const vector<int>& DLPAggreg::getOptimalPartitions() const {
+const vector<int>& DLPAggreg::getBestPartitions() const {
 	return bestPartitions;
 }
 
