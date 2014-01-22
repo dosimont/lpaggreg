@@ -30,13 +30,16 @@ class DLPAggreg {
 		DLPAggreg *parent;
 		vector<DLPAggreg*> childNodes;
 		vector<vector<Quality*> > qualities;
-		double ** optimalCompromises;
-		vector<vector<DLPCut*> > optimalCuts;
-		vector<int> optimalPartitions;
+		double ** bestCompromises;
+		vector<vector<DLPCut*> > bestCuts;
+		vector<int> bestPartitions;
+		vector<float> parameters;
+		vector<Quality*> qualityList;
 		double ** pIC;
 		int nodeSize;
 		int valueSize;
 		Eval *eval;
+
 
 	public:
 		/*Constructors/Destructors*/
@@ -48,8 +51,10 @@ class DLPAggreg {
 		//delete
 		void deleteChildNodes();
 		void deleteQualities();
+		void deleteBestCuts();
 		void clean();
 		void deleteEval();
+		void deleteParameters();
 
 		/*Node Management*/
 
@@ -98,7 +103,7 @@ class DLPAggreg {
 		void normalize(double maxGain = 0, double maxLoss = 0);
 
 		//Best Cut Computation
-		void computeBestCut(double parameter);
+		void computeBestCuts(double parameter);
 		double sumOptimalCompromise(int i, int j);
 		double computePIC(double parameter, int i, int j);
 
@@ -107,6 +112,16 @@ class DLPAggreg {
 		void computeBestPartitions();
 		void fillPartition(int start, int end, int *counter);
 		void setPartitions(int start, int end, int value);
+
+		//Dichotomy
+		void computeBestQualities(float threshold);
+		void computeBestQuality(Quality *bestQuality);
+		void fillQuality(int start, int end, Quality *bestQuality);
+		void addBestQualities(float parameter1, float parameter2,
+				Quality *bestQuality1, Quality *bestQuality2, float threshold);
+		void deleteQualityList();
+		vector<float> getParameters(float threshold);
+		const vector<Quality*>& getQualityList() const;
 
 
 		//BC & BP
