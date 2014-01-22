@@ -82,7 +82,7 @@ void OLPAggreg2::computeQualitiesSpe(bool normalization) {
 	delete[] entValues;
 }
 
-OLPAggreg2::OLPAggreg2(vector<vector<double> > values) :
+OLPAggreg2::OLPAggreg2(const vector<vector<double> >& values) :
 		OLPAggreg(), values(values) {
 }
 

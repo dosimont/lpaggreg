@@ -72,11 +72,4 @@ class NLPAggreg {
 		unsigned int childNodeSize();
 };
 
-/*
- * Node.cpp
- *
- *  Created on: 25 juil. 2013
- *      Author: dosimont
- */
-
 #endif /* NODE_H_ */

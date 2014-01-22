@@ -11,12 +11,12 @@ NLPAggreg2::NLPAggreg2() :
 		NLPAggreg() {
 }
 
-NLPAggreg2::NLPAggreg2(int id, vector<double> values) :
+NLPAggreg2::NLPAggreg2(int id, const vector<double>& values) :
 		NLPAggreg(0, id) {
 	setValues(values);
 }
 
-NLPAggreg2::NLPAggreg2(NLPAggreg2* parent, int id, vector<double> values) :
+NLPAggreg2::NLPAggreg2(NLPAggreg2* parent, int id, const vector<double>& values) :
 		NLPAggreg(parent, id) {
 	setValues(values);
 }

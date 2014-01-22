@@ -96,7 +96,7 @@ void OLPAggreg3::computeQualitiesSpe(bool normalization) {
 	delete[] entValues;
 }
 
-OLPAggreg3::OLPAggreg3(vector<vector<vector<double> > > values) :
+OLPAggreg3::OLPAggreg3(const vector<vector<vector<double> > >& values) :
 		OLPAggreg(), values(values) {
 }
 

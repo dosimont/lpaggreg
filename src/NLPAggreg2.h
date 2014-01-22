@@ -22,8 +22,8 @@ class NLPAggreg2: public NLPAggreg {
 	public:
 		NLPAggreg2();
 		virtual ~NLPAggreg2();
-		NLPAggreg2(int id, vector<double> values);
-		NLPAggreg2(NLPAggreg2* parent, int id, vector<double> values);
+		NLPAggreg2(int id, const vector<double>& values);
+		NLPAggreg2(NLPAggreg2* parent, int id, const vector<double>& values);
 		void computeQualities(bool normalization);
 		const vector<double>& getValues() const;
 		void setValues(const vector<double>& values);

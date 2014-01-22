@@ -15,6 +15,7 @@ void OLPAggreg1::computeQualitiesSpe(bool normalization) {
 	//Init and allocation
 	setSize(values.size());
 	int n = this->getSize();
+	eval.incrQCounter();
 	double ** sumValues = new double*[n];
 	double ** entValues = new double*[n];
 	for (int i = 0; i < n; i++) {
@@ -66,7 +67,7 @@ void OLPAggreg1::computeQualitiesSpe(bool normalization) {
 	delete[] entValues;
 }
 
-OLPAggreg1::OLPAggreg1(vector<double> values) :
+OLPAggreg1::OLPAggreg1(const vector<double>& values) :
 		OLPAggreg(), values(values) {
 }
 

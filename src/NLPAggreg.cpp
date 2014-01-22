@@ -14,12 +14,6 @@ NLPAggreg::NLPAggreg() :
 	
 }
 
-//NLPAggreg::NLPAggreg(int id, Value values) :
-//		id(id), rank(0), parent(0), childNodes(vector<NLPAggreg*>()), quality(
-//				new Quality(0, 0)), aggregated(false), size(0), entSum(0), eval(
-//				0), bestPartitions(0) {
-//	this->values = values;
-//}
 
 NLPAggreg::NLPAggreg(NLPAggreg* parent, int id) :
 		id(id), rank(0), parent(parent), childNodes(vector<NLPAggreg*>()), quality(

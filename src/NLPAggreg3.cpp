@@ -11,13 +11,13 @@ NLPAggreg3::NLPAggreg3() :
 		NLPAggreg() {
 }
 
-NLPAggreg3::NLPAggreg3(int id, vector<vector<double> > values) :
+NLPAggreg3::NLPAggreg3(int id, const vector<vector<double> >& values) :
 		NLPAggreg(0, id) {
 	setValues(values);
 }
 
 NLPAggreg3::NLPAggreg3(NLPAggreg3* parent, int id,
-		vector<vector<double> > values) :
+		const vector<vector<double> >& values) :
 		NLPAggreg(parent, id) {
 	setValues(values);
 }

@@ -20,7 +20,7 @@ class OLPAggreg2: public OLPAggreg {
 
 	public:
 		OLPAggreg2();
-		OLPAggreg2(vector<vector<double> > values);
+		OLPAggreg2(const vector<vector<double> >& values);
 		virtual ~OLPAggreg2();
 		void setValues(const vector<vector<double> >& values);
 		unsigned int getSize();
