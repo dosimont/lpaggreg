@@ -143,10 +143,7 @@ void DLPAggreg::computeBestPartitions() {
 }
 
 void DLPAggreg::fillPartition(int start, int end, int * counter) {
-	cout<<id<<" "<<start<<" "<<end;
-
 	DLPCut c = *bestCuts[start][end-start]; //WRITE
-	cout<<"    "<<c.getCut()<<endl;
 	eval->incrBPCounter();
 	if (c.isAggregated()){
 		setPartitions(c.getCut(), end, *counter);//TODO verificar
@@ -264,18 +261,15 @@ void DLPAggreg::computeBestCuts(double parameter) {
 	if (!hasChild()) {
 		for (int k = valueSize - 1; k >= 0; k--) {
 			pIC[k][0] = computePIC(parameter, k, 0);
-			cout<<pIC[k][0]<<endl;
 			bestCompromises[k][0] = pIC[k][0];
 			bestCuts[k][0]->setAll(k, true);
 			for (int j = 1; j < valueSize - k; j++) {
 				DLPCut currentCut = DLPCut(k, true);
 				pIC[k][j] = computePIC(parameter, k, j);
-				cout<<pIC[k][j]<<endl;
 				double currentCompromise = pIC[k][j];
 				for (int cut = 1; cut <= j; cut++) {
 					double compromise = bestCompromises[k][cut - 1]
 							+ pIC[cut + k][j - cut];
-					cout<<compromise<<endl;
 					if (compromise>currentCompromise||(compromise>=currentCompromise&&(cut+k)>currentCut.getCut())) {
 						currentCompromise = compromise;
 						currentCut.setAll(cut + k, true);
