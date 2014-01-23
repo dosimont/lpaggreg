@@ -78,15 +78,20 @@ void OLPAggreg3::computeQualitiesSpe(bool normalization) {
 	//Other levels
 	for (int i = 1; i < n; i++) {
 		for (int j = 0; j < n - i; j++) {
+#if SIZEREDUCTION
+			qualities[i][j]->setGain(i);
+#endif
 			for (int k = 0; k < m; k++) {
 				for (int o = 0; o < l; o++) {
 					sumValues[i][j][k][o] = sumValues[i - 1][j][k][o]
 							+ sumValues[0][i + j][k][o];
 					entValues[i][j][k][o] = entValues[i - 1][j][k][o]
 							+ entValues[0][i + j][k][o];
+#if ENTROPY
 					qualities[i][j]->addToGain(
 							entropyReduction(sumValues[i][j][k][o],
 									entValues[i][j][k][o]));
+#endif
 					qualities[i][j]->addToLoss(
 							divergence(i + 1, sumValues[i][j][k][o],
 									entValues[i][j][k][o]));
@@ -143,6 +148,11 @@ unsigned int OLPAggreg3::getSize() {
 void OLPAggreg3::computeQualities(bool normalization) {
 	deleteQualities();
 	EVALSTARTQ;
+#if ENTROPY
 	computeQualitiesSpe(normalization);
+#endif
+#if SIZEREDUCTION
+	computeQualitiesSpe(true);
+#endif
 	EVALSTOPQ;
 }

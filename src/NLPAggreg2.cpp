@@ -66,8 +66,13 @@ void NLPAggreg2::computeQualities(bool normalization) {
 		setEval(new Eval);
 		_EVALSTARTQ;
 		computeQuality();
+#if ENTROPY
 		if (normalization)
 			normalize();
+#endif
+#ifdef SIZEREDUCTION
+		normalize();
+#endif
 		_EVALSTOPQ;
 	}
 }
@@ -81,7 +86,9 @@ void NLPAggreg2::computeQuality_Vector(int index) {
 	if (!hasChild()) {
 		entSum = entropyReduction(this->values[index], 0);
 		size = 1;
-		_EVALQC(2);
+		quality->setGain(0);
+		quality->setLoss(0);
+		_EVALQC(4);
 	}
 	else {
 		this->values[index] = 0;
@@ -99,7 +106,12 @@ void NLPAggreg2::computeQuality_Vector(int index) {
 			quality->setGain(0);
 			quality->setLoss(0);
 		}
+#if SIZEREDUCTION
+		quality->setGain(size-1);
+#endif
+#if ENTROPY
 		quality->addToGain(entropyReduction(this->values[index], entSum));
+#endif
 		quality->addToLoss(divergence(size, this->values[index], entSum));
 		_EVALQC(2);
 	}

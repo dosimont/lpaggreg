@@ -10,17 +10,19 @@
 
 
 /*Activate Evaluation Counters and Timers*/
-#define EVAL
+//#define EVAL
 
 /*Include sys/time.h library specific to Linux Systems*/
-#define LINUX
+//#define LINUX
 
 /*Use Shannon Entropy to compute Gain instead of SizeReduction*/
-#define ENTROPY
+#define ENTROPY 0
 
 /*Don't modify from here*/
-#ifndef ENTROPY
-#define SIZEREDUCTION
+#if ENTROPY
+#define SIZEREDUCTION 0
+#else
+#define SIZEREDUCTION 1
 #endif
 
 

@@ -103,8 +103,14 @@ void DLPAggreg1::computeQualities() {
 			for (int i = 0; i < valueSize - j; i++) {
 				sumValue[i][j] = sumValue[i][j - 1] + sumValue[i + j][0];
 				microInfo[i][j] = microInfo[i][j - 1] + microInfo[i + j][0];
+#if ENTROPY
 				qualities[i][j]->setGain(
 						entropyReduction(sumValue[i][j], microInfo[i][j]));
+#endif
+#if SIZEREDUCTION
+				qualities[i][j]->setGain(j);
+#endif
+
 				qualities[i][j]->setLoss(
 						divergence(j + 1, sumValue[i][j], microInfo[i][j]));
 				_EVALQC(4);
@@ -122,8 +128,13 @@ void DLPAggreg1::computeQualities() {
 					microInfo[i][j]+=DCHILD1->getMicroInfo()[i][j];
 					_EVALQC(2);
 				}
+#if ENTROPY
 				qualities[i][j]->setGain(
 						entropyReduction(sumValue[i][j], microInfo[i][j]));
+#endif
+#if SIZEREDUCTION
+				qualities[i][j]->setGain((j+1)*(nodeSize-1));
+#endif
 				qualities[i][j]->setLoss(
 						divergence((j + 1)*nodeSize, sumValue[i][j],
 								microInfo[i][j]));
@@ -138,8 +149,13 @@ void DLPAggreg1::computeQualities(bool normalization) {
 		setEval(new Eval);
 		_EVALSTARTQ;
 		computeQualities();
+#if ENTROPY
 		if (normalization)
 			normalize();
+#endif
+#ifdef SIZEREDUCTION
+		normalize();
+#endif
 		_EVALSTOPQ;
 	}
 }
