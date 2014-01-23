@@ -71,6 +71,7 @@ class DLPAggreg {
 		const vector<DLPAggreg*>& getChildNodes() const;
 		bool ownsNode(DLPAggreg* node);
 		unsigned int childNodeSize();
+		void cleanChilds();
 
 		//Id
 		int getId() const;

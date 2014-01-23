@@ -43,6 +43,7 @@ DLPAggreg* DLPAggreg::getParent() {
 DLPAggreg::~DLPAggreg() {
 	deleteChildNodes();
 	clean();
+	deleteBestCuts();
 	deleteQualities();
 	deleteQualityList();
 	deleteParameters();
@@ -120,9 +121,7 @@ void DLPAggreg::computeAggregation(double parameter) {
 		eval->startBPTimer();
 		computeBestPartitions();
 		eval->stopBPTimer();
-		clean();
-		for DCHILDS
-		DCHILD->clean();
+		cleanChilds();
 	}
 }
 
@@ -349,17 +348,14 @@ void DLPAggreg::deleteQualities(){
 
 void DLPAggreg::clean(){
 	for (int i=valueSize-1; i>=0; i--) {
-		for (int j=valueSize-1; j>=0; j--) {
-			delete bestCuts[i][j];
-		}
-		bestCuts[i].clear();
 		delete pIC[i];
 		delete bestCompromises[i];
 	}
-	bestCuts.clear();
 	delete pIC;
 	delete bestCompromises;
 }
+
+
 
 void DLPAggreg::deleteEval(){
 	delete eval;
@@ -374,12 +370,14 @@ void DLPAggreg::computeBestQualities(float threshold) {
 	Quality *bestQualityParam1 = new Quality();
 	computeBestCuts(0);
 	computeBestQuality(bestQualityParam0);
-	deleteBestCuts();
+	//deleteBestCuts();
+	cleanChilds();
 	parameters.push_back(0);
 	qualityList.push_back(bestQualityParam0);
 	computeBestCuts(1);
 	computeBestQuality(bestQualityParam1);
-	deleteBestCuts();
+	//deleteBestCuts();
+	cleanChilds();
 	addBestQualities(0, 1, bestQualityParam0, bestQualityParam1, threshold);
 	parameters.push_back(1);
 	qualityList.push_back(bestQualityParam1);
@@ -425,7 +423,7 @@ void DLPAggreg::addBestQualities(float parameter1, float parameter2,
 		Quality *bestQuality = new Quality();
 		computeBestCuts(parameter);
 		computeBestQuality(bestQuality);
-		deleteBestCuts();
+		cleanChilds();
 		addBestQualities(parameter1, parameter, bestQuality1, bestQuality,
 				threshold);
 		parameters.push_back(parameter);
@@ -451,11 +449,12 @@ void DLPAggreg::deleteBestCuts() {
 }
 
 vector<float> DLPAggreg::getParameters(float threshold) {
-	clean();
-	for DCHILDS
-	DCHILD->clean();
 	deleteParameters();
 	deleteQualityList();
+//	clean();
+//	for DCHILDS{
+//	DCHILD->clean();
+//	}
 	computeBestQualities(threshold);
 	return parameters;
 
@@ -469,4 +468,11 @@ void DLPAggreg::deleteParameters() {
 	parameters.clear();
 }
 
-
+void DLPAggreg::cleanChilds() {
+	deleteBestCuts();
+	clean();
+	if (hasChild()){
+	for DCHILDS
+	DCHILD->cleanChilds();
+	}
+}
