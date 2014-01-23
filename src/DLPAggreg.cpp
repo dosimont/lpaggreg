@@ -451,6 +451,9 @@ void DLPAggreg::deleteBestCuts() {
 }
 
 vector<float> DLPAggreg::getParameters(float threshold) {
+	clean();
+	for DCHILDS
+	DCHILD->clean();
 	deleteParameters();
 	deleteQualityList();
 	computeBestQualities(threshold);
