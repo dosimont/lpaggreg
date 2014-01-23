@@ -153,7 +153,7 @@ void DLPAggreg1::computeQualities(bool normalization) {
 		if (normalization)
 			normalize();
 #endif
-#ifdef SIZEREDUCTION
+#if SIZEREDUCTION
 		normalize();
 #endif
 		_EVALSTOPQ;

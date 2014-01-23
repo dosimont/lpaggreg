@@ -105,8 +105,8 @@ bool DLPAggreg::hasChild() {
 
 void DLPAggreg::normalize(double maxGain, double maxLoss) {
 	if (maxGain == 0 && maxLoss == 0) {
-		maxGain = qualities[valueSize - 1][valueSize - 1]->getGain();
-		maxLoss = qualities[valueSize - 1][valueSize - 1]->getLoss();
+		maxGain = qualities[0][valueSize - 1]->getGain();
+		maxLoss = qualities[0][valueSize - 1]->getLoss();
 		_EVALQC(2);
 
 	}
