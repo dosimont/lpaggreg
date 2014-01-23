@@ -41,6 +41,7 @@
 #include "Quality.h"
 #include "Complexity.h"
 #include "Eval.h"
+#include "Configuration.h"
 #define CHILDS (unsigned int i_child=0; i_child<childNodes.size(); i_child++)
 #define NCHILDS(n) (unsigned int i_child=0; i_child<n->childNodeSize(); i_child++)
 #define CHILD childNodes[i_child]

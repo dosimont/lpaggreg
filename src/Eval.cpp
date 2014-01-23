@@ -40,42 +40,63 @@ Eval::Eval() :
 }
 
 void Eval::startQTimer() {
+#ifdef LINUX
 	gettimeofday(&timeQ1, NULL);
+#endif
 }
 
 void Eval::stopQTimer() {
+#ifdef LINUX
 	gettimeofday(&timeQ2, NULL);
+#endif
 }
 
 void Eval::startBCTimer() {
+#ifdef LINUX
 	gettimeofday(&timeBC1, NULL);
+#endif
 }
 
 void Eval::stopBCTimer() {
+#ifdef LINUX
 	gettimeofday(&timeBC2, NULL);
+#endif
 }
 
 void Eval::startBPTimer() {
+#ifdef LINUX
 	gettimeofday(&timeBP1, NULL);
+#endif
 }
 
 void Eval::stopBPTimer() {
+#ifdef LINUX
 	gettimeofday(&timeBP2, NULL);
+#endif
 }
 
 int Eval::getQDuration() {
+#ifdef LINUX
 	return ((timeQ2.tv_sec - timeQ1.tv_sec) * 1000)
 			+ ((timeQ2.tv_usec - timeQ1.tv_usec) / 1000);
+#endif
+	return 0;
 }
 
 int Eval::getBCDuration() {
+#ifdef LINUX
 	return ((timeBC2.tv_sec - timeBC1.tv_sec) * 1000)
 			+ ((timeBC2.tv_usec - timeBC1.tv_usec) / 1000);
+#endif
+	return 0;
 }
 
 int Eval::getBPDuration() {
+#ifdef LINUX
 	return ((timeBP2.tv_sec - timeBP1.tv_sec) * 1000)
 			+ ((timeBP2.tv_usec - timeBP1.tv_usec) / 1000);
+#endif
+	return 0;
 }
 
 void Eval::resetQCounter() {

@@ -56,7 +56,7 @@ void OLPAggreg2::computeQualitiesSpe(bool normalization) {
 			sumValues[i][j] = new double[m];
 			entValues[i][j] = new double[m];
 			qualities[i].push_back(new Quality(0, 0));
-			eval.incrQCounter(2);
+			EVALQC(2);
 		}
 	}
 	//Microscopic level
@@ -64,7 +64,7 @@ void OLPAggreg2::computeQualitiesSpe(bool normalization) {
 		for (int k = 0; k < m; k++) {
 			sumValues[0][j][k] = this->values[j][k];
 			entValues[0][j][k] = entropyReduction(sumValues[0][j][k], 0);
-			eval.incrQCounter(2);
+			EVALQC(2);
 		}
 	}
 	//Other levels
@@ -81,7 +81,7 @@ void OLPAggreg2::computeQualitiesSpe(bool normalization) {
 				qualities[i][j]->addToLoss(
 						divergence(i + 1, sumValues[i][j][k],
 								entValues[i][j][k]));
-				eval.incrQCounter(4);
+				EVALQC(4);
 			}
 		}
 	}
@@ -94,7 +94,7 @@ void OLPAggreg2::computeQualitiesSpe(bool normalization) {
 						qualities[i][j]->getGain() / maxQuality->getGain());
 				qualities[i][j]->setLoss(
 						qualities[i][j]->getLoss() / maxQuality->getLoss());
-				eval.incrQCounter(2);
+				EVALQC(2);
 			}
 		}
 	}
@@ -128,8 +128,7 @@ unsigned int OLPAggreg2::getSize() {
 
 void OLPAggreg2::computeQualities(bool normalization) {
 	deleteQualities();
-	eval.resetQCounter();
-	eval.startQTimer();
+	EVALSTARTQ;
 	computeQualitiesSpe(normalization);
-	eval.stopQTimer();
+	EVALSTOPQ;
 }

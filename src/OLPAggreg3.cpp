@@ -57,7 +57,7 @@ void OLPAggreg3::computeQualitiesSpe(bool normalization) {
 			sumValues[i][j] = new double*[m];
 			entValues[i][j] = new double*[m];
 			qualities[i].push_back(new Quality(0, 0));
-			eval.incrQCounter(2);
+			EVALQC(2);
 			for (int k = 0; k < m; k++) {
 				sumValues[i][j][k] = new double[l];
 				entValues[i][j][k] = new double[l];
@@ -71,7 +71,7 @@ void OLPAggreg3::computeQualitiesSpe(bool normalization) {
 				sumValues[0][j][k][o] = this->values[j][k][o];
 				entValues[0][j][k][o] = entropyReduction(sumValues[0][j][k][o],
 						0);
-				eval.incrQCounter(2);
+				EVALQC(2);
 			}
 		}
 	}
@@ -90,7 +90,7 @@ void OLPAggreg3::computeQualitiesSpe(bool normalization) {
 					qualities[i][j]->addToLoss(
 							divergence(i + 1, sumValues[i][j][k][o],
 									entValues[i][j][k][o]));
-					eval.incrQCounter(4);
+					EVALQC(4);
 				}
 			}
 		}
@@ -104,7 +104,7 @@ void OLPAggreg3::computeQualitiesSpe(bool normalization) {
 						qualities[i][j]->getGain() / maxQuality->getGain());
 				qualities[i][j]->setLoss(
 						qualities[i][j]->getLoss() / maxQuality->getLoss());
-				eval.incrQCounter(2);
+				EVALQC(2);
 			}
 		}
 	}
@@ -142,8 +142,7 @@ unsigned int OLPAggreg3::getSize() {
 
 void OLPAggreg3::computeQualities(bool normalization) {
 	deleteQualities();
-	eval.resetQCounter();
-	eval.startQTimer();
+	EVALSTARTQ;
 	computeQualitiesSpe(normalization);
-	eval.stopQTimer();
+	EVALSTOPQ;
 }

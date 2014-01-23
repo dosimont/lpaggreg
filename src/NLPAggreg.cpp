@@ -114,15 +114,15 @@ void NLPAggreg::normalize(double maxGain, double maxLoss) {
 	if (maxGain == 0 && maxLoss == 0) {
 		maxGain = quality->getGain();
 		maxLoss = quality->getLoss();
-		eval->incrQCounter(2);
+		_EVALQC(2);
 	}
 	if (maxGain > 0) {
 		quality->setGain(quality->getGain() / maxGain);
-		eval->incrQCounter();
+		_EVALQC();
 	}
 	if (maxLoss > 0) {
 		quality->setLoss(quality->getLoss() / maxLoss);
-		eval->incrQCounter();
+		_EVALQC();
 	}
 	for CHILDS
 	CHILD->normalize(maxGain, maxLoss);
@@ -149,43 +149,43 @@ void NLPAggreg::setAggregated(bool aggregated) {
 double NLPAggreg::computeAggregation(float parameter) {
 	if (!hasChild()) {
 		aggregated = true;
-		eval->incrBCCounter();
+		_EVALBCC_;
 		return 0;
 	}
 	else {
 		double nodeQuality = parameter * quality->getGain()
 				- (1 - parameter) * quality->getLoss();
 		double childQuality = 0.0;
-		eval->incrBCCounter(2);
+		_EVALBCC(2);
 		for CHILDS {
 			childQuality+=CHILD->computeAggregation(parameter);
-			eval->incrBCCounter();
+			_EVALBCC_;
 		}
 		aggregated = (childQuality < nodeQuality);
-		eval->incrBCCounter();
+		_EVALBCC_;
 		return max(childQuality, nodeQuality);
 	}
 }
 
 void NLPAggreg::computeBestPartitions() {
 	bestPartitions = new vector<int>();
-	eval->incrBPCounter();
+	_EVALBPC_;
 	fillBestPartitions(bestPartitions, 0);
 }
 
 int NLPAggreg::fillBestPartitions(vector<int>*bestPartitions, int p) {
 	this->bestPartitions = bestPartitions;
-	eval->incrBPCounter();
+	_EVALBPC_;
 	if (aggregated) {
 		for (int i = 0; i < size; i++) {
 			this->bestPartitions->push_back(p);
-			eval->incrBPCounter();
+			_EVALBPC_;
 		}
 	}
 	else {
 		for CHILDS {
 			p = CHILD->fillBestPartitions(this->bestPartitions, p);
-			eval->incrBPCounter();
+			_EVALBPC_;
 		}
 	}
 	return p + 1;
@@ -194,14 +194,12 @@ int NLPAggreg::fillBestPartitions(vector<int>*bestPartitions, int p) {
 vector<int>* NLPAggreg::getAggregation(float parameter) {
 	if (!hasParent()) {
 		delete bestPartitions;
-		eval->resetBCCounter();
-		eval->startBCTimer();
+		_EVALSTARTBC;
 		computeAggregation(parameter);
-		eval->stopBCTimer();
-		eval->resetBPCounter();
-		eval->startBPTimer();
+		_EVALSTOPBC;
+		_EVALSTARTBP;
 		computeBestPartitions();
-		eval->stopBPTimer();
+		_EVALSTOPBP;
 		return bestPartitions;
 	}
 	return 0;

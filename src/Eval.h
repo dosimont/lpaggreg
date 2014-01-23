@@ -37,12 +37,17 @@
 #define TIMER_H_
 
 #include <cstdlib>
+#include "Configuration.h"
+#ifdef LINUX
 #include <sys/time.h>
+#endif
 
 class Eval {
 		
 	private:
+#ifdef LINUX
 		timeval timeQ1, timeQ2, timeBC1, timeBC2, timeBP1, timeBP2;
+#endif
 		int counterQ, counterBC, counterBP;
 
 	public:

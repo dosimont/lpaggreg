@@ -116,6 +116,7 @@ class DLPAggreg {
 		Eval* getEval();
 		void setEval(Eval* eval);
 
+
 		//Counter getters
 		int getQualityCount();
 		int getBestCutCount();

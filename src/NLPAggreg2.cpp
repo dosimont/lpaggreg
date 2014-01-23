@@ -64,12 +64,11 @@ void NLPAggreg2::setValues(const vector<double>& values) {
 void NLPAggreg2::computeQualities(bool normalization) {
 	if (!hasParent()) {
 		setEval(new Eval);
-		eval->resetQCounter();
-		eval->startQTimer();
+		_EVALSTARTQ;
 		computeQuality();
 		if (normalization)
 			normalize();
-		eval->stopQTimer();
+		_EVALSTOPQ;
 	}
 }
 
@@ -82,19 +81,19 @@ void NLPAggreg2::computeQuality_Vector(int index) {
 	if (!hasChild()) {
 		entSum = entropyReduction(this->values[index], 0);
 		size = 1;
-		eval->incrQCounter(2);
+		_EVALQC(2);
 	}
 	else {
 		this->values[index] = 0;
 		entSum = 0;
 		size = 0;
-		eval->incrQCounter(3);
+		_EVALQC(3);
 		for CHILDS {
 			static_cast<NLPAggreg2*>(CHILD)->computeQuality_Vector(index);
 			this->values[index]+=static_cast<NLPAggreg2*>(CHILD)->getValues()[index];
 			entSum+=CHILD->getEntSum();
 			size+=CHILD->getSize();
-			eval->incrQCounter(3);
+			_EVALQC(3);
 		}
 		if (index == 0) {
 			quality->setGain(0);
@@ -102,7 +101,7 @@ void NLPAggreg2::computeQuality_Vector(int index) {
 		}
 		quality->addToGain(entropyReduction(this->values[index], entSum));
 		quality->addToLoss(divergence(size, this->values[index], entSum));
-		eval->incrQCounter(2);
+		_EVALQC(2);
 	}
 }
 

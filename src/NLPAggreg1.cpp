@@ -66,34 +66,33 @@ void NLPAggreg1::computeQuality() {
 	if (!hasChild()) {
 		entSum = entropyReduction(this->values, 0.0);
 		size = 1;
-		eval->incrQCounter(2);
+		_EVALQC(2);
 	}
 	else {
 		this->values = 0;
 		entSum = 0;
 		size = 0;
-		eval->incrQCounter(3);
+		_EVALQC(3);
 		for CHILDS {
 			static_cast<NLPAggreg1*>(CHILD)->computeQuality();
 			this->values+=static_cast<NLPAggreg1*>(CHILD)->getValues();
 			entSum+=CHILD->getEntSum();
 			size+=CHILD->getSize();
-			eval->incrQCounter(3);
+			_EVALQC(3);
 		}
 		quality->setGain(entropyReduction(this->values, entSum));
 		quality->setLoss(divergence(size, this->values, entSum));
-		eval->incrQCounter(2);
+		_EVALQC(2);
 	}
 }
 
 void NLPAggreg1::computeQualities(bool normalization) {
 	if (!hasParent()) {
 		setEval(new Eval);
-		eval->resetQCounter();
-		eval->startQTimer();
+		_EVALSTARTQ;
 		computeQuality();
 		if (normalization)
 			normalize();
-		eval->stopQTimer();
+		_EVALSTOPQ;
 	}
 }

@@ -68,21 +68,21 @@ const vector<vector<double> >& DLPAggreg2::getValues() const {
 void DLPAggreg2::computeQualities() {
 	if (hasChild()) {
 		nodeSize = 0;
-		eval->incrQCounter();
+		_EVALQC();
 		for DCHILDS {
 			DCHILD2->computeQualities();
 			nodeSize+=DCHILD2->getNodeSize();
-			eval->incrQCounter();
+			_EVALQC();
 		}
 		valueSize = static_cast<DLPAggreg2*>(childNodes[0])->getValueSize();
 		valueISize = static_cast<DLPAggreg2*>(childNodes[0])->getValueISize();
-		eval->incrQCounter(2);
+		_EVALQC(2);
 	}
 	else {
 		valueSize = values.size();
 		valueISize=values[0].size();
 		nodeSize = 1;
-		eval->incrQCounter(3);
+		_EVALQC(3);
 	}
 	sumValue = new double**[valueSize];
 	microInfo = new double**[valueSize];
@@ -94,7 +94,7 @@ void DLPAggreg2::computeQualities() {
 			qualities[i].push_back(new Quality(0, 0));
 			sumValue[i][j] = new double[valueISize];
 			microInfo[i][j] = new double[valueISize];
-			eval->incrQCounter();
+			_EVALQC();
 		}
 	}
 	if (!hasChild()) {
@@ -102,7 +102,7 @@ void DLPAggreg2::computeQualities() {
 			for (int k = 0; k < valueISize; k++){
 				sumValue[i][0][k] = values[i][k];
 				microInfo[i][0][k] = entropyReduction(values[i][k], 0);
-			eval->incrQCounter(2);
+			_EVALQC(2);
 			}
 		}
 		for (int j = 1; j < valueSize; j++) {
@@ -114,7 +114,7 @@ void DLPAggreg2::computeQualities() {
 						entropyReduction(sumValue[i][j][k], microInfo[i][j][k]));
 				qualities[i][j]->addToLoss(
 						divergence(j + 1, sumValue[i][j][k], microInfo[i][j][k]));
-				eval->incrQCounter(4);
+				_EVALQC(4);
 				}
 			}
 		}
@@ -125,18 +125,18 @@ void DLPAggreg2::computeQualities() {
 				for (int k = 0; k < valueISize; k++){
 				sumValue[i][j][k] = 0;
 				microInfo[i][j][k] = 0;
-				eval->incrQCounter(2);
+				_EVALQC(2);
 				for DCHILDS {
 					sumValue[i][j][k]+=DCHILD2->getSumValue()[i][j][k];
 					microInfo[i][j][k]+=DCHILD2->getMicroInfo()[i][j][k];
-					eval->incrQCounter(2);
+					_EVALQC(2);
 				}
 				qualities[i][j]->addToGain(
 						entropyReduction(sumValue[i][j][k], microInfo[i][j][k]));
 				qualities[i][j]->addToLoss(
 						divergence((j + 1)*nodeSize, sumValue[i][j][k],
 								microInfo[i][j][k]));
-				eval->incrQCounter(2);
+				_EVALQC(2);
 			}
 			}
 		}
@@ -146,12 +146,11 @@ void DLPAggreg2::computeQualities() {
 void DLPAggreg2::computeQualities(bool normalization) {
 	if (!hasParent()) {
 		setEval(new Eval);
-		eval->resetQCounter();
-		eval->startQTimer();
+		_EVALSTARTQ;
 		computeQualities();
 		if (normalization)
 			normalize();
-		eval->stopQTimer();
+		_EVALSTOPQ;
 	}
 }
 

@@ -41,6 +41,7 @@
 #include "Eval.h"
 #include "Complexity.h"
 #include <vector>
+#include "Configuration.h"
 
 using namespace std;
 

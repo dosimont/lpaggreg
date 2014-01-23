@@ -56,25 +56,25 @@ void OLPAggreg::computeBestCuts(float parameter) {
 	double * bestQuality = new double[n];
 	bestCuts[0] = 0; //WRITE
 	bestQuality[0] = 0; //WRITE	int n = getSize();
-	eval.incrBCCounter(2);
+	EVALBCC(2);
 	for (int i = 1; i < n; i++) {
 		long currentCut = 0; //WRITE
 		double currentQuality = parameter * qualities[i][0]->getGain() //WRITE
 		- (1 - parameter) * qualities[i][0]->getLoss();
-		eval.incrBCCounter(2);
+		EVALBCC(2);
 		for (int k = 1; k < i + 1; k++) { //WRITE
 			double quality = bestQuality[k - 1]
 					+ parameter * qualities[i - k][k]->getGain()
 					- (1 - parameter) * qualities[i - k][k]->getLoss();
-			eval.incrBCCounter();
+			EVALBCC_;
 			if (quality >= currentQuality) { //TODO influence p
 				currentCut = k; //WRITE*2
 				currentQuality = quality;
-				eval.incrBCCounter(2);
+				EVALBCC(2);
 			}
 			bestCuts[i] = currentCut; //WRITE*2
 			bestQuality[i] = currentQuality;
-			eval.incrBCCounter(2);
+			EVALBCC(2);
 		}
 	}
 	delete[] bestQuality;
@@ -89,7 +89,7 @@ void OLPAggreg::computeBestPartitions() {
 	bestPartitions.clear();
 	for (int i = 0; i < n; i++) {
 		bestPartitions.push_back(-1); //WRITE
-		eval.incrBPCounter();
+		EVALBPC_;
 	}
 	fillPartition(n - 1, 0);
 }
@@ -100,14 +100,14 @@ void OLPAggreg::deleteBestPartitions() {
 
 int OLPAggreg::fillPartition(int i, int p) {
 	int c = bestCuts[i]; //WRITE
-	eval.incrBPCounter();
+	EVALBPC_;
 	if (c > 0) {
 		p = fillPartition(c - 1, p); //WRITE
-		eval.incrBPCounter();
+		EVALBPC_;
 	}
 	for (int k = c; k < i + 1; k++) {
 		bestPartitions[k] = p; //WRITE
-		eval.incrBPCounter();
+		EVALBPC_;
 	}
 	return p + 1;
 }
@@ -200,14 +200,12 @@ OLPAggreg::~OLPAggreg() {
 
 vector<int> OLPAggreg::getParts(float parameter) {
 	deleteBestPartitions();
-	eval.resetBCCounter();
-	eval.startBCTimer();
+	EVALSTARTBC;
 	computeBestCuts(parameter);
-	eval.stopBCTimer();
-	eval.resetBPCounter();
-	eval.startBPTimer();
+	EVALSTOPBC;
+	EVALSTARTBP;
 	computeBestPartitions();
-	eval.stopBPTimer();
+	EVALSTOPBP;
 	deleteBestCuts();
 	return bestPartitions;
 }

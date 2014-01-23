@@ -68,19 +68,19 @@ const vector<double>& DLPAggreg1::getValues() const {
 void DLPAggreg1::computeQualities() {
 	if (hasChild()) {
 		nodeSize = 0;
-		eval->incrQCounter();
+		_EVALQC();
 		for DCHILDS {
 			DCHILD1->computeQualities();
 			nodeSize+=DCHILD1->getNodeSize();
-			eval->incrQCounter();
+			_EVALQC();
 		}
 		valueSize = static_cast<DLPAggreg1*>(childNodes[0])->getValueSize();
-		eval->incrQCounter();
+		_EVALQC();
 	}
 	else {
 		valueSize = values.size();
 		nodeSize = 1;
-		eval->incrQCounter(2);
+		_EVALQC(2);
 	}
 	sumValue = new double*[valueSize];
 	microInfo = new double*[valueSize];
@@ -90,14 +90,14 @@ void DLPAggreg1::computeQualities() {
 		qualities.push_back(vector<Quality*>());
 		for (int j = 0; j < valueSize; j++){
 			qualities[i].push_back(new Quality());
-			eval->incrQCounter();
+			_EVALQC();
 		}
 	}
 	if (!hasChild()) {
 		for (int i = 0; i < valueSize; i++) {
 			sumValue[i][0] = values[i];
 			microInfo[i][0] = entropyReduction(values[i], 0);
-			eval->incrQCounter(2);
+			_EVALQC(2);
 		}
 		for (int j = 1; j < valueSize; j++) {
 			for (int i = 0; i < valueSize - j; i++) {
@@ -107,7 +107,7 @@ void DLPAggreg1::computeQualities() {
 						entropyReduction(sumValue[i][j], microInfo[i][j]));
 				qualities[i][j]->setLoss(
 						divergence(j + 1, sumValue[i][j], microInfo[i][j]));
-				eval->incrQCounter(4);
+				_EVALQC(4);
 			}
 		}
 	}
@@ -116,18 +116,18 @@ void DLPAggreg1::computeQualities() {
 			for (int i = 0; i < valueSize - j; i++) {
 				sumValue[i][j] = 0;
 				microInfo[i][j] = 0;
-				eval->incrQCounter(2);
+				_EVALQC(2);
 				for DCHILDS {
 					sumValue[i][j]+=DCHILD1->getSumValue()[i][j];
 					microInfo[i][j]+=DCHILD1->getMicroInfo()[i][j];
-					eval->incrQCounter(2);
+					_EVALQC(2);
 				}
 				qualities[i][j]->setGain(
 						entropyReduction(sumValue[i][j], microInfo[i][j]));
 				qualities[i][j]->setLoss(
 						divergence((j + 1)*nodeSize, sumValue[i][j],
 								microInfo[i][j]));
-				eval->incrQCounter(2);
+				_EVALQC(2);
 			}
 		}
 	}
@@ -136,12 +136,11 @@ void DLPAggreg1::computeQualities() {
 void DLPAggreg1::computeQualities(bool normalization) {
 	if (!hasParent()) {
 		setEval(new Eval);
-		eval->resetQCounter();
-		eval->startQTimer();
+		_EVALSTARTQ;
 		computeQualities();
 		if (normalization)
 			normalize();
-		eval->stopQTimer();
+		_EVALSTOPQ;
 	}
 }
 
