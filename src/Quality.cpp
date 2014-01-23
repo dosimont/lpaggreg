@@ -1,12 +1,16 @@
 /*******************************************************************************
  *
- * This library is a C++ implementation of an algorithm designed by Robin
- * Lamarche-Perrin. This algorithm enables to aggregate sets of scalar or vector
- * data, according aggregation gain & information loss ratio parameter.
- * More information in "Robin Lamarche-Perrin, Yves Demazeau and Jean-Marc
- * Vincent. The Best-partitions Problem: How to Build Meaningful Agregations?
- * Research report RR-LIG-XXX, Laboratoire d’Informatique de Grenoble, France,
- * Feb. 2013. (forthcoming)"
+ * This library is a C++ implementation of several algorithms that enables
+ * to aggregate set of data according: an ordered dimension (OLP), a
+ * hierarchy (NLP), or both (DLP). OLP and NLP scalar versions (1) have been
+ * designed by Robin Lamarche-Perrin. OLP and NLP vector versions (2, 3) and
+ * DLP (1, 2) have been designed by Damien Dosimont and are a generalization
+ * of Robin Lamarche-Perrin works.
+ *
+ * Related works:
+ * http://magma.imag.fr/content/robin-lamarche-perrin
+ * http://moais.imag.fr/membres/damien.dosimont/research.html
+ *
  *
  * (C) Copyright (February 28th 2013) Damien Dosimont. All rights reserved.
  *
@@ -28,13 +32,6 @@
  * USA.
  *
  *******************************************************************************/
-
-/*Author : Damien Dosimont <damien.dosimont@imag.fr>*/
-
-/*Quality cpp file
- *
- * Class that contains quality measures (gain, loss) and methods for get and set them.
- */
 
 #include "Quality.h"
 
