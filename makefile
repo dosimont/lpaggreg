@@ -6,4 +6,5 @@ all:
 install:
 	./install.sh
 clean:
-	(cd Release; make clean)
+	(cd Release; rm *.so*; make clean)
+
