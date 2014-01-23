@@ -107,18 +107,18 @@ void DLPAggreg::normalize(double maxGain, double maxLoss) {
 	if (maxGain == 0 && maxLoss == 0) {
 		maxGain = qualities[valueSize - 1][valueSize - 1]->getGain();
 		maxLoss = qualities[valueSize - 1][valueSize - 1]->getLoss();
-		eval->incrQCounter(2);
+		EVALQCP(2);
 
 	}
 	for (int j = 0; j < valueSize; j++) {
 		for (int i = 0; i < valueSize - j; i++) {
 			if (maxGain > 0) {
 				qualities[i][j]->setGain(qualities[i][j]->getGain() / maxGain);
-				eval->incrQCounter();
+				EVALQCP_;
 			}
 			if (maxLoss > 0) {
 				qualities[i][j]->setLoss(qualities[i][j]->getLoss() / maxLoss);
-				eval->incrQCounter();
+				EVALQCP_;
 			}
 			for DCHILDS
 			DCHILD->normalize(maxGain, maxLoss);
@@ -158,14 +158,14 @@ void DLPAggreg::computeBestPartitions() {
 	bestPartitions.clear();
 	for (int i = 0; i < valueSize; i++) {
 		bestPartitions.push_back(-1); //WRITE
-		eval->incrBPCounter();
+		EVALBCCP_;
 	}
 	for DCHILDS
 	DCHILD->computeBestPartitions();
 	if (!hasParent()){
 		int *partCounter=new int;
 		*partCounter=0;
-		eval->incrBPCounter();
+		EVALBCCP_;
 		fillPartition(0, valueSize - 1, partCounter);
 		delete partCounter;
 	}
@@ -173,7 +173,7 @@ void DLPAggreg::computeBestPartitions() {
 
 void DLPAggreg::fillPartition(int start, int end, int * counter) {
 	DLPCut c = *bestCuts[start][end-start]; //WRITE
-	eval->incrBPCounter();
+	EVALBCCP_;
 	if (c.isAggregated()){
 		setPartitions(c.getCut(), end, *counter);//TODO verificar
 		(*counter)++;
@@ -192,7 +192,7 @@ void DLPAggreg::fillPartition(int start, int end, int * counter) {
 void DLPAggreg::setPartitions(int start, int end, int value){
 	for (int i=start; i<=end; i++){
 		bestPartitions[i]=value;
-		eval->incrBPCounter();
+		EVALBCCP_;
 	}
 	if (value>-1){
 		for DCHILDS
@@ -331,7 +331,7 @@ void DLPAggreg::computeBestCuts(double parameter) {
 				eval->incrBCCounter(4);
 				for (int cut=1; cut<=j; cut++) {
 					double compromise=bestCompromises[k][cut-1]+max(pIC[cut+k][j-cut], sumBestCompromises(cut+k, j-cut));
-					eval->incrBCCounter(1);
+					eval->incrBCCounter();
 					//bool tempAggreg=(pIC[cut+k][j-cut]==(compromise-optimalCompromises[k][cut-1]));
 					if (((compromise>currentCompromise))){//||(compromise>=currentCompromise&&(cut+k)>currentCut.getCut()))){
 						currentCompromise=compromise;

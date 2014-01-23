@@ -43,6 +43,7 @@
 #include "Complexity.h"
 #include "Eval.h"
 #include "DLPCut.h"
+#include "Configuration.h"
 
 #define DCHILDS (unsigned int i_child=0; i_child<childNodes.size(); i_child++)
 #define NDCHILDS(n) (unsigned int i_child=0; i_child<n->childNodeSize(); i_child++)

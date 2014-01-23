@@ -11,12 +11,18 @@
 #define EVAL
 
 #ifdef EVAL
-#define EVALQC eval->incrQCounter()
-#define EVALQC(n) eval->incrQCounter(n)
-#define EVALBCC eval->incrBPounter()
-#define EVALBCC(n) eval->incrBPounter(n)
-#define EVALBPC eval->incrBPounter()
-#define EVALBPC(n) eval->incrBPounter(n)
+#define EVALQC_ eval.incrQCounter()
+#define EVALQC(n) eval.incrQCounter(n)
+#define EVALBCC_ eval->incrBPCounter()
+#define EVALBCC(n) eval.incrBPCounter(n)
+#define EVALBPC_ eval.incrBPCounter()
+#define EVALBPC(n) eval.incrBPCounter(n)
+#define EVALQCP_ eval->incrQCounter()
+#define EVALQCP(n) eval->incrQCounter(n)
+#define EVALBCCP_ eval->incrBPCounter()
+#define EVALBCCP(n) eval->incrBPCounter(n)
+#define EVALBPCP_ eval->incrBPCounter()
+#define EVALBPCP(n) eval->incrBPCounter(n)
 #endif
 
 
