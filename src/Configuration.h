@@ -16,7 +16,7 @@
 //#define LINUX
 
 /*Use Shannon Entropy to compute Gain instead of SizeReduction*/
-#define ENTROPY 0
+#define ENTROPY 1
 
 /*Don't modify from here*/
 #if ENTROPY

@@ -108,7 +108,7 @@ void DLPAggreg1::computeQualities() {
 						entropyReduction(sumValue[i][j], microInfo[i][j]));
 #endif
 #if SIZEREDUCTION
-				qualities[i][j]->setGain(j);
+				qualities[i][j]->setGain(j+1);
 #endif
 
 				qualities[i][j]->setLoss(

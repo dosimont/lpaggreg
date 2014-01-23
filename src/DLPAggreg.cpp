@@ -301,7 +301,7 @@ void DLPAggreg::computeBestCuts(double parameter) {
 					double compromise = bestCompromises[k][cut - 1]
 							+ pIC[cut + k][j - cut];
 					_EVALBCC(1);
-					if (compromise>currentCompromise){//||(compromise>=currentCompromise&&(cut+k)>currentCut.getCut())) {
+					if (compromise>currentCompromise||(compromise==currentCompromise&&(cut+k)>currentCut.getCut())) {
 						currentCompromise = compromise;
 						currentCut.setAll(cut + k, true);
 						_EVALBCC(3);
@@ -330,8 +330,7 @@ void DLPAggreg::computeBestCuts(double parameter) {
 				for (int cut=1; cut<=j; cut++) {
 					double compromise=bestCompromises[k][cut-1]+max(pIC[cut+k][j-cut], sumBestCompromises(cut+k, j-cut));
 					_EVALBCC_;
-					//bool tempAggreg=(pIC[cut+k][j-cut]==(compromise-optimalCompromises[k][cut-1]));
-					if (((compromise>currentCompromise))){//||(compromise>=currentCompromise&&(cut+k)>currentCut.getCut()))){
+					if (((compromise>currentCompromise))){//||(compromise==currentCompromise&&(cut+k)<=currentCut.getCut()&&!currentCut.isAggregated()&&(pIC[cut+k][j-cut]==(compromise-bestCompromises[k][cut-1])))||(compromise>=currentCompromise&&(cut+k)>currentCut.getCut()))){
 						currentCompromise=compromise;
 						currentCut.setAll(cut+k, pIC[cut+k][j-cut]==(compromise-bestCompromises[k][cut-1]));
 						_EVALBCC(3);
