@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/bash -x
 LIB=liblpaggreg.so
 cd Release
 LSLIB=`ls ${LIB}*`
