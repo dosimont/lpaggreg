@@ -41,26 +41,26 @@
 #include "DLPAggreg1.h"
 
 #include "LPValues.h"
+#include <map>
 #include <vector>
 
 using namespace std;
 
 class DLPAggregWrapper {
-	protected:
+	private:
 
 		/*List of relevant parameters get by dichotomy*/
-		vector<float> parameters;
+		vector<double> parameters;
 
 		/*List of associated qualities to parameter list*/
 		vector<Quality*> qualities;
 
 		int dimension;
 
-		LPValues<1, double> values1;
-		LPValues<2, double> values2;
-		LPValues<3, double> values3;
+		map<int, LPValues<1, double> > values1;
+		map<int, LPValues<2, double> > values2;
 
-		vector <DLPAggreg*> aggreg;
+		map<int, DLPAggreg*> aggreg;
 		DLPAggreg * root;
 
 	public:
@@ -71,11 +71,15 @@ class DLPAggregWrapper {
 		/*Destructor*/
 		virtual ~DLPAggregWrapper();
 
-		int newElement(int parent);
+		int newLeaf(int parent, int id);
 
-		int newElement();
+		int newNode(int parent, int id);
 
-		void setActiveElement(int id);
+		int newRoot(int id);
+
+		void validate();
+
+		bool hasFullAggregation(int id);
 
 		/*Get the part with in index "index"*/
 		int getPart(int id, int index);
@@ -93,37 +97,32 @@ class DLPAggregWrapper {
 		double getGainByIndex(int index);
 
 		/*Get the gain by parameter*/
-		double getGainByParameter(float parameter);
+		double getGainByParameter(double parameter);
 
 		/*Get the loss by index*/
 		double getLossByIndex(int index);
 
 		/*Get the loss by parameter*/
-		double getLossByParameter(float parameter);
+		double getLossByParameter(double parameter);
 
 		/*Algo step 1 : compute qualities*/
 		void computeQualities(bool normalization);
 
 		/*Algo step 2 : compute parts for a parameter*/
-		void computeParts(float parameter);
+		void computeParts(double parameter);
 
 		/*Algo step 2 : compute relevant parameter list by using dichotomy*/
 		void computeDichotomy(float threshold);
 
 //1
-		void setValue(int i, double value);
-		void push_back(double value);
+		void setValue(int id, int i, double value);
+		void push_back(int id, double value);
 
 //2
-		void addVector();
-		void setValue(int i, int j, double value);
-		void push_back(int i, double value);
+		void addVector(int id);
+		void setValue(int id, int i, int j, double value);
+		void push_back(int id, int i, double value);
 
-//3
-		void addMatrix();
-		void setValue(int i, int j, int k, double value);
-		void addVector(int i);
-		void push_back(int i, int j, double value);
 		
 };
 

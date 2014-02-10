@@ -502,3 +502,10 @@ void DLPAggreg::cleanChilds() {
 	DCHILD->cleanChilds();
 	}
 }
+
+bool DLPAggreg::hasFullAggregation() {
+	for (int i=0; i<bestPartitions.size(); i++)
+		if (bestPartitions[i]==-1)
+			return false;
+	return true;
+}

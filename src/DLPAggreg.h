@@ -157,6 +157,7 @@ class DLPAggreg {
 
 		//BC & BP
 		void computeAggregation(double parameter);
+		bool hasFullAggregation();
 
 		//Getters and setters
 		int getValueSize() const;

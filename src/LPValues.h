@@ -57,6 +57,7 @@ class LPValues<0, Type> {
 		virtual ~LPValues();
 		Type getValues() const;
 		void setValue(Type value);
+		void clear();
 };
 
 template<typename Type>
@@ -69,6 +70,7 @@ class LPValues<1, Type> {
 		void setValue(int i, Type value);
 		void push_back(Type value);
 		virtual ~LPValues();
+		void clear();
 };
 
 template<typename Type>
@@ -83,6 +85,7 @@ class LPValues<2, Type> {
 		void push_back(int i, Type value);
 		void push_back(Type value);
 		virtual ~LPValues();
+		void clear();
 };
 
 template<typename Type>
@@ -99,6 +102,7 @@ class LPValues<3, Type> {
 		void push_back(int i, int j, Type value);
 		void push_back(Type value);
 		virtual ~LPValues();
+		void clear();
 };
 
 template<int Dimension, typename Type>
@@ -234,6 +238,28 @@ void LPValues<3, Type>::push_back(Type value) {
 
 template<typename Type>
 LPValues<3, Type>::~LPValues() {
+}
+
+template<typename Type>
+void LPValues<1, Type>::clear() {
+	this->values.clear();
+}
+
+template<typename Type>
+void LPValues<2, Type>::clear() {
+	for (int i=0; i<this->values.size(); i++)
+		this->values[i].clear();
+	this->values.clear();
+}
+
+template<typename Type>
+void LPValues<3, Type>::clear() {
+	for (int i=0; i<this->values.size(); i++){
+		for (int j=0; j<this->values[i].size(); i++)
+			this->values[i][j].clear();
+		this->values[i].clear();
+	}
+	this->values.clear();
 }
 
 #endif /* LPVALUES_H_ */

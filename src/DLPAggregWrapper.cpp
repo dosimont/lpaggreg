@@ -39,20 +39,19 @@ DLPAggregWrapper::DLPAggregWrapper(int dimension) :
 		dimension(dimension){
 	switch (dimension) {
 	case 1: {
-		values1 = LPValues<1, double>();
+		values1 = map<int, LPValues<1, double> >();
 		root = new DLPAggreg1(0);
 
 		break;
 	}
 	case 2: {
-		values2 = LPValues<2, double>();
+		values2 = map<int, LPValues<2, double> >();
 		root = new DLPAggreg2(0);
 		break;
 
 	}
 	}
-	aggreg = vector<DLPAggreg*>();
-	aggreg.push_back(root);
+	aggreg = map<int, DLPAggreg*>();
 }
 
 
@@ -82,7 +81,7 @@ double DLPAggregWrapper::getGainByIndex(int index) {
 	return -1;
 }
 
-double DLPAggregWrapper::getGainByParameter(float parameter) {
+double DLPAggregWrapper::getGainByParameter(double parameter) {
 	for (int i = 0; i < (int) parameters.size(); i++)
 		if (parameter == parameters[i])
 			return qualities[i]->getGain();
@@ -95,14 +94,14 @@ double DLPAggregWrapper::getLossByIndex(int index) {
 	return -1;
 }
 
-double DLPAggregWrapper::getLossByParameter(float parameter) {
+double DLPAggregWrapper::getLossByParameter(double parameter) {
 	for (int i = 0; i < (int) parameters.size(); i++)
 		if (parameter == parameters[i])
 			return qualities[i]->getLoss();
 	return -1;
 }
 
-void DLPAggregWrapper::computeParts(float parameter) {
+void DLPAggregWrapper::computeParts(double parameter) {
 	root->computeAggregation(parameter);
 }
 
@@ -127,114 +126,120 @@ void DLPAggregWrapper::computeDichotomy(float threshold) {
 	
 }
 
-void DLPAggregWrapper::setValue(int i, double value) {
+void DLPAggregWrapper::setValue(int id, int i, double value) {
 	switch (dimension) {
 	case 1: {
-		values1.setValue(i, value);
+		values1[id].setValue(i, value);
 		break;
 	}
 	}
 }
 
-void DLPAggregWrapper::push_back(double value) {
+void DLPAggregWrapper::push_back(int id, double value) {
 	switch (dimension) {
 	case 1: {
-		values1.push_back(value);
+		values1[id].push_back(value);
 		break;
 	}
 	case 2: {
-		values2.push_back(value);
-		break;
-	}
-	case 3: {
-		values3.push_back(value);
+		values2[id].push_back(value);
 		break;
 	}
 	}
 }
 
-void DLPAggregWrapper::addVector() {
+void DLPAggregWrapper::addVector(int id) {
 	switch (dimension) {
 	case 2: {
-		values2.addVector();
-		break;
-	}
-	case 3: {
-		values3.addVector();
+		values2[id].addVector();
 		break;
 	}
 	}
 }
 
-void DLPAggregWrapper::setValue(int i, int j, double value) {
+void DLPAggregWrapper::setValue(int id, int i, int j, double value) {
 	switch (dimension) {
 	case 2: {
-		values2.setValue(i, j, value);
+		values2[id].setValue(i, j, value);
 		break;
 	}
 	}
 }
 
-void DLPAggregWrapper::push_back(int i, double value) {
+int DLPAggregWrapper::newRoot(int id) {
+	switch (dimension) {
+		case 1: {
+			DLPAggreg1 * temp=new DLPAggreg1((int) aggreg.size());
+			aggreg.insert(pair<int, DLPAggreg1*>(id,temp));
+			root=temp;
+			return temp->getId();
+			break;
+		}
+		case 2: {
+			DLPAggreg2 * temp=new DLPAggreg2((int) aggreg.size());
+			aggreg.insert(pair<int, DLPAggreg2*>(id,temp));
+			root=temp;
+			return temp->getId();
+			break;
+		}
+	}
+	return -1;
+}
+
+void DLPAggregWrapper::validate() {
+	map<int,DLPAggreg*>::iterator it;
+	for (it = aggreg.begin(); it!=aggreg.end(); it++){
+		int id=it->first;
+		DLPAggreg* node=it->second;
+		if (!node->hasChild()){
+			switch (dimension) {
+				case 1: {
+					DLPAggreg1 * temp=static_cast<DLPAggreg1*>(node);
+					temp->setValues(values1[id].getValues());
+					break;
+				}
+				case 2: {
+					DLPAggreg2 * temp=static_cast<DLPAggreg2*>(node);
+					temp->setValues(values2[id].getValues());
+					break;
+				}
+			}
+		}
+	}
+}
+
+DLPAggregWrapper::~DLPAggregWrapper() {
+	delete root;
+}
+
+bool DLPAggregWrapper::hasFullAggregation(int id) {
+	return aggreg[id]->hasFullAggregation();
+}
+
+void DLPAggregWrapper::push_back(int id, int i, double value) {
 	switch (dimension) {
 	case 2: {
-		values2.push_back(i, value);
+		values2[id].push_back(i, value);
 		break;
 	}
 	}
 }
 
-void DLPAggregWrapper::addMatrix() {
-	switch (dimension) {
-	case 3: {
-		values3.addMatrix();
-		break;
-	}
-	}
-}
-
-void DLPAggregWrapper::setValue(int i, int j, int k, double value) {
-	switch (dimension) {
-	case 3: {
-		values3.setValue(i, j, k, value);
-		break;
-	}
-	}
-}
-
-void DLPAggregWrapper::addVector(int i) {
-	switch (dimension) {
-	case 3: {
-		values3.addVector(i);
-		break;
-	}
-	}
-}
-
-
-void DLPAggregWrapper::push_back(int i, int j, double value) {
-	switch (dimension) {
-	case 3: {
-		values3.push_back(i, j, value);
-		break;
-	}
-	}
-}
-
-
-int DLPAggregWrapper::newElement(int parent) {
+int DLPAggregWrapper::newLeaf(int id, int parent) {
 	switch (dimension) {
 	case 1: {
 		DLPAggreg1 * temp=new DLPAggreg1((int) aggreg.size());
 		temp->setParent(aggreg[parent]);
-		aggreg.push_back(temp);
+		aggreg.insert(pair<int, DLPAggreg1*>(id,temp));
+		values1.insert(pair<int, LPValues<1, double> >(id, LPValues<1, double>()));
 		return temp->getId();
 		break;
 	}
 	case 2: {
 		DLPAggreg2 * temp=new DLPAggreg2((int) aggreg.size());
 		temp->setParent(aggreg[parent]);
-		aggreg.push_back(temp);
+		aggreg.insert(pair<int, DLPAggreg2*>(id,temp));
+		values2.insert(pair<int, LPValues<2, double> >(id, LPValues<2, double>()));
 		return temp->getId();
 		break;
 	}
@@ -242,6 +247,24 @@ int DLPAggregWrapper::newElement(int parent) {
 	return -1;
 }
 
-void DLPAggregWrapper::setActiveElement(int id) {
-
+int DLPAggregWrapper::newNode(int id, int parent) {
+	switch (dimension) {
+	case 1: {
+		DLPAggreg1 * temp=new DLPAggreg1((int) aggreg.size());
+		temp->setParent(aggreg[parent]);
+		aggreg.insert(pair<int, DLPAggreg1*>(id,temp));
+		return temp->getId();
+		break;
+	}
+	case 2: {
+		DLPAggreg2 * temp=new DLPAggreg2((int) aggreg.size());
+		temp->setParent(aggreg[parent]);
+		aggreg.insert(pair<int, DLPAggreg2*>(id,temp));
+		return temp->getId();
+		break;
+	}
+	}
+	return -1;
 }
+
+
