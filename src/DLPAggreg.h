@@ -151,7 +151,7 @@ class DLPAggreg {
 		void addBestQualities(float parameter1, float parameter2,
 				Quality *bestQuality1, Quality *bestQuality2, float threshold);
 		void deleteQualityList();
-		vector<float> getParameters(float threshold);
+		const vector<float>& getParameters(float threshold);
 		const vector<Quality*>& getQualityList() const;
 
 

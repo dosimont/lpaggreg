@@ -33,8 +33,8 @@
  *
  *******************************************************************************/
 
-#ifndef DLPAGGREG2_H_
-#define DLPAGGREG2_H_
+#ifndef DLPAGGREG1_H_
+#define DLPAGGREG1_H_
 
 #include "DLPAggreg.h"
 #define DCHILD1 static_cast<DLPAggreg1*>(DCHILD)
@@ -61,4 +61,4 @@ class DLPAggreg1: public DLPAggreg {
 		double** getSumValue() const;
 };
 
-#endif /* DLPAGGREG2_H_ */
+#endif /* DLPAGGREG1_H_ */

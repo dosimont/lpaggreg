@@ -51,7 +51,6 @@ class DLPAggreg2: public DLPAggreg {
 		void computeQualities();
 
 	public:
-	public:
 		DLPAggreg2();
 		virtual ~DLPAggreg2();
 		DLPAggreg2(int id);

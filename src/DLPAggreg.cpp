@@ -474,7 +474,7 @@ void DLPAggreg::deleteBestCuts() {
 	}
 }
 
-vector<float> DLPAggreg::getParameters(float threshold) {
+const vector<float>& DLPAggreg::getParameters(float threshold) {
 	deleteParameters();
 	deleteQualityList();
 //	clean();

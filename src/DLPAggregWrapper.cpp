@@ -33,114 +33,101 @@
  *
  *******************************************************************************/
 
-#include "LPAggregWrapper.h"
+#include "DLPAggregWrapper.h"
 
-LPAggregWrapper::LPAggregWrapper(int dimension) :
-		parts(vector<int>()), dimension(dimension) {
+DLPAggregWrapper::DLPAggregWrapper(int dimension) :
+		dimension(dimension){
 	switch (dimension) {
 	case 1: {
 		values1 = LPValues<1, double>();
-		aggreg = new OLPAggreg1();
+		root = new DLPAggreg1(0);
+
 		break;
 	}
 	case 2: {
 		values2 = LPValues<2, double>();
-		aggreg = new OLPAggreg2();
+		root = new DLPAggreg2(0);
 		break;
-	}
-	case 3: {
-		values3 = LPValues<3, double>();
-		aggreg = new OLPAggreg3();
-		break;
+
 	}
 	}
+	aggreg = vector<DLPAggreg*>();
+	aggreg.push_back(root);
 }
 
-LPAggregWrapper::~LPAggregWrapper() {
-	parts.clear();
-}
 
-int LPAggregWrapper::getPart(int index) {
+int DLPAggregWrapper::getPart(int id, int index) {
 	if (index < getPartNumber())
-		return parts[index];
+		return aggreg[id]->getBestPartitions()[index];
 	return -1;
 }
 
-int LPAggregWrapper::getPartNumber() {
-	return (int) parts.size();
+int DLPAggregWrapper::getPartNumber() {
+	return (int) root->getValueSize();
 }
 
-int LPAggregWrapper::getParameterNumber() {
+int DLPAggregWrapper::getParameterNumber() {
 	return (int) parameters.size();
 }
 
-float LPAggregWrapper::getParameter(int index) {
+float DLPAggregWrapper::getParameter(int index) {
 	if (index < getParameterNumber())
 		return parameters[index];
 	return -1;
 }
 
-double LPAggregWrapper::getGainByIndex(int index) {
+double DLPAggregWrapper::getGainByIndex(int index) {
 	if (index < (int) qualities.size())
 		return qualities[index]->getGain();
 	return -1;
 }
 
-double LPAggregWrapper::getGainByParameter(float parameter) {
+double DLPAggregWrapper::getGainByParameter(float parameter) {
 	for (int i = 0; i < (int) parameters.size(); i++)
 		if (parameter == parameters[i])
 			return qualities[i]->getGain();
 	return -1;
 }
 
-double LPAggregWrapper::getLossByIndex(int index) {
+double DLPAggregWrapper::getLossByIndex(int index) {
 	if (index < (int) qualities.size())
 		return qualities[index]->getLoss();
 	return -1;
 }
 
-double LPAggregWrapper::getLossByParameter(float parameter) {
+double DLPAggregWrapper::getLossByParameter(float parameter) {
 	for (int i = 0; i < (int) parameters.size(); i++)
 		if (parameter == parameters[i])
 			return qualities[i]->getLoss();
 	return -1;
 }
 
-void LPAggregWrapper::computeParts(float parameter) {
-	parts.clear();
-	parts = aggreg->getParts(parameter);
+void DLPAggregWrapper::computeParts(float parameter) {
+	root->computeAggregation(parameter);
 }
 
-void LPAggregWrapper::computeQualities(bool normalization) {
+void DLPAggregWrapper::computeQualities(bool normalization) {
 	switch (dimension) {
 	case 1: {
-		OLPAggreg1 *aggreg1 = static_cast<OLPAggreg1*>(aggreg);
-		aggreg1->setValues(values1.getValues());
+		DLPAggreg1 *aggreg1 = static_cast<DLPAggreg1*>(root);
 		aggreg1->computeQualities(normalization);
 		break;
 	}
 	case 2: {
-		OLPAggreg2 *aggreg2 = static_cast<OLPAggreg2*>(aggreg);
-		aggreg2->setValues(values2.getValues());
+		DLPAggreg2 *aggreg2 = static_cast<DLPAggreg2*>(root);
 		aggreg2->computeQualities(normalization);
 		break;
 	}
-	case 3: {
-		OLPAggreg3 *aggreg3 = static_cast<OLPAggreg3*>(aggreg);
-		aggreg3->setValues(values3.getValues());
-		aggreg3->computeQualities(normalization);
-		break;
-	}
 	}
 }
 
-void LPAggregWrapper::computeDichotomy(float threshold) {
-	parameters = aggreg->getParameters(threshold);
-	qualities = aggreg->getQualityList();
+void DLPAggregWrapper::computeDichotomy(float threshold) {
+	parameters=root->getParameters(threshold);
+	qualities=root->getQualityList();
 	
 }
 
-void LPAggregWrapper::setValue(int i, double value) {
+void DLPAggregWrapper::setValue(int i, double value) {
 	switch (dimension) {
 	case 1: {
 		values1.setValue(i, value);
@@ -149,7 +136,7 @@ void LPAggregWrapper::setValue(int i, double value) {
 	}
 }
 
-void LPAggregWrapper::push_back(double value) {
+void DLPAggregWrapper::push_back(double value) {
 	switch (dimension) {
 	case 1: {
 		values1.push_back(value);
@@ -166,7 +153,7 @@ void LPAggregWrapper::push_back(double value) {
 	}
 }
 
-void LPAggregWrapper::addVector() {
+void DLPAggregWrapper::addVector() {
 	switch (dimension) {
 	case 2: {
 		values2.addVector();
@@ -179,7 +166,7 @@ void LPAggregWrapper::addVector() {
 	}
 }
 
-void LPAggregWrapper::setValue(int i, int j, double value) {
+void DLPAggregWrapper::setValue(int i, int j, double value) {
 	switch (dimension) {
 	case 2: {
 		values2.setValue(i, j, value);
@@ -188,7 +175,7 @@ void LPAggregWrapper::setValue(int i, int j, double value) {
 	}
 }
 
-void LPAggregWrapper::push_back(int i, double value) {
+void DLPAggregWrapper::push_back(int i, double value) {
 	switch (dimension) {
 	case 2: {
 		values2.push_back(i, value);
@@ -197,7 +184,7 @@ void LPAggregWrapper::push_back(int i, double value) {
 	}
 }
 
-void LPAggregWrapper::addMatrix() {
+void DLPAggregWrapper::addMatrix() {
 	switch (dimension) {
 	case 3: {
 		values3.addMatrix();
@@ -206,7 +193,7 @@ void LPAggregWrapper::addMatrix() {
 	}
 }
 
-void LPAggregWrapper::setValue(int i, int j, int k, double value) {
+void DLPAggregWrapper::setValue(int i, int j, int k, double value) {
 	switch (dimension) {
 	case 3: {
 		values3.setValue(i, j, k, value);
@@ -215,7 +202,7 @@ void LPAggregWrapper::setValue(int i, int j, int k, double value) {
 	}
 }
 
-void LPAggregWrapper::addVector(int i) {
+void DLPAggregWrapper::addVector(int i) {
 	switch (dimension) {
 	case 3: {
 		values3.addVector(i);
@@ -224,11 +211,37 @@ void LPAggregWrapper::addVector(int i) {
 	}
 }
 
-void LPAggregWrapper::push_back(int i, int j, double value) {
+
+void DLPAggregWrapper::push_back(int i, int j, double value) {
 	switch (dimension) {
 	case 3: {
 		values3.push_back(i, j, value);
 		break;
 	}
 	}
+}
+
+
+int DLPAggregWrapper::newElement(int parent) {
+	switch (dimension) {
+	case 1: {
+		DLPAggreg1 * temp=new DLPAggreg1((int) aggreg.size());
+		temp->setParent(aggreg[parent]);
+		aggreg.push_back(temp);
+		return temp->getId();
+		break;
+	}
+	case 2: {
+		DLPAggreg2 * temp=new DLPAggreg2((int) aggreg.size());
+		temp->setParent(aggreg[parent]);
+		aggreg.push_back(temp);
+		return temp->getId();
+		break;
+	}
+	}
+	return -1;
+}
+
+void DLPAggregWrapper::setActiveElement(int id) {
+
 }

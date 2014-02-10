@@ -48,8 +48,7 @@ DLPAggreg2::DLPAggreg2(int id, const vector<vector<double> >& values) :
 }
 
 DLPAggreg2::DLPAggreg2(DLPAggreg2* parent, int id, const vector<vector<double> >& values) :
-		DLPAggreg(parent, id) {
-	setValues(values);
+		DLPAggreg(parent, id) , values(values), sumValue(0), microInfo(0), valueISize(0) {
 }
 
 DLPAggreg2::~DLPAggreg2() {
