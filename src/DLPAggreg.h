@@ -62,7 +62,7 @@ class DLPAggreg {
 		double ** bestCompromises;
 		vector<vector<DLPCut*> > bestCuts;
 		vector<int> bestPartitions;
-		vector<float> parameters;
+		vector<double> parameters;
 		vector<Quality*> qualityList;
 		double ** pIC;
 		int nodeSize;
@@ -151,7 +151,7 @@ class DLPAggreg {
 		void addBestQualities(float parameter1, float parameter2,
 				Quality *bestQuality1, Quality *bestQuality2, float threshold);
 		void deleteQualityList();
-		const vector<float>& getParameters(float threshold);
+		const vector<double>& getParameters(float threshold);
 		const vector<Quality*>& getQualityList() const;
 
 

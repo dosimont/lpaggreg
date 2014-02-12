@@ -38,7 +38,7 @@
 DLPAggreg::DLPAggreg() :
 		id(0), rank(0), parent(0), childNodes(vector<DLPAggreg*>()), qualities(
 				0), bestCompromises(0), bestCuts(0), bestPartitions(
-						vector<int>()), parameters(vector<float>()), qualityList(
+						vector<int>()), parameters(vector<double>()), qualityList(
 								vector<Quality*>()), pIC(0), nodeSize(0), valueSize(0), eval(0) {
 	
 }
@@ -46,7 +46,7 @@ DLPAggreg::DLPAggreg() :
 DLPAggreg::DLPAggreg(DLPAggreg* parent, int id) :
 		id(id), rank(0), parent(parent), childNodes(vector<DLPAggreg*>()), qualities(
 				0), bestCompromises(0), bestCuts(0), bestPartitions(
-						vector<int>()), parameters(vector<float>()), qualityList(
+						vector<int>()), parameters(vector<double>()), qualityList(
 						vector<Quality*>()), pIC(0), nodeSize(0), valueSize(0), eval(0) {
 	parent->addChild(this);
 }
@@ -54,7 +54,7 @@ DLPAggreg::DLPAggreg(DLPAggreg* parent, int id) :
 DLPAggreg::DLPAggreg(int id) :
 		id(id), rank(0), parent(0), childNodes(vector<DLPAggreg*>()), qualities(
 				0), bestCompromises(0), bestCuts(0), bestPartitions(
-						vector<int>()), parameters(vector<float>()), qualityList(
+						vector<int>()), parameters(vector<double>()), qualityList(
 						vector<Quality*>()), pIC(0), nodeSize(0), valueSize(0), eval(0) {
 }
 
@@ -474,7 +474,7 @@ void DLPAggreg::deleteBestCuts() {
 	}
 }
 
-const vector<float>& DLPAggreg::getParameters(float threshold) {
+const vector<double>& DLPAggreg::getParameters(float threshold) {
 	deleteParameters();
 	deleteQualityList();
 //	clean();
@@ -504,7 +504,7 @@ void DLPAggreg::cleanChilds() {
 }
 
 bool DLPAggreg::hasFullAggregation() {
-	for (int i=0; i<bestPartitions.size(); i++)
+	for (unsigned int i=0; i<bestPartitions.size(); i++)
 		if (bestPartitions[i]==-1)
 			return false;
 	return true;
