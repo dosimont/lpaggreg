@@ -10,5 +10,5 @@ ln -s $DIR/$LSLIB $DIR/$LIB
 mkdir -p /usr/include/lpaggreg
 cp src/*.h /usr/include/lpaggreg
 echo "/usr/lib/" > /etc/ld.so.conf.d/lpaggreg.conf
-ldconfig -n /usr/lib
+ldconfig
 exit 0
