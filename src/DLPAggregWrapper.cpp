@@ -228,16 +228,14 @@ void DLPAggregWrapper::push_back(int id, int i, double value) {
 int DLPAggregWrapper::newLeaf(int id, int parent) {
 	switch (dimension) {
 	case 1: {
-		DLPAggreg1 * temp=new DLPAggreg1((int) aggreg.size());
-		temp->setParent(aggreg[parent]);
+		DLPAggreg1 * temp=new DLPAggreg1(static_cast<DLPAggreg1*>(aggreg[parent]), id);
 		aggreg.insert(pair<int, DLPAggreg1*>(id,temp));
 		values1.insert(pair<int, LPValues<1, double> >(id, LPValues<1, double>()));
 		return temp->getId();
 		break;
 	}
 	case 2: {
-		DLPAggreg2 * temp=new DLPAggreg2((int) aggreg.size());
-		temp->setParent(aggreg[parent]);
+		DLPAggreg2 * temp=new DLPAggreg2(static_cast<DLPAggreg2*>(aggreg[parent]), id);
 		aggreg.insert(pair<int, DLPAggreg2*>(id,temp));
 		values2.insert(pair<int, LPValues<2, double> >(id, LPValues<2, double>()));
 		return temp->getId();
@@ -250,15 +248,13 @@ int DLPAggregWrapper::newLeaf(int id, int parent) {
 int DLPAggregWrapper::newNode(int id, int parent) {
 	switch (dimension) {
 	case 1: {
-		DLPAggreg1 * temp=new DLPAggreg1((int) aggreg.size());
-		temp->setParent(aggreg[parent]);
+		DLPAggreg1 * temp=new DLPAggreg1(static_cast<DLPAggreg1*>(aggreg[parent]), id);
 		aggreg.insert(pair<int, DLPAggreg1*>(id,temp));
 		return temp->getId();
 		break;
 	}
 	case 2: {
-		DLPAggreg2 * temp=new DLPAggreg2((int) aggreg.size());
-		temp->setParent(aggreg[parent]);
+		DLPAggreg2 * temp=new DLPAggreg2(static_cast<DLPAggreg2*>(aggreg[parent]), id);
 		aggreg.insert(pair<int, DLPAggreg2*>(id,temp));
 		return temp->getId();
 		break;
