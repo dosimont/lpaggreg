@@ -36,17 +36,15 @@
 #include "DLPAggregWrapper.h"
 
 DLPAggregWrapper::DLPAggregWrapper(int dimension) :
-		dimension(dimension){
+		dimension(dimension), root(0){
 	switch (dimension) {
 	case 1: {
 		values1 = map<int, LPValues<1, double> >();
-		root = new DLPAggreg1(0);
 
 		break;
 	}
 	case 2: {
 		values2 = map<int, LPValues<2, double> >();
-		root = new DLPAggreg2(0);
 		break;
 
 	}
