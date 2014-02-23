@@ -55,6 +55,7 @@ class DLPAggreg2: public DLPAggreg {
 		virtual ~DLPAggreg2();
 		DLPAggreg2(int id);
 		DLPAggreg2(int id, const vector<vector<double> >& values);
+		DLPAggreg2(DLPAggreg2* parent, int id);
 		DLPAggreg2(DLPAggreg2* parent, int id, const vector<vector<double> >& values);
 		void computeQualities(bool normalization);
 		const vector<vector <double> >& getValues() const;
