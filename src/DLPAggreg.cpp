@@ -303,6 +303,7 @@ void DLPAggreg::computeBestCuts(double parameter) {
 				for (int cut = 1; cut <= j; cut++) {
 					double compromise = bestCompromises[k][cut - 1]
 							+ pIC[cut + k][j - cut];
+
 					_EVALBCC(1);
 					if (compromise>currentCompromise||(compromise==currentCompromise&&(cut+k)>currentCut.getCut())) {
 						currentCompromise = compromise;
@@ -326,14 +327,23 @@ void DLPAggreg::computeBestCuts(double parameter) {
 			bestCuts[k][0]->setAll(k, pIC[k][0]==bestCompromises[k][0]);
 			_EVALBCC(4);
 			for (int j=1; j<valueSize-k; j++) {
-				pIC[k][j]=computePIC(parameter, k, j);
+				pIC[k][j]=computePIC(parameter, k, j);//replace double by three double: pic, gain, loss
 				double currentCompromise=max(pIC[k][j], sumBestCompromises(k,j));
 				DLPCut currentCut = DLPCut(k, pIC[k][j]==currentCompromise);
 				_EVALBCC(4);
 				for (int cut=1; cut<=j; cut++) {
 					double compromise=bestCompromises[k][cut-1]+max(pIC[cut+k][j-cut], sumBestCompromises(cut+k, j-cut));
 					_EVALBCC_;
-					if (((compromise>currentCompromise))){//||(compromise==currentCompromise&&(cut+k)<=currentCut.getCut()&&!currentCut.isAggregated()&&(pIC[cut+k][j-cut]==(compromise-bestCompromises[k][cut-1])))||(compromise>=currentCompromise&&(cut+k)>currentCut.getCut()))){
+					bool betterCompromise = compromise>currentCompromise;
+					bool sameCompromise = compromise==currentCompromise;
+					bool currentAggregated = pIC[cut+k][j-cut]==(compromise-bestCompromises[k][cut-1]);
+					bool oldAggregated=currentCut.isAggregated();
+					bool betterSpaceAggregation=currentAggregated&&!oldAggregated;
+					bool sameSpaceAggregation=currentAggregated==oldAggregated;
+					bool curFar=(cut+k)>currentCut.getCut();
+					bool curFar2=(cut+k)>=currentCut.getCut();
+					if (betterCompromise||(sameCompromise&&((betterSpaceAggregation)||(sameSpaceAggregation&&curFar)))){//test if gain & loss <
+						//||(compromise==currentCompromise&&(cut+k)<=currentCut.getCut()&&!currentCut.isAggregated()&&(pIC[cut+k][j-cut]==(compromise-bestCompromises[k][cut-1])))||(compromise>=currentCompromise&&(cut+k)>currentCut.getCut()))){
 						currentCompromise=compromise;
 						currentCut.setAll(cut+k, pIC[cut+k][j-cut]==(compromise-bestCompromises[k][cut-1]));
 						_EVALBCC(3);
