@@ -43,6 +43,7 @@
 #include "Complexity.h"
 #include "Eval.h"
 #include "DLPCut.h"
+#include "Compromise.h"
 #include "Configuration.h"
 
 #define DCHILDS (unsigned int i_child=0; i_child<childNodes.size(); i_child++)
@@ -59,12 +60,12 @@ class DLPAggreg {
 		DLPAggreg *parent;
 		vector<DLPAggreg*> childNodes;
 		vector<vector<Quality*> > qualities;
-		double ** bestCompromises;
+		vector<vector<double> > bestCompromises;
 		vector<vector<DLPCut*> > bestCuts;
 		vector<int> bestPartitions;
 		vector<double> parameters;
 		vector<Quality*> qualityList;
-		double ** pIC;
+		vector<vector<Compromise*> > pIC;
 		int nodeSize;
 		int valueSize;
 		Eval *eval;
