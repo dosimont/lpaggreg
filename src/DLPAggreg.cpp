@@ -70,13 +70,16 @@ DLPAggreg* DLPAggreg::getParent() {
 
 DLPAggreg::~DLPAggreg() {
 	deleteChildNodes();
-	clean();
+
 	deleteBestCuts();
 	deleteQualities();
 	deleteQualityList();
 	deleteParameters();
-	if (!hasParent())
-	deleteEval();
+	if (!hasParent()){
+		clean();
+		deleteEval();
+	}
+
 }
 
 int DLPAggreg::getId() const {

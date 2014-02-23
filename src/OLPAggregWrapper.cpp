@@ -58,6 +58,7 @@ OLPAggregWrapper::OLPAggregWrapper(int dimension) :
 
 OLPAggregWrapper::~OLPAggregWrapper() {
 	parts.clear();
+	delete aggreg;
 }
 
 int OLPAggregWrapper::getPart(int index) {

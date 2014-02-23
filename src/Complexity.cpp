@@ -40,13 +40,13 @@ double entropy(double val) {
 }
 
 double entropyReduction(double val, double ent) {
-	if (val > 0)
-		return entropy(val) - ent;
+	if (val+1 > 0)
+		return entropy(val+1) - ent;
 	else
 		return 0;
 }
 
 double divergence(int size, double value, double ent) {
-	return value * log(size) / ln - entropyReduction(value, ent);
+	return (value + 1) * log(size) / ln - entropyReduction(value, ent);
 }
 
