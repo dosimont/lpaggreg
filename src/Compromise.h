@@ -32,16 +32,11 @@ class Compromise {
 		double getValue() const;
 		void setValue(double value);
 		void set(Compromise C);
-		Compromise& operator= (const Compromise &C);
-		Compromise& operator+= (const Compromise &C);
-		Compromise& operator+= (Compromise *C);
+		void add(Compromise C);
+		bool isGreater(Compromise C);
+		bool isEqual(Compromise C);
+		void setGreatest(Compromise C1, Compromise C2);
 
 };
-
-Compromise operator+ (Compromise C1, Compromise C2);
-bool operator> (Compromise C1, Compromise C2);
-bool operator== (Compromise C1, Compromise C2);
-
-Compromise * max(Compromise *C1, Compromise *C2);
 
 #endif /* COMPROMISE_H_ */

@@ -36,26 +36,26 @@
 #include "DLPAggreg.h"
 
 DLPAggreg::DLPAggreg() :
-		id(0), rank(0), parent(0), childNodes(vector<DLPAggreg*>()), qualities(
-				0), bestCompromises(0), bestCuts(0), bestPartitions(
+		id(0), rank(0), parent(0), childNodes(vector<DLPAggreg*>()), qualities(vector<vector<Quality*> >()),
+		bestCompromises(vector<vector<Compromise*> >()), bestCuts(vector<vector<DLPCut*> >()), bestPartitions(
 						vector<int>()), parameters(vector<double>()), qualityList(
-								vector<Quality*>()), pIC(0), nodeSize(0), valueSize(0), eval(0) {
+						vector<Quality*>()), pIC(vector<vector<Compromise*> >()), nodeSize(0), valueSize(0), eval(0){
 	
 }
 
 DLPAggreg::DLPAggreg(DLPAggreg* parent, int id) :
-		id(id), rank(0), parent(parent), childNodes(vector<DLPAggreg*>()), qualities(
-				0), bestCompromises(0), bestCuts(0), bestPartitions(
+		id(id), rank(0), parent(parent), childNodes(vector<DLPAggreg*>()), qualities(vector<vector<Quality*> >()),
+		bestCompromises(vector<vector<Compromise*> >()), bestCuts(vector<vector<DLPCut*> >()), bestPartitions(
 						vector<int>()), parameters(vector<double>()), qualityList(
-						vector<Quality*>()), pIC(0), nodeSize(0), valueSize(0), eval(0) {
+						vector<Quality*>()), pIC(vector<vector<Compromise*> >()), nodeSize(0), valueSize(0), eval(0) {
 	parent->addChild(this);
 }
 
 DLPAggreg::DLPAggreg(int id) :
-		id(id), rank(0), parent(0), childNodes(vector<DLPAggreg*>()), qualities(
-				0), bestCompromises(0), bestCuts(0), bestPartitions(
+		id(id), rank(0), parent(0), childNodes(vector<DLPAggreg*>()), qualities(vector<vector<Quality*> >()),
+		bestCompromises(vector<vector<Compromise*> >()), bestCuts(vector<vector<DLPCut*> >()), bestPartitions(
 						vector<int>()), parameters(vector<double>()), qualityList(
-						vector<Quality*>()), pIC(0), nodeSize(0), valueSize(0), eval(0) {
+						vector<Quality*>()), pIC(vector<vector<Compromise*> >()), nodeSize(0), valueSize(0), eval(0) {
 }
 
 void DLPAggreg::addChild(DLPAggreg *child) {
@@ -70,13 +70,13 @@ DLPAggreg* DLPAggreg::getParent() {
 
 DLPAggreg::~DLPAggreg() {
 	deleteChildNodes();
-
 	deleteBestCuts();
 	deleteQualities();
 	deleteQualityList();
 	deleteParameters();
+	clean();
 	if (!hasParent()){
-		clean();
+
 		deleteEval();
 	}
 
@@ -264,7 +264,7 @@ const vector<vector<Quality*> >& DLPAggreg::getQualities() const {
 
 void DLPAggreg::sumBestCompromises(int i, int j, Compromise * C) {
 	for DCHILDS
-	*C+=DCHILD->getBestCompromises()[i][j];
+	C->add(DCHILD->getBestCompromises()[i][j]);
 	_EVALBCC(childNodeSize()+1);
 }
 
@@ -275,7 +275,6 @@ void DLPAggreg::computePIC(double parameter, int i, int j, Compromise *C) {
 }
 
 void DLPAggreg::computeBestCuts(double parameter) {
-	clean();
 	bestCompromises = vector<vector<Compromise*> >();
 	bestCuts = vector<vector<DLPCut*> >();
 	pIC = vector<vector<Compromise*> >();
@@ -294,7 +293,7 @@ void DLPAggreg::computeBestCuts(double parameter) {
 	if (!hasChild()) {
 		for (int k = valueSize - 1; k >= 0; k--) {
 			computePIC(parameter, k, 0, pIC[k][0]);
-			bestCompromises[k][0] = pIC[k][0];
+			bestCompromises[k][0]->set(pIC[k][0]);
 			bestCuts[k][0]->setAll(k, true);
 			_EVALBCC(4);
 			for (int j = 1; j < valueSize - k; j++) {
@@ -304,11 +303,11 @@ void DLPAggreg::computeBestCuts(double parameter) {
 				_EVALBCC(4);
 				for (int cut = 1; cut <= j; cut++) {
 					Compromise compromise(bestCompromises[k][cut - 1]);
-					compromise+= pIC[cut + k][j - cut];
+					compromise.add(pIC[cut + k][j - cut]);
 
 					_EVALBCC(1);
-					if (compromise>currentCompromise) {
-						currentCompromise = compromise;
+					if (compromise.isGreater(currentCompromise)) {
+						currentCompromise.set(compromise);
 						currentCut.setAll(cut + k, true);
 						_EVALBCC(3);
 					}
@@ -325,28 +324,34 @@ void DLPAggreg::computeBestCuts(double parameter) {
 		DCHILD->computeBestCuts(parameter);
 		for (int k=valueSize-1; k>=0; k--) {
 			computePIC(parameter, k, 0, pIC[k][0]);
-			sumBestCompromises(k,0, bestCompromises[k][0]);
-			bestCompromises[k][0]=max(pIC[k][0], bestCompromises[k][0]);
-			bestCuts[k][0]->setAll(k, pIC[k][0]==bestCompromises[k][0]);
+			Compromise *s = new Compromise;
+			sumBestCompromises(k,0, s);
+			bestCompromises[k][0]->setGreatest(pIC[k][0], s);
+			bestCuts[k][0]->setAll(k, pIC[k][0]->isEqual(bestCompromises[k][0]));
+			delete s;
 			_EVALBCC(4);
 			for (int j=1; j<valueSize-k; j++) {
 				computePIC(parameter, k, j, pIC[k][j]);//replace double by three double: pic, gain, loss
 				Compromise *currentCompromise=new Compromise();
-				sumBestCompromises(k,j, currentCompromise);
-				currentCompromise=max(pIC[k][j], currentCompromise);
-				DLPCut currentCut = DLPCut(k, pIC[k][j]==currentCompromise);
+				Compromise *t=new Compromise();
+				sumBestCompromises(k,j, t);
+				currentCompromise->setGreatest(pIC[k][j], t);
+				DLPCut currentCut = DLPCut(k, pIC[k][j]->isEqual(currentCompromise));
+				delete t;
 				_EVALBCC(4);
 				for (int cut=1; cut<=j; cut++) {
-					Compromise* compromise= new Compromise(0);
-					sumBestCompromises(cut+k, j-cut, compromise);
-					compromise=max(pIC[cut+k][j-cut], compromise);
-					compromise=+(bestCompromises[k][cut-1]);
+					Compromise* compromise= new Compromise();
+					Compromise* u= new Compromise();
+					sumBestCompromises(cut+k, j-cut, u);
+					compromise->setGreatest(pIC[cut+k][j-cut], u);
+					compromise->add(bestCompromises[k][cut-1]);
+					delete u;
 					_EVALBCC_;
-					if (compromise>currentCompromise){
+					if (compromise->isGreater(currentCompromise)){
 						currentCompromise->set(compromise);
 						Compromise temp(pIC[cut+k][j-cut]);
-						temp+=compromise;
-						currentCut.setAll(cut+k, temp==(bestCompromises[k][cut-1]));
+						temp.add(bestCompromises[k][cut-1]);
+						currentCut.setAll(cut+k, temp.isEqual(compromise));
 						_EVALBCC(3);
 					}
 					delete compromise;
@@ -377,8 +382,8 @@ void DLPAggreg::deleteChildNodes(){
 }
 
 void DLPAggreg::deleteQualities(){
-	for (int i=qualities.size(); i>=0; i--) {
-		for (int j=qualities[i].size(); j>=0; j--) {
+	for (int i=qualities.size()-1; i>=0; i--) {
+		for (int j=qualities[i].size()-1; j>=0; j--) {
 			delete qualities[i][j];
 		}
 		qualities[i].clear();
@@ -389,14 +394,17 @@ void DLPAggreg::deleteQualities(){
 
 
 void DLPAggreg::clean(){
-	for (int i=pIC.size(); i>=0; i--) {
-		for (int j=pIC[i].size(); j>=0; j--) {
+	for (int i=pIC.size()-1; i>=0; i--) {
+		for (int j=pIC[i].size()-1; j>=0; j--) {
 			delete pIC[i][j];
 		}
 		pIC[i].clear();
 	}
 	pIC.clear();
-	for (int i=bestCompromises.size(); i>=0; i--) {
+	for (int i=bestCompromises.size()-1; i>=0; i--) {
+		for (int j=bestCompromises[i].size()-1; j>=0; j--) {
+			delete bestCompromises[i][j];
+		}
 		bestCompromises[i].clear();
 	}
 	bestCompromises.clear();
@@ -486,12 +494,13 @@ void DLPAggreg::deleteQualityList() {
 }
 
 void DLPAggreg::deleteBestCuts() {
-	for (int i=valueSize-1; i>=0; i--) {
-		for (int j=valueSize-1; j>=0; j--) {
+	for (int i=bestCuts.size()-1; i>=0; i--) {
+		for (int j=bestCuts[i].size()-1; j>=0; j--) {
 			delete bestCuts[i][j];
 		}
 		bestCuts[i].clear();
 	}
+	bestCuts.clear();
 }
 
 const vector<double>& DLPAggreg::getParameters(float threshold) {
