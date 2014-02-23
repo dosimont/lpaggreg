@@ -21,6 +21,7 @@ class Compromise {
 	public:
 		Compromise();
 		Compromise(const Compromise &C);
+		Compromise(Compromise *C);
 		Compromise(double value, double gain, double loss);
 		Compromise(double value, Quality quality);
 		virtual ~Compromise();
@@ -30,11 +31,17 @@ class Compromise {
 		void setLoss(double loss);
 		double getValue() const;
 		void setValue(double value);
+		void set(Compromise C);
 		Compromise& operator= (const Compromise &C);
 		Compromise& operator+= (const Compromise &C);
+		Compromise& operator+= (Compromise *C);
 
 };
 
-Compromise operator+ (const Compromise &C1, const Compromise &C2);
+Compromise operator+ (Compromise C1, Compromise C2);
+bool operator> (Compromise C1, Compromise C2);
+bool operator== (Compromise C1, Compromise C2);
+
+Compromise * max(Compromise *C1, Compromise *C2);
 
 #endif /* COMPROMISE_H_ */

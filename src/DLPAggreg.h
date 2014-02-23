@@ -60,7 +60,7 @@ class DLPAggreg {
 		DLPAggreg *parent;
 		vector<DLPAggreg*> childNodes;
 		vector<vector<Quality*> > qualities;
-		vector<vector<double> > bestCompromises;
+		vector<vector<Compromise*> > bestCompromises;
 		vector<vector<DLPCut*> > bestCuts;
 		vector<int> bestPartitions;
 		vector<double> parameters;
@@ -136,8 +136,8 @@ class DLPAggreg {
 
 		//Best Cut Computation
 		void computeBestCuts(double parameter);
-		double sumBestCompromises(int i, int j);
-		double computePIC(double parameter, int i, int j);
+		void sumBestCompromises(int i, int j, Compromise* c);
+		void computePIC(double parameter, int i, int j, Compromise* c);
 
 		//Best Partition Computation
 
@@ -163,9 +163,9 @@ class DLPAggreg {
 		//Getters and setters
 		int getValueSize() const;
 		const vector<vector<Quality*> > & getQualities() const;
-		double** getBestCompromises() const;
+		const vector<vector<Compromise*> > & getBestCompromises() const;
 		const vector<vector<DLPCut*> > & getBestCuts() const;
-		double** getPIC() const;
+		const vector<vector<Compromise*> > & getPIC() const;
 		const vector<int>& getBestPartitions() const;
 };
 

@@ -246,7 +246,7 @@ bool DLPAggreg::ownsNode(DLPAggreg* node) {
 	return false;
 }
 
-double** DLPAggreg::getBestCompromises() const {
+const vector<vector<Compromise*> > & DLPAggreg::getBestCompromises() const {
 	return bestCompromises;
 }
 
@@ -254,7 +254,7 @@ const vector<vector<DLPCut*> >& DLPAggreg::getBestCuts() const {
 	return bestCuts;
 }
 
-double** DLPAggreg::getPIC() const {
+const vector<vector<Compromise*> > & DLPAggreg::getPIC() const {
 	return pIC;
 }
 
@@ -262,59 +262,58 @@ const vector<vector<Quality*> >& DLPAggreg::getQualities() const {
 	return qualities;
 }
 
-double DLPAggreg::sumBestCompromises(int i, int j) {
-	double sum = 0;
+void DLPAggreg::sumBestCompromises(int i, int j, Compromise * C) {
 	for DCHILDS
-	sum+=DCHILD->getBestCompromises()[i][j];
+	*C+=DCHILD->getBestCompromises()[i][j];
 	_EVALBCC(childNodeSize()+1);
-	return sum;
 }
 
-double DLPAggreg::computePIC(double parameter, int i, int j) {
-	return (((double) parameter) * qualities[i][j]->getGain()
-			- ((1 - (double) parameter) * qualities[i][j]->getLoss()));
+void DLPAggreg::computePIC(double parameter, int i, int j, Compromise *C) {
+	C->setValue(((double) parameter) * qualities[i][j]->getGain()- ((1 - (double) parameter) * qualities[i][j]->getLoss()));
+	C->setGain(qualities[i][j]->getGain());
+	C->setLoss(qualities[i][j]->getLoss());
 }
 
 void DLPAggreg::computeBestCuts(double parameter) {
 	clean();
-	bestCompromises = vector<vector<double> >();
+	bestCompromises = vector<vector<Compromise*> >();
 	bestCuts = vector<vector<DLPCut*> >();
 	pIC = vector<vector<Compromise*> >();
 	int i;
 	for (i = 0; i < valueSize; i++) {
-		bestCompromises.push_back(vector<double>());
-		pIC.push_back(vector<double>());
+		bestCompromises.push_back(vector<Compromise*>());
+		pIC.push_back(vector<Compromise*>());
 		bestCuts.push_back(vector<DLPCut*>());
 		for (int j = 0; j < valueSize; j++) {
 			bestCuts[i].push_back(new DLPCut());
-			bestCompromises[i].push_back(0.0);
-			pIC[i].push_back(0.0);
+			bestCompromises[i].push_back(new Compromise());
+			pIC[i].push_back(new Compromise());
 			_EVALBCC_;
 		}
 	}
 	if (!hasChild()) {
 		for (int k = valueSize - 1; k >= 0; k--) {
-			pIC[k][0] = computePIC(parameter, k, 0);
+			computePIC(parameter, k, 0, pIC[k][0]);
 			bestCompromises[k][0] = pIC[k][0];
 			bestCuts[k][0]->setAll(k, true);
 			_EVALBCC(4);
 			for (int j = 1; j < valueSize - k; j++) {
 				DLPCut currentCut = DLPCut(k, true);
-				pIC[k][j] = computePIC(parameter, k, j);
-				double currentCompromise = pIC[k][j];
+				computePIC(parameter, k, j, pIC[k][j]);
+				Compromise currentCompromise(pIC[k][j]);
 				_EVALBCC(4);
 				for (int cut = 1; cut <= j; cut++) {
-					double compromise = bestCompromises[k][cut - 1]
-							+ pIC[cut + k][j - cut];
+					Compromise compromise(bestCompromises[k][cut - 1]);
+					compromise+= pIC[cut + k][j - cut];
 
 					_EVALBCC(1);
-					if (compromise>currentCompromise||(compromise==currentCompromise&&(cut+k)>currentCut.getCut())) {
+					if (compromise>currentCompromise) {
 						currentCompromise = compromise;
 						currentCut.setAll(cut + k, true);
 						_EVALBCC(3);
 					}
 				}
-				bestCompromises[k][j] = currentCompromise;
+				bestCompromises[k][j]->set(currentCompromise);
 				bestCuts[k][j]->setAll(currentCut.getCut(),
 						currentCut.isAggregated());
 				_EVALBCC(3);
@@ -325,34 +324,35 @@ void DLPAggreg::computeBestCuts(double parameter) {
 		for DCHILDS
 		DCHILD->computeBestCuts(parameter);
 		for (int k=valueSize-1; k>=0; k--) {
-			pIC[k][0]= computePIC(parameter, k, 0);
-			bestCompromises[k][0]=max(pIC[k][0], sumBestCompromises(k,0));
+			computePIC(parameter, k, 0, pIC[k][0]);
+			sumBestCompromises(k,0, bestCompromises[k][0]);
+			bestCompromises[k][0]=max(pIC[k][0], bestCompromises[k][0]);
 			bestCuts[k][0]->setAll(k, pIC[k][0]==bestCompromises[k][0]);
 			_EVALBCC(4);
 			for (int j=1; j<valueSize-k; j++) {
-				pIC[k][j]=computePIC(parameter, k, j);//replace double by three double: pic, gain, loss
-				double currentCompromise=max(pIC[k][j], sumBestCompromises(k,j));
+				computePIC(parameter, k, j, pIC[k][j]);//replace double by three double: pic, gain, loss
+				Compromise *currentCompromise=new Compromise();
+				sumBestCompromises(k,j, currentCompromise);
+				currentCompromise=max(pIC[k][j], currentCompromise);
 				DLPCut currentCut = DLPCut(k, pIC[k][j]==currentCompromise);
 				_EVALBCC(4);
 				for (int cut=1; cut<=j; cut++) {
-					double compromise=bestCompromises[k][cut-1]+max(pIC[cut+k][j-cut], sumBestCompromises(cut+k, j-cut));
+					Compromise* compromise= new Compromise(0);
+					sumBestCompromises(cut+k, j-cut, compromise);
+					compromise=max(pIC[cut+k][j-cut], compromise);
+					compromise=+(bestCompromises[k][cut-1]);
 					_EVALBCC_;
-					bool betterCompromise = compromise>currentCompromise;
-					bool sameCompromise = compromise==currentCompromise;
-					bool currentAggregated = pIC[cut+k][j-cut]==(compromise-bestCompromises[k][cut-1]);
-					bool oldAggregated=currentCut.isAggregated();
-					bool betterSpaceAggregation=currentAggregated&&!oldAggregated;
-					bool sameSpaceAggregation=currentAggregated==oldAggregated;
-					bool curFar=(cut+k)>currentCut.getCut();
-					bool curFar2=(cut+k)>=currentCut.getCut();
-					if (betterCompromise||(sameCompromise&&((betterSpaceAggregation)||(sameSpaceAggregation&&curFar)))){//test if gain & loss <
-						//||(compromise==currentCompromise&&(cut+k)<=currentCut.getCut()&&!currentCut.isAggregated()&&(pIC[cut+k][j-cut]==(compromise-bestCompromises[k][cut-1])))||(compromise>=currentCompromise&&(cut+k)>currentCut.getCut()))){
-						currentCompromise=compromise;
-						currentCut.setAll(cut+k, pIC[cut+k][j-cut]==(compromise-bestCompromises[k][cut-1]));
+					if (compromise>currentCompromise){
+						currentCompromise->set(compromise);
+						Compromise temp(pIC[cut+k][j-cut]);
+						temp+=compromise;
+						currentCut.setAll(cut+k, temp==(bestCompromises[k][cut-1]));
 						_EVALBCC(3);
 					}
+					delete compromise;
 				}
-				bestCompromises[k][j]=currentCompromise;
+				bestCompromises[k][j]->set(currentCompromise);
+				delete currentCompromise;
 				bestCuts[k][j]->setAll(currentCut.getCut(), currentCut.isAggregated());
 				_EVALBCC(3);
 			}
@@ -397,9 +397,6 @@ void DLPAggreg::clean(){
 	}
 	pIC.clear();
 	for (int i=bestCompromises.size(); i>=0; i--) {
-		for (int j=bestCompromises[i].size(); j>=0; j--) {
-			delete bestCompromises[i][j];
-		}
 		bestCompromises[i].clear();
 	}
 	bestCompromises.clear();
