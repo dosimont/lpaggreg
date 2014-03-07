@@ -70,7 +70,7 @@ void Compromise::add(Compromise C) {
 bool Compromise::isGreater(Compromise C) {
 	bool sup=getValue()>C.getValue();
 	bool equal=getValue()==C.getValue();
-	bool einfo=(getGain()+getLoss())>(C.getGain()&&C.getLoss());
+	bool einfo=(getGain()+getLoss())>(C.getGain()+C.getLoss());
 	return (sup)||(equal&&einfo);
 }
 
