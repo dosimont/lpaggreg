@@ -107,7 +107,7 @@ bool DLPAggreg::hasChild() {
 }
 
 void DLPAggreg::normalize(double maxGain, double maxLoss) {
-	if (maxGain == 0 && maxLoss == 0) {
+	if (!hasParent()) {
 		maxGain = qualities[0][valueSize - 1]->getGain();
 		maxLoss = qualities[0][valueSize - 1]->getLoss();
 		_EVALQC(2);
@@ -115,11 +115,11 @@ void DLPAggreg::normalize(double maxGain, double maxLoss) {
 	}
 	for (int j = 0; j < valueSize; j++) {
 		for (int i = 0; i < valueSize - j; i++) {
-			if (maxGain > 0) {
+			if (maxGain != 0) {
 				qualities[i][j]->setGain(qualities[i][j]->getGain() / maxGain);
 				_EVALQC_;
 			}
-			if (maxLoss > 0) {
+			if (maxLoss != 0) {
 				qualities[i][j]->setLoss(qualities[i][j]->getLoss() / maxLoss);
 				_EVALQC_;
 			}
@@ -436,8 +436,7 @@ void DLPAggreg::computeBestQualities(float threshold) {
 	parameters.push_back(1);
 	qualityList.push_back(bestQualityParam1);
 	for (unsigned int i = qualityList.size() - 1; i > 0; i--) {
-		if ((qualityList[i]->getGain() == qualityList[i - 1]->getGain())
-				&& (qualityList[i]->getLoss() == qualityList[i - 1]->getLoss())) {
+		if (qualityList[i]->compare(*qualityList[i-1])) {
 			delete qualityList[i];
 			qualityList.erase(qualityList.begin() + i);
 			parameters.erase(parameters.begin() + i);
@@ -470,9 +469,9 @@ void DLPAggreg::fillQuality(int start, int end, Quality* bestQuality) {
 
 void DLPAggreg::addBestQualities(float parameter1, float parameter2,
 		Quality* bestQuality1, Quality* bestQuality2, float threshold) {
-	if (!(((bestQuality1->getGain() == bestQuality2->getGain())
-			&& (bestQuality1->getLoss() == bestQuality2->getLoss()))
-			|| (parameter2 - parameter1 <= threshold))) {
+	if ((!(bestQuality1->getGain() == bestQuality2->getGain())
+			&& !(bestQuality1->getLoss() == bestQuality2->getLoss())
+			&& (parameter2 - parameter1 > threshold))) {
 		float parameter = parameter1 + ((parameter2 - parameter1) / 2);
 		Quality *bestQuality = new Quality();
 		computeBestCuts(parameter);

@@ -72,7 +72,7 @@ bool Compromise::isGreater(Compromise C) {
 	bool equal=getValue()==C.getValue();
 	bool sgain=getGain()>C.getGain();
 	bool egain=getGain()==C.getGain();
-	bool sloss=getLoss()>C.getLoss();
+	bool sloss=getLoss()<C.getLoss();
 	return (sup)||(equal&&sgain)||(equal&&egain&&sloss);
 }
 

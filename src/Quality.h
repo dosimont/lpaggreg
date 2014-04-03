@@ -36,6 +36,10 @@
 #ifndef QUALITY_H_
 #define QUALITY_H_
 
+#include <cmath>
+#include <algorithm>
+#define PRECISION 0.0000000000001
+
 class Quality {
 	private:
 		
@@ -73,6 +77,8 @@ class Quality {
 
 		/*Add a value to current loss*/
 		void addToLoss(double loss);
+
+		bool compare(Quality quality);
 };
 
 #endif /* QUALITY_H_ */
