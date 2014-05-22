@@ -73,6 +73,6 @@ void Quality::addToLoss(double loss) {
 bool Quality::compare(Quality quality) {
 	double precision=std::max(this->gain+quality.getGain(),this->loss+quality.getLoss())/2*PRECISION;
 	return (this->gain==quality.getGain()&&this->loss==quality.getLoss())||
-			(std::abs(this->gain-quality.getGain()<precision)&&
-			std::abs(this->loss-quality.getLoss()<precision));
+			((std::abs(this->gain-quality.getGain())<precision)&&
+			(std::abs(this->loss-quality.getLoss())<precision));
 }
