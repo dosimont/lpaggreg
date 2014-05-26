@@ -1,12 +1,12 @@
 #!/bin/bash -x
-LIB=liblpaggreg.so
-cd Release
-LSLIB=`ls ${LIB}*`
-cd ..
 DIR=/usr/lib
-rm $DIR/$LIB
-cp Release/$LSLIB $DIR
-ln -s $DIR/$LSLIB $DIR/$LIB
+ALIB=liblpaggreg.a
+cd Static
+ALSLIB=`ls ${ALIB}*`
+cd ..
+rm $DIR/$ALIB
+cp Static/$ALSLIB $DIR
+ln -s $DIR/$ALSLIB $DIR/$ALIB
 mkdir -p /usr/include/lpaggreg
 cp src/*.h /usr/include/lpaggreg
 echo "/usr/lib/" > /etc/ld.so.conf.d/lpaggreg.conf

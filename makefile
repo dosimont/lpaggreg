@@ -1,10 +1,21 @@
 
 # All Target
-all:
-	(cd Release; make)
+all: shared
 
-install:
-	./install.sh
+shared:
+	(cd Shared; make)
+
+static:
+	(cd Static; make)
+
+install: install-shared
+
+install-shared:
+	./install-shared.sh
+
+install-static:
+	./install-static.sh
+
 clean:
-	(cd Release; rm *.so*; make clean)
-
+	(cd Shared; rm *.so*; make clean)
+	(cd Static; rm *.a*; make clean)
