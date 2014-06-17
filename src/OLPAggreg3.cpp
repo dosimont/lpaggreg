@@ -47,56 +47,63 @@ void OLPAggreg3::computeQualitiesSpe(bool normalization) {
 	int n = this->getSize();
 	int m = this->values[0].size();
 	int l = this->values[0][0].size();
-	double **** sumValues = new double***[n];
-	double **** entValues = new double***[n];
+	double ** sumValues = new double*[n];
+	double ** entValues = new double*[n];
 	for (int i = 0; i < n; i++) {
-		sumValues[i] = new double**[n];
-		entValues[i] = new double**[n];
+		sumValues[i] = new double[m*l];
+		entValues[i] = new double[m*l];
 		qualities.push_back(vector<Quality*>());
 		for (int j = 0; j < n; j++) {
-			sumValues[i][j] = new double*[m];
-			entValues[i][j] = new double*[m];
 			qualities[i].push_back(new Quality(0, 0));
 			EVALQC(2);
-			for (int k = 0; k < m; k++) {
-				sumValues[i][j][k] = new double[l];
-				entValues[i][j][k] = new double[l];
-			}
 		}
 	}
+	int o, ktemp;
 	//Microscopic level
 	for (int j = 0; j < n; j++) {
-		for (int k = 0; k < m; k++) {
-			for (int o = 0; o < l; o++) {
-				sumValues[0][j][k][o] = this->values[j][k][o];
-				entValues[0][j][k][o] = entropyReduction(sumValues[0][j][k][o],
-						0);
+		for (int k = 0; k < m*l; k++) {
+			o = k % l;
+			ktemp = (int) (k / l);
+			
+				sumValues[j][k] = this->values[j][ktemp][o];
+				entValues[j][k] = entropyReduction(sumValues[j][k],	0);
 				EVALQC(2);
-			}
 		}
 	}
+	o=0;
+	ktemp =0;
 	//Other levels
 	for (int i = 1; i < n; i++) {
 		for (int j = 0; j < n - i; j++) {
 #if SIZEREDUCTION
 			qualities[i][j]->setGain(i);
 #endif
-			for (int k = 0; k < m; k++) {
-				for (int o = 0; o < l; o++) {
-					sumValues[i][j][k][o] = sumValues[i - 1][j][k][o]
+			for (int k = 0; k < m*l; k++) {
+				o = k % l;
+				ktemp = (int) (k / l);
+
+				/*if(i == 1)
+				{
+					sumValues[j][k] = this->values[j][ktemp][o];
+					entValues[j][k] = entropyReduction(sumValues[j][k], 0);
+				}*/
+				
+				sumValues[j][k] = sumValues[j][k] + this->values[i+j][ktemp][o];
+				entValues[j][k] = entValues[j][k] + entropyReduction(this->values[i+j][ktemp][o], 0);
+				
+					/*sumValues[i][j][k][o] = sumValues[i - 1][j][k][o]
 							+ sumValues[0][i + j][k][o];
 					entValues[i][j][k][o] = entValues[i - 1][j][k][o]
-							+ entValues[0][i + j][k][o];
+							+ entValues[0][i + j][k][o];*/
 #if ENTROPY
 					qualities[i][j]->addToGain(
-							entropyReduction(sumValues[i][j][k][o],
-									entValues[i][j][k][o]));
+							entropyReduction(sumValues[j][k],
+									entValues[j][k]));
 #endif
 					qualities[i][j]->addToLoss(
-							divergence(i + 1, sumValues[i][j][k][o],
-									entValues[i][j][k][o]));
+							divergence(i + 1, sumValues[j][k],
+									entValues[j][k]));
 					EVALQC(4);
-				}
 			}
 		}
 	}
@@ -114,14 +121,14 @@ void OLPAggreg3::computeQualitiesSpe(bool normalization) {
 		}
 	}
 	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
+		/*for (int j = 0; j < n; j++) {
 			for (int k = 0; k < m; k++) {
 				delete[] sumValues[i][j][k];
 				delete[] entValues[i][j][k];
 			}
 			delete[] sumValues[i][j];
 			delete[] entValues[i][j];
-		}
+		}*/
 		delete[] sumValues[i];
 		delete[] entValues[i];
 	}
