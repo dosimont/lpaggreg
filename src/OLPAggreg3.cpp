@@ -50,62 +50,49 @@ void OLPAggreg3::computeQualitiesSpe(bool normalization) {
 	double ** sumValues = new double*[n];
 	double ** entValues = new double*[n];
 	for (int i = 0; i < n; i++) {
-		sumValues[i] = new double[m*l];
-		entValues[i] = new double[m*l];
+		sumValues[i] = new double[n];
+		entValues[i] = new double[n];
 		qualities.push_back(vector<Quality*>());
 		for (int j = 0; j < n; j++) {
 			qualities[i].push_back(new Quality(0, 0));
 			EVALQC(2);
 		}
 	}
-	int o, ktemp;
-	//Microscopic level
-	for (int j = 0; j < n; j++) {
-		for (int k = 0; k < m*l; k++) {
-			o = k % l;
-			ktemp = (int) (k / l);
-			
-				sumValues[j][k] = this->values[j][ktemp][o];
-				entValues[j][k] = entropyReduction(sumValues[j][k],	0);
-				EVALQC(2);
-		}
-	}
-	o=0;
-	ktemp =0;
-	//Other levels
-	for (int i = 1; i < n; i++) {
-		for (int j = 0; j < n - i; j++) {
-#if SIZEREDUCTION
-			qualities[i][j]->setGain(i);
-#endif
-			for (int k = 0; k < m*l; k++) {
-				o = k % l;
-				ktemp = (int) (k / l);
 
-				/*if(i == 1)
-				{
-					sumValues[j][k] = this->values[j][ktemp][o];
-					entValues[j][k] = entropyReduction(sumValues[j][k], 0);
-				}*/
-				
-				sumValues[j][k] = sumValues[j][k] + this->values[i+j][ktemp][o];
-				entValues[j][k] = entValues[j][k] + entropyReduction(this->values[i+j][ktemp][o], 0);
-				
-					/*sumValues[i][j][k][o] = sumValues[i - 1][j][k][o]
-							+ sumValues[0][i + j][k][o];
-					entValues[i][j][k][o] = entValues[i - 1][j][k][o]
-							+ entValues[0][i + j][k][o];*/
+
+	//Other levels
+	for (int k = 0; k < m; k++) {
+		for (int o = 0; o < l; o++){
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n - i; j++) {
+#if SIZEREDUCTION
+					qualities[i][j]->setGain(i);
+					EVALQC(1);
+#endif
+			
+					if (i==0){
+						sumValues[i][j] = this->values[j][k][o];
+						entValues[i][j] = entropyReduction(sumValues[i][j], 0);
+						EVALQC(2);
+					}else
+					{
+						sumValues[i][j] = sumValues[i - 1][j]
+								+ sumValues[0][i + j];
+						entValues[i][j] = entValues[i - 1][j]
+								+ entValues[0][i + j];
 #if ENTROPY
 					qualities[i][j]->addToGain(
-							entropyReduction(sumValues[j][k],
-									entValues[j][k]));
+							entropyReduction(sumValues[i][j],
+									entValues[i][j]));
 #endif
 					qualities[i][j]->addToLoss(
-							divergence(i + 1, sumValues[j][k],
-									entValues[j][k]));
+							divergence(i + 1, sumValues[i][j],
+									entValues[i][j]));
 					EVALQC(4);
+					}
 			}
 		}
+	}
 	}
 	if (normalization) {
 		Quality * maxQuality = new Quality(qualities[n - 1][0]->getGain(),
@@ -121,14 +108,6 @@ void OLPAggreg3::computeQualitiesSpe(bool normalization) {
 		}
 	}
 	for (int i = 0; i < n; i++) {
-		/*for (int j = 0; j < n; j++) {
-			for (int k = 0; k < m; k++) {
-				delete[] sumValues[i][j][k];
-				delete[] entValues[i][j][k];
-			}
-			delete[] sumValues[i][j];
-			delete[] entValues[i][j];
-		}*/
 		delete[] sumValues[i];
 		delete[] entValues[i];
 	}
