@@ -55,42 +55,34 @@ void OLPAggreg1::computeQualitiesSpe(bool normalization) {
 			EVALQC(2);
 		}
 	}
-	//Microscopic level
-	for (int j = 0; j < n; j++) {
-		sumValues[0][j] = this->values[j]; //WRITE
-		entValues[0][j] = entropyReduction(sumValues[0][j], 0); //WRITE
-		EVALQC(2);
-	}
-	//Other levels
-	for (int i = 1; i < n; i++) {
+
+	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n - i; j++) { //WRITE*4
-			sumValues[i][j] = sumValues[i - 1][j] + sumValues[0][i + j];
-			entValues[i][j] = entValues[i - 1][j] + entValues[0][i + j];
+
+			//Microscopic level
+			if (i == 0) {
+				sumValues[0][j] = this->values[j]; //WRITE
+				entValues[0][j] = entropyReduction(sumValues[0][j], 0); //WRITE
+				EVALQC(2);
+			} else //Other levels
+			{
+				sumValues[i][j] = sumValues[i - 1][j] + sumValues[0][i + j];
+				entValues[i][j] = entValues[i - 1][j] + entValues[0][i + j];
 #if ENTROPY
-			qualities[i][j]->setGain(
-					entropyReduction(sumValues[i][j], entValues[i][j]));
+				qualities[i][j]->setGain(
+						entropyReduction(sumValues[i][j], entValues[i][j]));
 #endif
 #if SIZEREDUCTION
-			qualities[i][j]->setGain(i);
+				qualities[i][j]->setGain(i);
 #endif
-			qualities[i][j]->setLoss(
-					divergence(i + 1, sumValues[i][j], entValues[i][j]));
-			EVALQC(4);
+				qualities[i][j]->setLoss(
+						divergence(i + 1, sumValues[i][j], entValues[i][j]));
+				EVALQC(4);
+			}
 		}
 	}
 	if (normalization) {
-		Quality * maxQuality = new Quality(qualities[n - 1][0]->getGain(),
-				qualities[n - 1][0]->getLoss()); //WRITE
-		EVALQC_;
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n - i; j++) { //WRITE*2
-				qualities[i][j]->setGain(
-						qualities[i][j]->getGain() / maxQuality->getGain());
-				qualities[i][j]->setLoss(
-						qualities[i][j]->getLoss() / maxQuality->getLoss());
-				EVALQC(2);
-			}
-		}
+		normalize(n);
 	}
 	for (int i = 0; i < n; i++) {
 		delete[] sumValues[i];

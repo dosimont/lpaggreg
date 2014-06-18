@@ -133,6 +133,7 @@ class OLPAggreg { //ABC
 		int getQualityCount();
 		int getBestCutCount();
 		int getBestPartitionCount();
+		void normalize(int n);
 		unsigned int getSize();
 		
 };

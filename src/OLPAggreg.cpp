@@ -218,6 +218,21 @@ vector<float> OLPAggreg::getParameters(float threshold) {
 	
 }
 
+void OLPAggreg::normalize(int n)
+{
+	Quality * maxQuality = new Quality(qualities[n - 1][0]->getGain(),
+					qualities[n - 1][0]->getLoss());
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n - i; j++) {
+			qualities[i][j]->setGain(
+					qualities[i][j]->getGain() / maxQuality->getGain());
+			qualities[i][j]->setLoss(
+					qualities[i][j]->getLoss() / maxQuality->getLoss());
+			EVALQC(2);
+		}
+	}
+}
+
 const vector<Quality*>& OLPAggreg::getQualityList() const {
 	return qualityList;
 }

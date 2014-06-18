@@ -49,60 +49,47 @@ void OLPAggreg2::computeQualitiesSpe(bool normalization) {
 	double ** sumValues = new double*[n];
 	double ** entValues = new double*[n];
 	for (int i = 0; i < n; i++) {
-		//sumValues[i] = new double[n];
-		//entValues[i] = new double[n];
+		sumValues[i] = new double[n];
+		entValues[i] = new double[n];
 		qualities.push_back(vector<Quality*>());
 		for (int j = 0; j < n; j++) {
-			sumValues[j] = new double[m];
-			entValues[j] = new double[m];
 			qualities[i].push_back(new Quality(0, 0));
 			EVALQC(2);
 		}
 	}
 
-
-	//Other levels
-	for (int i = 1; i < n; i++) {
-		for (int j = 0; j < n - i; j++) {
+	for (int k = 0; k < m; k++) {
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n - i; j++) {
 #if SIZEREDUCTION
-			qualities[i][j]->setGain(i);
+				qualities[i][j]->setGain(i);
 #endif
-			for (int k = 0; k < m; k++) {
-				if(i == 1)
-				{
-					sumValues[j][k] = this->values[j][k];
-					entValues[j][k] = entropyReduction(sumValues[j][k], 0);
-				}
-				sumValues[j][k] = sumValues[j][k] + this->values[i+j][k];
-				entValues[j][k] = entValues[j][k] + entropyReduction(this->values[i+j][k], 0);
+
+				//Microscopic level
+				if (i == 0) {
+					sumValues[i][j] = this->values[j][k];
+					entValues[i][j] = entropyReduction(sumValues[i][j], 0);
+					EVALQC(2);
+				} else {
+					//Other levels
+					sumValues[i][j] = sumValues[i - 1][j] + sumValues[0][i + j];
+					entValues[i][j] = entValues[i - 1][j] + sumValues[0][i + j];
 #if ENTROPY
-				qualities[i][j]->addToGain(
-						entropyReduction(sumValues[j][k], entValues[j][k]));
+					qualities[i][j]->addToGain(
+							entropyReduction(sumValues[i][j], entValues[i][j]));
 #endif
-				qualities[i][j]->addToLoss(
-						divergence(i + 1, sumValues[j][k], entValues[j][k]));
-				EVALQC(4);
+					qualities[i][j]->addToLoss(
+							divergence(i + 1, sumValues[i][j],
+									entValues[i][j]));
+					EVALQC(4);
+				}
 			}
 		}
 	}
 	if (normalization) {
-		Quality * maxQuality = new Quality(qualities[n - 1][0]->getGain(),
-				qualities[n - 1][0]->getLoss());
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n - i; j++) {
-				qualities[i][j]->setGain(
-						qualities[i][j]->getGain() / maxQuality->getGain());
-				qualities[i][j]->setLoss(
-						qualities[i][j]->getLoss() / maxQuality->getLoss());
-				EVALQC(2);
-			}
-		}
+		normalize(n);
 	}
 	for (int i = 0; i < n; i++) {
-		/*for (int j = 0; j < n; j++) {
-			delete[] sumValues[i][j];
-			delete[] entValues[i][j];
-		}*/
 		delete[] sumValues[i];
 		delete[] entValues[i];
 	}
