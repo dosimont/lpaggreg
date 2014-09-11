@@ -1,14 +1,16 @@
 #!/bin/bash -x
 DIR=/usr/lib
-ALIB=liblpaggreg.a
-cd Static
+OBJ=lpaggreg
+ALIB=lib${OBJ}.a
+VERSION=Static
+cd $VERSION
 ALSLIB=`ls ${ALIB}*`
 cd ..
 rm $DIR/$ALIB
-cp Static/$ALSLIB $DIR
+cp $VERSION/$ALSLIB $DIR
 ln -s $DIR/$ALSLIB $DIR/$ALIB
-mkdir -p /usr/include/lpaggreg
-cp src/*.h /usr/include/lpaggreg
-echo "/usr/lib/" > /etc/ld.so.conf.d/lpaggreg.conf
+mkdir -p /usr/include/$OBJ
+cp src/*.h /usr/include/$OBJ
+echo "/usr/lib/" > /etc/ld.so.conf.d/$OBJ.conf
 ldconfig
 exit 0
