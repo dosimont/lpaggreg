@@ -8,5 +8,5 @@
 .project
 Debug
 .settings
-liblpaggreg.so.*
-liblpaggreg.a.*
+*.so.*
+*.a.*
