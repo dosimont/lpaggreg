@@ -29,8 +29,8 @@
 #ifdef EVAL
 #define EVALQC_ eval.incrQCounter()
 #define EVALQC(n) eval.incrQCounter(n)
-#define EVALBCC_ eval.incrBPCounter()
-#define EVALBCC(n) eval.incrBPCounter(n)
+#define EVALBCC_ eval.incrBCCounter()
+#define EVALBCC(n) eval.incrBCCounter(n)
 #define EVALBPC_ eval.incrBPCounter()
 #define EVALBPC(n) eval.incrBPCounter(n)
 #define _EVALQC_ eval->incrQCounter()
