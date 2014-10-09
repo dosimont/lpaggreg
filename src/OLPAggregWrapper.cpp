@@ -233,3 +233,7 @@ void OLPAggregWrapper::push_back(int i, int j, double value) {
 	}
 	}
 }
+
+OLPAggreg* OLPAggregWrapper::getAggreg() {
+	return aggreg;
+}

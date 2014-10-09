@@ -119,7 +119,7 @@ class OLPAggregWrapper {
 		void setValue(int i, int j, int k, double value);
 		void addVector(int i);
 		void push_back(int i, int j, double value);
-		
+		OLPAggreg* getAggreg();
 };
 
 #endif /* WRAPPER_H_ */
