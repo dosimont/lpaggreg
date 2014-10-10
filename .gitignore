@@ -4,9 +4,6 @@
 *~
 *.swp
 *.d
-.cproject
-.project
 Debug
-.settings
 *.so.*
 *.a.*
