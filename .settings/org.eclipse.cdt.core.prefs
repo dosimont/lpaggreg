@@ -1,4 +1,15 @@
 eclipse.preferences.version=1
+environment/project/cdt.managedbuild.config.gnu.so.release.1522321088/INCLUDE/delimiter=;
+environment/project/cdt.managedbuild.config.gnu.so.release.1522321088/INCLUDE/operation=replace
+environment/project/cdt.managedbuild.config.gnu.so.release.1522321088/INCLUDE/value=C\:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\include
+environment/project/cdt.managedbuild.config.gnu.so.release.1522321088/LIB/delimiter=;
+environment/project/cdt.managedbuild.config.gnu.so.release.1522321088/LIB/operation=replace
+environment/project/cdt.managedbuild.config.gnu.so.release.1522321088/LIB/value=C\:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\lib;C\:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.1A\\Lib
+environment/project/cdt.managedbuild.config.gnu.so.release.1522321088/PATH/delimiter=;
+environment/project/cdt.managedbuild.config.gnu.so.release.1522321088/PATH/operation=replace
+environment/project/cdt.managedbuild.config.gnu.so.release.1522321088/PATH/value=C\:/Program Files (x86)/Java/jre7/bin/client;C\:/Program Files (x86)/Java/jre7/bin;C\:/Program Files (x86)/Java/jre7/lib/i386;C\:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C\:\\Windows\\system32;C\:\\Windows;C\:\\Windows\\System32\\Wbem;C\:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C\:\\Program Files\\MiKTeX 2.9\\miktex\\bin\\x64\\;C\:\\Program Files\\OpenVPN\\bin;C\:\\Program Files\\Microsoft SQL Server\\110\\Tools\\Binn\\;C\:\\Program Files (x86)\\Microsoft SDKs\\TypeScript\\1.0\\;D\:\\Windows 8.1\\Damien\\Documents\\Thesis\\Eclipse\\eclipse;C\:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\bin
+environment/project/cdt.managedbuild.config.gnu.so.release.1522321088/append=true
+environment/project/cdt.managedbuild.config.gnu.so.release.1522321088/appendContributed=true
 environment/project/cdt.managedbuild.config.gnu.so.release.408390577/append=true
 environment/project/cdt.managedbuild.config.gnu.so.release.408390577/appendContributed=true
 org.eclipse.cdt.core.code_formatter=org.eclipse.cdt.core.defaultCodeFormatter

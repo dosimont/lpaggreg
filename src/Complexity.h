@@ -36,12 +36,12 @@
 #ifndef COMPLEXITY_H_
 #define COMPLEXITY_H_
 
-#include <math.h>
+#include <cmath>
 
 double entropy(double val);
 double entropyReduction(double val, double ent);
 double divergence(int size, double value, double ent);
 
-static const double ln = log(2);
+static const double ln = log(2.0);
 
 #endif /* COMPLEXITY_H_ */
