@@ -261,4 +261,6 @@ int DLPAggregWrapper::newNode(int id, int parent) {
 	return -1;
 }
 
-
+const DLPAggreg*& DLPAggregWrapper::getRoot() const {
+	return root;
+}

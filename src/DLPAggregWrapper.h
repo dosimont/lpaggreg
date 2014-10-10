@@ -123,7 +123,7 @@ class DLPAggregWrapper {
 		void setValue(int id, int i, int j, double value);
 		void push_back(int id, int i, double value);
 
-		
+		const DLPAggreg*& getRoot() const;
 };
 
 #endif /* DWRAPPER_H_ */
