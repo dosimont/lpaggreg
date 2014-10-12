@@ -35,8 +35,8 @@
 #define EVALBPC(n) eval.incrBPCounter(n)
 #define _EVALQC_ eval->incrQCounter()
 #define _EVALQC(n) eval->incrQCounter(n)
-#define _EVALBCC_ eval->incrBPCounter()
-#define _EVALBCC(n) eval->incrBPCounter(n)
+#define _EVALBCC_ eval->incrBCCounter()
+#define _EVALBCC(n) eval->incrBCCounter(n)
 #define _EVALBPC_ eval->incrBPCounter()
 #define _EVALBPC(n) eval->incrBPCounter(n)
 #define EVALSTARTQ eval.resetQCounter();\
