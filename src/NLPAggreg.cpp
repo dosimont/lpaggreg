@@ -205,27 +205,27 @@ vector<int>* NLPAggreg::getAggregation(float parameter) {
 	return 0;
 }
 
-int NLPAggreg::getQualityDuration() {
+double NLPAggreg::getQualityDuration() {
 	return eval->getQDuration();
 }
 
-int NLPAggreg::getBestCutDuration() {
+double NLPAggreg::getBestCutDuration() {
 	return eval->getBCDuration();
 }
 
-int NLPAggreg::getBestPartitionDuration() {
+double NLPAggreg::getBestPartitionDuration() {
 	return eval->getBPDuration();
 }
 
-int NLPAggreg::getQualityCount() {
+long NLPAggreg::getQualityCount() {
 	return eval->getQCount();
 }
 
-int NLPAggreg::getBestCutCount() {
+long NLPAggreg::getBestCutCount() {
 	return eval->getBCCount();
 }
 
-int NLPAggreg::getBestPartitionCount() {
+long NLPAggreg::getBestPartitionCount() {
 	return eval->getBPCount();
 }
 

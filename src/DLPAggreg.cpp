@@ -201,27 +201,27 @@ void DLPAggreg::setPartitions(int start, int end, int value){
 	}
 }
 
-int DLPAggreg::getQualityDuration() {
+double DLPAggreg::getQualityDuration() {
 	return eval->getQDuration();
 }
 
-int DLPAggreg::getBestCutDuration() {
+double DLPAggreg::getBestCutDuration() {
 	return eval->getBCDuration();
 }
 
-int DLPAggreg::getBestPartitionDuration() {
+double DLPAggreg::getBestPartitionDuration() {
 	return eval->getBPDuration();
 }
 
-int DLPAggreg::getQualityCount() {
+long DLPAggreg::getQualityCount() {
 	return eval->getQCount();
 }
 
-int DLPAggreg::getBestCutCount() {
+long DLPAggreg::getBestCutCount() {
 	return eval->getBCCount();
 }
 
-int DLPAggreg::getBestPartitionCount() {
+long DLPAggreg::getBestPartitionCount() {
 	return eval->getBPCount();
 }
 

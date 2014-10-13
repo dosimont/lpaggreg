@@ -90,12 +90,12 @@ class NLPAggreg {
 		Eval* getEval();
 		void setEval(Eval* eval);
 		vector<int> * getAggregation(float parameter);
-		int getQualityDuration(); //ms
-		int getBestCutDuration(); //ms
-		int getBestPartitionDuration(); //ms
-		int getQualityCount();
-		int getBestCutCount();
-		int getBestPartitionCount();
+		double getQualityDuration(); //ms
+		double getBestCutDuration(); //ms
+		double getBestPartitionDuration(); //ms
+		long getQualityCount();
+		long getBestCutCount();
+		long getBestPartitionCount();
 		int getRank() const;
 		void setRank(int rank);
 		bool ownsNode(NLPAggreg* node);

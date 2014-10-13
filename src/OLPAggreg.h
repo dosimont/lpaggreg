@@ -127,12 +127,12 @@ class OLPAggreg { //ABC
 		vector<int> getParts(float parameter);
 		vector<float> getParameters(float threshold);
 		const vector<Quality*>& getQualityList() const;
-		int getQualityDuration(); //ms
-		int getBestCutDuration(); //ms
-		int getBestPartitionDuration(); //ms
-		int getQualityCount();
-		int getBestCutCount();
-		int getBestPartitionCount();
+		double getQualityDuration(); //ms
+		double getBestCutDuration(); //ms
+		double getBestPartitionDuration(); //ms
+		long getQualityCount();
+		long getBestCutCount();
+		long getBestPartitionCount();
 		void normalize(int n);
 		unsigned int getSize();
 		

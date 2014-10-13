@@ -48,7 +48,7 @@ class Eval {
 #ifdef LINUX
 		timeval timeQ1, timeQ2, timeBC1, timeBC2, timeBP1, timeBP2;
 #endif
-		int counterQ, counterBC, counterBP;
+		long counterQ, counterBC, counterBP;
 
 	public:
 		Eval();
@@ -58,9 +58,9 @@ class Eval {
 		void stopBCTimer();
 		void startBPTimer();
 		void stopBPTimer();
-		int getQDuration(); //ms
-		int getBCDuration(); //ms
-		int getBPDuration(); //ms
+		double getQDuration(); //ms
+		double getBCDuration(); //ms
+		double getBPDuration(); //ms
 		void resetQCounter();
 		void resetBCCounter();
 		void resetBPCounter();
@@ -68,9 +68,9 @@ class Eval {
 		void incrQCounter(int i = 1);
 		void incrBCCounter(int i = 1);
 		void incrBPCounter(int i = 1);
-		int getQCount();
-		int getBCCount();
-		int getBPCount();
+		long getQCount();
+		long getBCCount();
+		long getBPCount();
 		virtual ~Eval();
 };
 

@@ -119,14 +119,14 @@ class DLPAggreg {
 
 
 		//Counter getters
-		int getQualityCount();
-		int getBestCutCount();
-		int getBestPartitionCount();
+		long getQualityCount();
+		long getBestCutCount();
+		long getBestPartitionCount();
 
 		//Timer getters
-		int getQualityDuration(); //ms
-		int getBestCutDuration(); //ms
-		int getBestPartitionDuration(); //ms
+		double getQualityDuration(); //ms
+		double getBestCutDuration(); //ms
+		double getBestPartitionDuration(); //ms
 
 		/*DLP algo*/
 

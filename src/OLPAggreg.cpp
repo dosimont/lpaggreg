@@ -237,27 +237,27 @@ const vector<Quality*>& OLPAggreg::getQualityList() const {
 	return qualityList;
 }
 
-int OLPAggreg::getQualityDuration() {
+double OLPAggreg::getQualityDuration() {
 	return eval.getQDuration();
 }
 
-int OLPAggreg::getBestCutDuration() {
+double OLPAggreg::getBestCutDuration() {
 	return eval.getBCDuration();
 }
 
-int OLPAggreg::getBestPartitionDuration() {
+double OLPAggreg::getBestPartitionDuration() {
 	return eval.getBPDuration();
 }
 
-int OLPAggreg::getQualityCount() {
+long OLPAggreg::getQualityCount() {
 	return eval.getQCount();
 }
 
-int OLPAggreg::getBestCutCount() {
+long OLPAggreg::getBestCutCount() {
 	return eval.getBCCount();
 }
 
-int OLPAggreg::getBestPartitionCount() {
+long OLPAggreg::getBestPartitionCount() {
 	return eval.getBPCount();
 }
 

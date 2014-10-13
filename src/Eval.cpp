@@ -75,26 +75,26 @@ void Eval::stopBPTimer() {
 #endif
 }
 
-int Eval::getQDuration() {
+double Eval::getQDuration() {
 #ifdef LINUX
-	return ((timeQ2.tv_sec - timeQ1.tv_sec) * 1000)
-			+ ((timeQ2.tv_usec - timeQ1.tv_usec) / 1000);
+	return ((double) (timeQ2.tv_sec - timeQ1.tv_sec) * 1000.0)
+			+ ((double) (timeQ2.tv_usec - timeQ1.tv_usec) / 1000.0);
 #endif
 	return 0;
 }
 
-int Eval::getBCDuration() {
+double Eval::getBCDuration() {
 #ifdef LINUX
-	return ((timeBC2.tv_sec - timeBC1.tv_sec) * 1000)
-			+ ((timeBC2.tv_usec - timeBC1.tv_usec) / 1000);
+	return ((double) (timeBC2.tv_sec - timeBC1.tv_sec) * 1000.0)
+			+ ((double) (timeBC2.tv_usec - timeBC1.tv_usec) / 1000.0);
 #endif
 	return 0;
 }
 
-int Eval::getBPDuration() {
+double Eval::getBPDuration() {
 #ifdef LINUX
-	return ((timeBP2.tv_sec - timeBP1.tv_sec) * 1000)
-			+ ((timeBP2.tv_usec - timeBP1.tv_usec) / 1000);
+	return ((double) (timeBP2.tv_sec - timeBP1.tv_sec) * 1000.0)
+			+ ((double) (timeBP2.tv_usec - timeBP1.tv_usec) / 1000.0);
 #endif
 	return 0;
 }
@@ -129,15 +129,15 @@ void Eval::incrBPCounter(int i) {
 	counterBP += i;
 }
 
-int Eval::getQCount() {
+long Eval::getQCount() {
 	return counterQ;
 }
 
-int Eval::getBCCount() {
+long Eval::getBCCount() {
 	return counterBC;
 }
 
-int Eval::getBPCount() {
+long Eval::getBPCount() {
 	return counterBP;
 }
 
