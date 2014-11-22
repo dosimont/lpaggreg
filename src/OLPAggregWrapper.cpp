@@ -117,19 +117,19 @@ void OLPAggregWrapper::computeQualities(bool normalization) {
 	case 1: {
 		OLPAggreg1 *aggreg1 = static_cast<OLPAggreg1*>(aggreg);
 		aggreg1->setValues(values1.getValues());
-		aggreg1->computeQualities(normalization);
+		aggreg1->computeQualities(false);
 		break;
 	}
 	case 2: {
 		OLPAggreg2 *aggreg2 = static_cast<OLPAggreg2*>(aggreg);
 		aggreg2->setValues(values2.getValues());
-		aggreg2->computeQualities(normalization);
+		aggreg2->computeQualities(false);
 		break;
 	}
 	case 3: {
 		OLPAggreg3 *aggreg3 = static_cast<OLPAggreg3*>(aggreg);
 		aggreg3->setValues(values3.getValues());
-		aggreg3->computeQualities(normalization);
+		aggreg3->computeQualities(false);
 		break;
 	}
 	}
