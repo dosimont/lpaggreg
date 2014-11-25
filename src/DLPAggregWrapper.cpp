@@ -107,11 +107,11 @@ void DLPAggregWrapper::computeQualities(bool normalization) {
 	switch (dimension) {
 	case 1: {
 		DLPAggreg1 *aggreg1 = static_cast<DLPAggreg1*>(root);
-		aggreg1->computeQualities(normalization);
+		aggreg1->computeQualities(false);
 		break;
 	}
 	case 2: {
-		static_cast<DLPAggreg2*>(root)->computeQualities(normalization);
+		static_cast<DLPAggreg2*>(root)->computeQualities(false);
 		break;
 	}
 	}
