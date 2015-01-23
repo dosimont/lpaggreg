@@ -71,7 +71,7 @@ class DLPAggregWrapper {
 		/*Destructor*/
 		virtual ~DLPAggregWrapper();
 
-		int newLeaf(int parent, int id);
+		int newLeaf(int parent, int id, int weight);
 
 		int newNode(int parent, int id);
 

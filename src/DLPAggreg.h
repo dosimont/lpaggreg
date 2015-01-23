@@ -96,6 +96,7 @@ class DLPAggreg {
 		//Childs
 
 		int getNodeSize() const;
+		void setNodeSize(int aWeight);
 		void addChild(DLPAggreg* child);
 		bool hasChild();
 		const vector<DLPAggreg*>& getChildNodes() const;

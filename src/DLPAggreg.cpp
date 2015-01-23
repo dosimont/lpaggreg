@@ -39,7 +39,7 @@ DLPAggreg::DLPAggreg() :
 		id(0), rank(0), parent(0), childNodes(vector<DLPAggreg*>()), qualities(vector<vector<Quality*> >()),
 		bestCompromises(vector<vector<Compromise*> >()), bestCuts(vector<vector<DLPCut*> >()), bestPartitions(
 						vector<int>()), parameters(vector<double>()), qualityList(
-						vector<Quality*>()), pIC(vector<vector<Compromise*> >()), nodeSize(0), valueSize(0), eval(0){
+						vector<Quality*>()), pIC(vector<vector<Compromise*> >()), nodeSize(1), valueSize(0), eval(0){
 	
 }
 
@@ -47,7 +47,7 @@ DLPAggreg::DLPAggreg(DLPAggreg* parent, int id) :
 		id(id), rank(0), parent(parent), childNodes(vector<DLPAggreg*>()), qualities(vector<vector<Quality*> >()),
 		bestCompromises(vector<vector<Compromise*> >()), bestCuts(vector<vector<DLPCut*> >()), bestPartitions(
 						vector<int>()), parameters(vector<double>()), qualityList(
-						vector<Quality*>()), pIC(vector<vector<Compromise*> >()), nodeSize(0), valueSize(0), eval(0) {
+						vector<Quality*>()), pIC(vector<vector<Compromise*> >()), nodeSize(1), valueSize(0), eval(0) {
 	parent->addChild(this);
 }
 
@@ -55,7 +55,7 @@ DLPAggreg::DLPAggreg(int id) :
 		id(id), rank(0), parent(0), childNodes(vector<DLPAggreg*>()), qualities(vector<vector<Quality*> >()),
 		bestCompromises(vector<vector<Compromise*> >()), bestCuts(vector<vector<DLPCut*> >()), bestPartitions(
 						vector<int>()), parameters(vector<double>()), qualityList(
-						vector<Quality*>()), pIC(vector<vector<Compromise*> >()), nodeSize(0), valueSize(0), eval(0) {
+						vector<Quality*>()), pIC(vector<vector<Compromise*> >()), nodeSize(1), valueSize(0), eval(0) {
 }
 
 void DLPAggreg::addChild(DLPAggreg *child) {
@@ -97,6 +97,11 @@ const vector<DLPAggreg*>& DLPAggreg::getChildNodes() const {
 int DLPAggreg::getNodeSize() const {
 	return nodeSize;
 }
+
+void DLPAggreg::setNodeSize(int aWeight) {
+	nodeSize = aWeight;
+}
+
 
 void DLPAggreg::setParent(DLPAggreg* parent) {
 	this->parent = parent;

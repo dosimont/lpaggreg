@@ -47,8 +47,9 @@ DLPAggreg2::DLPAggreg2(int id, const vector<vector<double> >& values) :
 		DLPAggreg(0, id), values(values), sumValue(0), microInfo(0), valueISize(0) {
 }
 
-DLPAggreg2::DLPAggreg2(DLPAggreg2* parent, int id) :
+DLPAggreg2::DLPAggreg2(DLPAggreg2* parent, int id, int weight) :
 		DLPAggreg(parent, id) , values(0), sumValue(0), microInfo(0), valueISize(0) {
+	setNodeSize(weight);
 }
 
 DLPAggreg2::DLPAggreg2(DLPAggreg2* parent, int id, const vector<vector<double> >& values) :
@@ -84,7 +85,6 @@ void DLPAggreg2::computeQualities() {
 	else {
 		valueSize = values.size();
 		valueISize=values[0].size();
-		nodeSize = 1;
 		_EVALQC(3);
 	}
 	sumValue = new double**[valueSize];
