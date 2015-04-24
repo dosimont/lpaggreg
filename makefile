@@ -19,10 +19,10 @@ static-linux-x86:
 	(cd static-linux-x86; make)
 
 static-win64:
-	(cd ; make)
+	(cd static-win64; make)
 
 static-win32:
-	(cd ${DIR}; make)
+	(cd static-win32; make)
 
 repo:
 	(cd ${DIR}; make)
