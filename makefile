@@ -1,5 +1,5 @@
-LIB="/usr/lib/"
-INCLUDE="/usr/include/"
+LIB=/usr/lib
+INCLUDE=/usr/include
 
 .PHONY: all shared-linux bench-linux static-linux static-linux-x86 static-win64 static-win32 repo install install-bench install-shared install-static installd clean
 
@@ -27,16 +27,16 @@ static-win32:
 repo:
 	(cd ${DIR}; make)
 
-install:	install-bench
-
-install-bench:	shared-linux
-	./install.sh shared-linux ${LIB} ${INCLUDE} ldconfig
+install:	install-shared
 
 install-shared:	shared-linux
-	./install.sh shared-linux ${LIB} ${INCLUDE} ldconfig
+	./install.sh shared-linux "${LIB}" "${INCLUDE}" ldconfig
+
+install-bench:	bench-linux
+	./install.sh bench-linux "${LIB}" "${INCLUDE}" ldconfig
 
 install-static:	static-linux
-	./install.sh static-linux ${LIB} ${INCLUDE} ldconfig
+	./install.sh static-linux "${LIB}" "${INCLUDE}" ldconfig
 
 installd:
 	./install.sh ${DIR} ${LIB} ${INCLUDE} ldconfig
@@ -48,3 +48,7 @@ clean:
 	(cd static-linux-x86; rm *.a*; make clean)
 	(cd static-win64; rm *.a*; make clean)
 	(cd static-win32; rm *.a*; make clean)
+
+uninstall:
+	rm -fr ${INCLUDE}/lpaggreg
+	rm ${LIB}/*lpaggreg*

@@ -30,7 +30,7 @@ mkdir -p $3/$OBJ
 cp src/*.h $3/$OBJ
 if [[ "$4" =~ "ldconfig" ]]
 then
-echo $2 > /etc/ld.so.conf.d/$OBJ.conf
+echo "$2/" > /etc/ld.so.conf.d/$OBJ.conf
 ldconfig
 fi
 exit 0
