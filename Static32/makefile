@@ -45,6 +45,7 @@ liblpaggreg.a.3.1: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC Archiver'
 	ar -r  "liblpaggreg.a.3.1" $(OBJS) $(USER_OBJS) $(LIBS)
+	ln -s liblpaggreg.a.3.1 liblpaggreg.a
 	@echo 'Finished building target: $@'
 	@echo ' '
 
