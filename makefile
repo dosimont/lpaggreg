@@ -1,35 +1,36 @@
+$(LIB)="/usr/lib/"
+$(INCLUDE)="/usr/include/"
+
 
 # All Target
-all: shared
+all: shared-linux
 
-shared:
-	(cd Shared; make)
+shared-linux:
+	$(eval DIR := share-linux)
+	(cd ${DIR}; make)
 
-bench:
-	(cd Bench; make)
+bench-linux:
+	$(eval DIR := bench-linux)
+	(cd ${DIR}; make)
 
-static:
-	(cd Static; make)
+static-linux:
+	$(eval DIR := static-linux)
+	(cd ${DIR}; make)
 
-static32:
-	(cd Static32; make)
+static-linux-x86:
+	$(eval DIR := static-linux-x86)
+	(cd ${DIR}; make)
 
-install: install-shared
+static-win64:
+	$(eval DIR := share-win64)
+	(cd ${DIR}; make)
 
-install-shared:
-	./install-shared.sh
+static-win32:
+	$(eval DIR := share-win32)
+	(cd ${DIR}; make)
 
-install-bench:
-	./install-bench.sh
-
-install-static:
-	./install-static.sh
-
-install-static32:
-	./install-static32.sh
+install:
+	./install.sh ${DIR} ${LIB} ${INCLUDE} ldconfig
 
 clean:
-	(cd Shared; rm *.so*; make clean)
-	(cd Bench; rm *.so*; make clean)
-	(cd Static; rm *.a*; make clean)
-	(cd Static32; rm *.a*; make clean)
+	(for i in *; if -d [ $i ]; cd $i; rm *.so* *.a*; make clean; cd -)
