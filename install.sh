@@ -5,10 +5,6 @@ if [ ! -d $1 ]
 then
 echo "No procedure found to install this library".
 exit 3
-elif [[ "$1" =~ "win" ]]
-then
-echo "Windows library installation is not supported. Please install it manually".
-exit 1
 elif [[ "$1" =~ "static" ]]
 then
 LIB=lib${OBJ}.a
