@@ -1,36 +1,50 @@
-$(LIB)="/usr/lib/"
-$(INCLUDE)="/usr/include/"
+LIB="/usr/lib/"
+INCLUDE="/usr/include/"
 
+.PHONY: all shared-linux bench-linux static-linux static-linux-x86 static-win64 static-win32 repo install install-bench install-shared install-static installd clean
 
 # All Target
 all: shared-linux
 
 shared-linux:
-	$(eval DIR := share-linux)
-	(cd ${DIR}; make)
+	(cd shared-linux; make)
 
 bench-linux:
-	$(eval DIR := bench-linux)
-	(cd ${DIR}; make)
+	(cd bench-linux; make)
 
 static-linux:
-	$(eval DIR := static-linux)
-	(cd ${DIR}; make)
+	(cd static-linux; make)
 
 static-linux-x86:
-	$(eval DIR := static-linux-x86)
-	(cd ${DIR}; make)
+	(cd static-linux-x86; make)
 
 static-win64:
-	$(eval DIR := share-win64)
-	(cd ${DIR}; make)
+	(cd ; make)
 
 static-win32:
-	$(eval DIR := share-win32)
 	(cd ${DIR}; make)
 
-install:
+repo:
+	(cd ${DIR}; make)
+
+install:	install-bench
+
+install-bench:	shared-linux
+	./install.sh shared-linux ${LIB} ${INCLUDE} ldconfig
+
+install-shared:	shared-linux
+	./install.sh shared-linux ${LIB} ${INCLUDE} ldconfig
+
+install-static:	static-linux
+	./install.sh static-linux ${LIB} ${INCLUDE} ldconfig
+
+installd:
 	./install.sh ${DIR} ${LIB} ${INCLUDE} ldconfig
 
 clean:
-	(for i in *; if -d [ $i ]; cd $i; rm *.so* *.a*; make clean; cd -)
+	(cd shared-linux; rm *.so*; make clean)
+	(cd bench-linux; rm *.so*; make clean)
+	(cd static-linux; rm *.a*; make clean)
+	(cd static-linux-x86; rm *.a*; make clean)
+	(cd static-win64; rm *.a*; make clean)
+	(cd static-win32; rm *.a*; make clean)
