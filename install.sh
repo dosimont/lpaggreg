@@ -11,6 +11,9 @@ LIB=lib${OBJ}.a
 elif [[ "$1" =~ "shared" ]]
 then
 LIB=lib${OBJ}.so
+elif [[ "$1" =~ "bench" ]]
+then
+LIB=lib${OBJ}.so
 else
 echo "No procedure found to install this library".
 exit 2
