@@ -13,8 +13,7 @@ then
 LIB=lib${OBJ}.so
 elif [[ "$1" =~ "bench" ]]
 then
-OBJ=benchlpaggreg
-LIB=lib${OBJ}.so
+LIB=libbench${OBJ}.so
 else
 echo "No procedure found to install this library".
 exit 2

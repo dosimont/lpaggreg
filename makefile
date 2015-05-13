@@ -50,5 +50,5 @@ clean:
 	(cd static-win32; rm *.a*; make clean)
 
 uninstall:
-	rm -fr ${INCLUDE}/lpaggreg
+	rm -fr ${INCLUDE}/*lpaggreg*
 	rm ${LIB}/*lpaggreg*
