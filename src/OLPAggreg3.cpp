@@ -50,66 +50,59 @@ void OLPAggreg3::computeQualitiesSpe(bool normalization) {
 	double ** sumValues = new double*[n];
 	double ** entValues = new double*[n];
 
-	#pragma omp parallel shared(n,m,l,sumValues,entValues) /* begin of parallel region */
-	{
-		#pragma omp for schedule(static)
-		for (int i = 0; i < n; i++) {
-			sumValues[i] = new double[n];
-			entValues[i] = new double[n];
-			qualities.push_back(vector<Quality*>());
-			for (int j = 0; j < n; j++) {
-				qualities[i].push_back(new Quality(0, 0));
-				EVALQC(2);
-			}
+	#pragma omp parallel for shared(n,m,l,sumValues,entValues) schedule(static)
+	for (int i = 0; i < n; i++) {
+		sumValues[i] = new double[n];
+		entValues[i] = new double[n];
+		qualities.push_back(vector<Quality*>());
+		for (int j = 0; j < n; j++) {
+			qualities[i].push_back(new Quality(0, 0));
+			EVALQC(2);
 		}
+	}
 
-		//Other levels
-		#pragma omp for schedule(static) ordered
-		for (int k = 0; k < m; k++) {
-			for (int o = 0; o < l; o++) {
-				for (int i = 0; i < n; i++) {
-					for (int j = 0; j < n - i; j++) {
-	#if SIZEREDUCTION
-						qualities[i][j]->setGain(i);
-						EVALQC(1);
-	#endif
-						//Microscopic level
-						if (i == 0) {
-							sumValues[i][j] = this->values[j][k][o];
-							entValues[i][j] = entropyReduction(sumValues[i][j], 0);
-							EVALQC(2);
-						} else {
-							//Other levels
-							#pragma omp ordered
-							{
-								sumValues[i][j] = sumValues[i - 1][j]
-										+ sumValues[0][i + j];
-								entValues[i][j] = entValues[i - 1][j]
-										+ entValues[0][i + j];
-							}
-	#if ENTROPY
-							qualities[i][j]->addToGain(
-									entropyReduction(sumValues[i][j],
-											entValues[i][j]));
-	#endif
-							qualities[i][j]->addToLoss(
-									divergence(i + 1, sumValues[i][j],
-											entValues[i][j]));
-							EVALQC(4);
-						}
+	//Other levels
+	for (int k = 0; k < m; k++) {
+		for (int o = 0; o < l; o++) {
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n - i; j++) {
+#if SIZEREDUCTION
+					qualities[i][j]->setGain(i);
+					EVALQC(1);
+#endif
+					//Microscopic level
+					if (i == 0) {
+						sumValues[i][j] = this->values[j][k][o];
+						entValues[i][j] = entropyReduction(sumValues[i][j], 0);
+						EVALQC(2);
+					} else {
+						//Other levels
+						sumValues[i][j] = sumValues[i - 1][j]
+									+ sumValues[0][i + j];
+						entValues[i][j] = entValues[i - 1][j]
+									+ entValues[0][i + j];
+#if ENTROPY
+						qualities[i][j]->addToGain(
+								entropyReduction(sumValues[i][j],
+										entValues[i][j]));
+#endif
+						qualities[i][j]->addToLoss(
+								divergence(i + 1, sumValues[i][j],
+										entValues[i][j]));
+						EVALQC(4);
 					}
 				}
 			}
 		}
-		if (normalization) {
-			normalize(n);
-		}
-		#pragma omp for schedule(static)
-		for (int i = 0; i < n; i++) {
-			delete[] sumValues[i];
-			delete[] entValues[i];
-		}
-	} /* end of parallel region */
+	}
+	if (normalization) {
+		normalize(n);
+	}
+	#pragma omp for schedule(static)
+	for (int i = 0; i < n; i++) {
+		delete[] sumValues[i];
+		delete[] entValues[i];
+	}
 	delete[] sumValues;
 	delete[] entValues;
 }
