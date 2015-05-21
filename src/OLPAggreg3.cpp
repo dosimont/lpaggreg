@@ -65,6 +65,7 @@ void OLPAggreg3::computeQualitiesSpe(bool normalization) {
 	for (int k = 0; k < m; k++) {
 		for (int o = 0; o < l; o++) {
 			for (int i = 0; i < n; i++) {
+				#pragma omp parallel for shared(n,i,sumValues,entValues) schedule(static)
 				for (int j = 0; j < n - i; j++) {
 #if SIZEREDUCTION
 					qualities[i][j]->setGain(i);
