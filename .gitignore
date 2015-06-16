@@ -11,4 +11,3 @@ Debug
 *.obj
 *.lib
 *.dll
-/openmp/
