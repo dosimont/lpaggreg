@@ -87,7 +87,6 @@ void OLPAggreg::deleteBestCuts() {
 void OLPAggreg::computeBestPartitions() {
 	int n = getSize();
 	bestPartitions.clear();
-	#pragma omp parallel for shared(n) schedule(static)
 	for (int i = 0; i < n; i++) {
 		bestPartitions.push_back(-1); //WRITE
 		EVALBPC_;
@@ -223,7 +222,6 @@ void OLPAggreg::normalize(int n)
 {
 	Quality * maxQuality = new Quality(qualities[n - 1][0]->getGain(),
 					qualities[n - 1][0]->getLoss());
-	#pragma omp parallel for shared(n) schedule(static)
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n - i; j++) {
 			qualities[i][j]->setGain(
