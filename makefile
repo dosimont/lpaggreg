@@ -1,7 +1,7 @@
 LIB=/usr/lib
 INCLUDE=/usr/include
 
-.PHONY: all shared-linux bench-linux static-linux static-linux-x86 static-win64 static-win32 repo install install-bench install-shared install-static installd clean
+.PHONY: all shared-linux bench-linux static-linux static-linux-x86 static-win64 static-win32 openmp repo install install-bench install-shared install-static install-openmp installd clean
 
 # All Target
 all: shared-linux
@@ -23,6 +23,9 @@ static-win64:
 
 static-win32:
 	(cd static-win32; make)
+	
+openmp:
+	(cd openmp; make)
 
 repo:
 	(cd ${DIR}; make)
@@ -37,6 +40,9 @@ install-bench:	bench-linux
 
 install-static:	static-linux
 	./install.sh static-linux "${LIB}" "${INCLUDE}" ldconfig
+	
+install-openmp: openmp
+	./install.sh openmp "${LIB}" "${INCLUDE}" ldconfig
 
 installd:
 	./install.sh ${DIR} ${LIB} ${INCLUDE} ldconfig
@@ -48,6 +54,7 @@ clean:
 	(cd static-linux-x86; rm *.a*; make clean)
 	(cd static-win64; rm *.a*; make clean)
 	(cd static-win32; rm *.a*; make clean)
+	(cd openmp; rm *.so*; make clean)
 
 uninstall:
 	rm -fr ${INCLUDE}/*lpaggreg*

@@ -15,6 +15,10 @@ elif [[ "$1" =~ "bench" ]]
 then
 OBJ=benchlpaggreg
 LIB=lib${OBJ}.so
+elif [[ "$1" =~ "openmp" ]]
+then
+OBJ=openmplpaggreg
+LIB=lib${OBJ}.so
 else
 echo "No procedure found to install this library".
 exit 2
