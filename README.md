@@ -3,20 +3,9 @@ lpaggreg
 
 __License__
 
-
-
-This library is a C++ implementation of several algorithms that enables
-to aggregate set of data according: an ordered dimension (OLP), a
-hierarchy (NLP), or both (DLP). OLP and NLP scalar versions (1) have been
-designed by Robin Lamarche-Perrin. OLP and NLP vector versions (2, 3) and
-DLP (1, 2) have been designed by Damien Dosimont and are a generalization
-of Robin Lamarche-Perrin works.
-
-Related works:
-http://magma.imag.fr/content/robin-lamarche-perrin
-http://moais.imag.fr/membres/damien.dosimont/research.html
-
-
+This library is a C++ implementation of several algorithms that enable
+to aggregate sets of data according: an ordered dimension (OLP), a
+hierarchy (NLP), or both (DLP). 
 
 (C) Copyright (February 28th 2013) Damien Dosimont. All rights reserved.
 
@@ -37,10 +26,21 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
 USA.
 
+__Dependancies__
+
+*cmake*
+
+__Generate makefile__
+
+		$ mkdir build
+                $ cd build
+                $ cmake ..
+
 __Compile__
 
-		$ make
+                $ make
 		
+
 __Install__
 
 		# make install
@@ -49,3 +49,6 @@ __Clean__
 		
 		$ make clean
 
+__Uninstall__
+		
+		$ make uninstall
