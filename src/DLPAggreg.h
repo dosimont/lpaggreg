@@ -43,7 +43,7 @@
 #include "Complexity.h"
 #include "Eval.h"
 #include "DLPCut.h"
-#include "Compromise.h"
+#include "Tradeoff.h"
 #include "Configuration.h"
 
 #define DCHILDS (unsigned int i_child=0; i_child<childNodes.size(); i_child++)
@@ -60,12 +60,12 @@ class DLPAggreg {
 		DLPAggreg *parent;
 		vector<DLPAggreg*> childNodes;
 		vector<vector<Quality*> > qualities;
-		vector<vector<Compromise*> > bestCompromises;
+        vector<vector<Tradeoff*> > bestTradeoffs;
 		vector<vector<DLPCut*> > bestCuts;
 		vector<int> bestPartitions;
 		vector<double> parameters;
 		vector<Quality*> qualityList;
-		vector<vector<Compromise*> > pIC;
+		vector<vector<Tradeoff*> > pIC;
 		int nodeSize;
 		int valueSize;
 		Eval *eval;
@@ -136,8 +136,8 @@ class DLPAggreg {
 
 		//Best Cut Computation
 		void computeBestCuts(double parameter);
-		void sumBestCompromises(int i, int j, Compromise* c);
-		void computePIC(double parameter, int i, int j, Compromise* c);
+		void sumBestCompromises(int i, int j, Tradeoff* c);
+		void computePIC(double parameter, int i, int j, Tradeoff* c);
 
 		//Best Partition Computation
 
@@ -163,9 +163,9 @@ class DLPAggreg {
 		//Getters and setters
 		int getValueSize() const;
 		const vector<vector<Quality*> > & getQualities() const;
-		const vector<vector<Compromise*> > & getBestCompromises() const;
+		const vector<vector<Tradeoff*> > & getBestCompromises() const;
 		const vector<vector<DLPCut*> > & getBestCuts() const;
-		const vector<vector<Compromise*> > & getPIC() const;
+		const vector<vector<Tradeoff*> > & getPIC() const;
 		const vector<int>& getBestPartitions() const;
 };
 

@@ -1,9 +1,12 @@
 #Can be edited
 
-OPTION(CROSS_WIN "Cross compilation for Windows" OFF)
 OPTION(STATIC "Build a static library" OFF)
+
+#Not implemented yet
+OPTION(CROSS_WIN "Cross compilation for Windows" OFF)
 OPTION(TIMERS "Activate the timers (Linux Only)" OFF)
 OPTION(COUNTERS "Activate the counters" OFF)
+OPTION(OPENMP "Use the parallel version" OFF)
 
 #Should not be modified
 
@@ -12,8 +15,8 @@ cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
-set(LPAGGREG_VERSION_MAJOR "4")
-set(LPAGGREG_VERSION_MINOR "0")
+set(LPAGGREG_VERSION_MAJOR "3")
+set(LPAGGREG_VERSION_MINOR "2")
 set(LPAGGREG_VERSION_PATCH "0")
 set(LPAGGREG_VERSION "${LPAGGREG_VERSION_MAJOR}.${LPAGGREG_VERSION_MINOR}.${LPAGGREG_VERSION_PATCH}")
 #add_definitions(-D__BUILD_VERSION__="${LPAGGREG_VERSION}")
@@ -23,7 +26,7 @@ set(LPAGGREG_VERSION "${LPAGGREG_VERSION_MAJOR}.${LPAGGREG_VERSION_MINOR}.${LPAG
 aux_source_directory(src SRC_LIST)
 if(STATIC)
     add_library(${PROJECT_NAME} STATIC ${SRC_LIST})
-else()
+else(STATIC)
     add_library(${PROJECT_NAME} SHARED ${SRC_LIST})
 endif(STATIC)
 
@@ -31,5 +34,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${LPAGGREG_VERSION} SOV
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib)
 install(DIRECTORY src/ DESTINATION include/${PROJECT_NAME} FILES_MATCHING PATTERN "*.h")
+
+export(PACKAGE ${PROJECT_NAME})
 
 add_custom_target(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_MODULE_PATH}/uninstall.cmake")
