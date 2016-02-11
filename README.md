@@ -32,23 +32,23 @@ __Dependancies__
 
 __Generate makefile__
 
-		$ mkdir build
-                $ cd build
-                $ cmake ..
+  $ mkdir build
+  $ cd build
+  $ cmake ..
 
 __Compile__
 
-                $ make
+  $ make
 		
 
 __Install__
 
-		# make install
+  # make install
 		
 __Clean__
 		
-		$ make clean
+  $ make clean
 
 __Uninstall__
 		
-		$ make uninstall
+  $ make uninstall
