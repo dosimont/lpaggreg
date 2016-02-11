@@ -51,4 +51,4 @@ __Clean__
 
 __Uninstall__
 		
-    $ make uninstall
+    # make uninstall
