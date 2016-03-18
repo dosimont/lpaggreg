@@ -72,7 +72,7 @@ Thumbs.db
 *.exe
 
 # CMake User
-*txt.user
+*txt.user*
 
 # Build
 /build
