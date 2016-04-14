@@ -1,0 +1,14 @@
+#!/bin/bash
+
+module unload cmake
+module load cmake/3.5.0
+cd ../../../..
+version=${PWD##*/}
+mkdir default
+dest=`pwd default`
+cd -
+mkdir -p build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=$dest ../../
+make
+make install
