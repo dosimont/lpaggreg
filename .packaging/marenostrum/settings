@@ -1,3 +1,3 @@
-SSHTARGET=mn1.bsc.es
+SSHTARGET=mn1
 APPDIR=/apps/CEPBATOOLS
 APP=lpaggreg

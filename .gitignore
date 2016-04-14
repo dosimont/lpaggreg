@@ -76,3 +76,6 @@ Thumbs.db
 
 # Build
 /build
+
+#Packaging
+*.tmp
