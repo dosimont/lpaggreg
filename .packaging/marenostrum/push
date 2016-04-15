@@ -2,20 +2,20 @@
 
 source settings
 
-cmakelist=../../CMakeLists.txt
-major=`grep set\(LPAGGREG_VERSION_MAJOR $cmakelist | sed 's/set(LPAGGREG_VERSION_MAJOR\ "//' | sed 's/")//'`
-minor=`grep set\(LPAGGREG_VERSION_MINOR $cmakelist | sed 's/set(LPAGGREG_VERSION_MINOR\ "//' | sed 's/")//'`
-patch=`grep set\(LPAGGREG_VERSION_PATCH $cmakelist | sed 's/set(LPAGGREG_VERSION_PATCH\ "//' | sed 's/")//'`
-version=$major.$minor.$patch
+script=$(readlink -f "$0")
+scriptpath=$(dirname "$script")
+apppath=$scriptpath/../..
+version=$scriptpath/version
 target=$APPDIR/$APP/$version/src
-echo "target=$target" > deploy.tmp
-scp deploy.tmp $SSHTARGET:/tmp/
+temp=$scriptpath/deploy.tmp
+echo "target=$target" > $temp
+scp $temp $SSHTARGET:/tmp/
 ssh $SSHTARGET 'bash -c "`source /tmp/deploy.tmp && rm -fr $target && mkdir -p $target`"'
-cd ../../
+cd $apppath
 repo=${PWD##*/}
-cd -
-echo "repo=$repo" >> deploy.tmp
-scp -r ../../../$repo $SSHTARGET:$target/
-scp deploy.tmp $SSHTARGET:/tmp/
+cd $scriptpath
+echo "repo=$repo" >> $temp
+scp -r $apppath/../$repo $SSHTARGET:$target/
+scp $temp $SSHTARGET:/tmp/
 ssh $SSHTARGET 'bash -c "`source /tmp/deploy.tmp && cd $target/$repo/.packaging/marenostrum/ && ./deploy && rm /tmp/deploy.tmp`"' 2>/dev/null
-rm deploy.tmp
+rm $temp

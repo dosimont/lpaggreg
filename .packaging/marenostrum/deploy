@@ -1,22 +1,23 @@
 #!/bin/bash
 
-#module unload cmake
-#module load cmake/3.5.0
-current=`pwd`
-cd ../../../..
+script=$(readlink -f "$0")
+scriptpath=$(dirname "$script")
+srcpath=$scriptpath/../..
+versionpath=$srcpath/../..
+cd $versionpath
 version=${PWD##*/}
-mkdir -p default
-cd default
-dest=`pwd`
-cd $current
+dest=$versionpath/default
+mkdir -p $dest
+cd $scriptpath
+log=$srcpath/log
 mkdir -p build
 cd build
-/apps/CMAKE/3.5.0/bin/cmake -DCMAKE_INSTALL_PREFIX=$dest ../../../
-make
-make install
-cd ../../../../../..
-if [ -d default ]
+/apps/CMAKE/3.5.0/bin/cmake -DCMAKE_INSTALL_PREFIX=$dest ../../../ $log 2>&1 
+make >> $log 2>&1 
+make install >> $log 2>&1
+path=$versionpath/..
+if [ -d $path/default ]
 then
-  rm default
+  rm $path/default
 fi
-ln -s $version default
+ln -s $path/$version $path/default
