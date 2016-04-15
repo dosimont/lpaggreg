@@ -12,7 +12,7 @@ cd $scriptpath
 log=$srcpath/log
 mkdir -p build
 cd build
-/apps/CMAKE/3.5.0/bin/cmake -DCMAKE_INSTALL_PREFIX=$dest ../../../ $log 2>&1 
+/apps/CMAKE/3.5.0/bin/cmake -DCMAKE_INSTALL_PREFIX=$dest ../../.. > $log 2>&1 
 make >> $log 2>&1 
 make install >> $log 2>&1
 path=$versionpath/..

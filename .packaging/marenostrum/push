@@ -5,7 +5,7 @@ source settings
 script=$(readlink -f "$0")
 scriptpath=$(dirname "$script")
 apppath=$scriptpath/../..
-version=$scriptpath/version
+version=`$scriptpath/version`
 target=$APPDIR/$APP/$version/src
 temp=$scriptpath/deploy.tmp
 echo "target=$target" > $temp
