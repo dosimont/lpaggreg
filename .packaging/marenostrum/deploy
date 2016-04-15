@@ -15,4 +15,8 @@ cd build
 make
 make install
 cd ../../../../../..
+if [ -d default ]
+then
+  rm default
+fi
 ln -s $version default

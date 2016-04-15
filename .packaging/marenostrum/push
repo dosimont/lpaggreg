@@ -10,7 +10,7 @@ version=$major.$minor.$patch
 target=$APPDIR/$APP/$version/src
 echo "target=$target" > deploy.tmp
 scp deploy.tmp $SSHTARGET:/tmp/
-ssh $SSHTARGET 'bash -c "`source /tmp/deploy.tmp && mkdir -p $target`"'
+ssh $SSHTARGET 'bash -c "`source /tmp/deploy.tmp && rm -fr $target && mkdir -p $target`"'
 cd ../../
 repo=${PWD##*/}
 cd -
