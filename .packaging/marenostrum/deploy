@@ -1,5 +1,7 @@
 #!/bin/bash
 
+CMAKE=/apps/CMAKE/3.5.0/bin/cmake 
+
 script=$(readlink -f "$0")
 scriptpath=$(dirname "$script")
 srcpath=$scriptpath/../..
@@ -9,12 +11,11 @@ version=${PWD##*/}
 dest=$versionpath/default
 mkdir -p $dest
 cd $scriptpath
-log=$srcpath/log
 mkdir -p build
 cd build
-/apps/CMAKE/3.5.0/bin/cmake -DCMAKE_INSTALL_PREFIX=$dest ../../.. > $log 2>&1 
-make >> $log 2>&1 
-make install >> $log 2>&1
+$CMAKE -DCMAKE_INSTALL_PREFIX=$dest ../../.. 
+make
+make install
 path=$versionpath/..
 if [ -d $path/default ]
 then
