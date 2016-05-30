@@ -1,16 +1,19 @@
 #ifndef LPQUALITY_H
 #define LPQUALITY_H
 
+#include <cmath>
+#include <algorithm>
+#include "lpglobal.h"
 
-class LPQuality
+template<typename T> class LPQuality
 {
 private:
 
     /*Gain*/
-    double gain;
+    T gain;
 
     /*Loss*/
-    double loss;
+    T loss;
 
 public:
 
@@ -18,39 +21,52 @@ public:
     LPQuality();
 
     /*Constructor with parameters*/
-    LPQuality(double gain, double loss);
+    LPQuality(T gain, T loss);
 
     /*Destructor*/
     virtual ~LPQuality();
 
     /*Gain getter*/
-    double getGain() const;
+    T getGain() const;
 
     /*Gain setter*/
-    void setGain(double gain);
+    void setGain(T gain);
 
     /*Loss getter*/
-    double getLoss() const;
+    T getLoss() const;
 
     /*Loss setter*/
-    void setLoss(double loss);
+    void setLoss(T loss);
 
     /*Add a value to current gain*/
-    void addToGain(double gain);
+    void addToGain(T gain);
 
     /*Add a value to current loss*/
-    void addToLoss(double loss);
+    void addToLoss(T loss);
 
-    friend bool operator== (LPQuality &quality1, LPQuality &quality2);
-    friend bool operator+= (LPQuality &quality1, LPQuality &quality2);
-    friend bool operator-= (LPQuality &quality1, LPQuality &quality2);
-    friend bool operator/= (LPQuality &quality1, LPQuality &quality2);
-    friend bool operator*= (LPQuality &quality1, LPQuality &quality2);
-    friend bool operator!= (LPQuality &quality1, LPQuality &quality2);
-    friend bool operator> (LPQuality &quality1, LPQuality &quality2);
-    friend bool operator<= (LPQuality &quality1, LPQuality &quality2);
-    friend bool operator< (LPQuality &quality1, LPQuality &quality2);
-    friend bool operator>= (LPQuality &quality1, LPQuality &quality2);
+    /*Override operators*/
+
+
+
+    void operator+=(LPQuality<T> &quality);
+    void operator-=(LPQuality<T> &quality);
+    void operator*=(LPQuality<T> &quality);
+    void operator/=(LPQuality<T> &quality);
+
+    template<typename U>
+    friend LPQuality<U> operator+(LPQuality<U> &quality1, LPQuality<U> &quality2);
+    template<typename U>
+    friend LPQuality<U> operator-(LPQuality<U> &quality1, LPQuality<U> &quality2);
+    template<typename U>
+    friend LPQuality<U> operator*(LPQuality<U> &quality1, LPQuality<U> &quality2);
+    template<typename U>
+    friend LPQuality<U> operator/(LPQuality<U> &quality1, LPQuality<U> &quality2);
+    template<typename U>
+    friend bool operator==(LPQuality<U> &quality1, LPQuality<U> &quality2);
+    template<typename U>
+    friend bool operator!=(LPQuality<U> &quality1, LPQuality<U> &quality2);
 };
+
+
 
 #endif // LPQUALITY_H
