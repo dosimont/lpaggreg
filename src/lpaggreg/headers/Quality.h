@@ -33,8 +33,8 @@
  *
  *******************************************************************************/
 
-#ifndef QUALITY_H_
-#define QUALITY_H_
+#ifndef LPQUALITY_H_
+#define LPQUALITY_H_
 
 #include <cmath>
 #include <algorithm>
@@ -81,4 +81,4 @@ class Quality {
 		bool compare(Quality quality);
 };
 
-#endif /* QUALITY_H_ */
+#endif /* LPQUALITY_H_ */

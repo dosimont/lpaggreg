@@ -2,10 +2,10 @@
 #define LPITEM_H
 
 
-class LPItem
+class Item
 {
 public:
-    LPItem();
+    Item();
 };
 
 #endif // LPITEM_H
