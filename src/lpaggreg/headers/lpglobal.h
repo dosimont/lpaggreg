@@ -1,6 +1,0 @@
-#ifndef LPGLOBAL_H
-#define LPGLOBAL_H
-
-#define LP_PRECISION 0.0000000000001
-
-#endif // LPGLOBAL_H
