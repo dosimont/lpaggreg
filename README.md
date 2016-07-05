@@ -9,7 +9,7 @@ hierarchy (NLP), or both (DLP).
 
 (C) Copyright (February 28th 2013) Damien Dosimont. All rights reserved.
 
-Damien Dosimont <damien.dosimont@imag.fr>
+Damien Dosimont <damien.dosimont@bsc.es>
 
 This library is free software; you can redistribute it and/or modify it
 under the terms of the GNU Lesser General Public License as published by
@@ -35,6 +35,10 @@ __Generate makefile__
     $ mkdir build
     $ cd build
     $ cmake ..
+
+You may want to install lpaggreg in a custom location:
+
+    $ cmake -DCMAKE_INSTALL_PREFIX=/your/installation/directory/ ..
 
 __Compile__
 
