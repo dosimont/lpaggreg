@@ -22,6 +22,8 @@ namespace lpaggreg{
         /*Constructor, initialize gain and loss with value 0*/
         Quality();
 
+        Quality(Quality &quality);
+
         /*Constructor with parameters*/
         Quality(T gain, T loss);
 
@@ -47,8 +49,6 @@ namespace lpaggreg{
         void addToLoss(T loss);
 
         /*Override operators*/
-
-
 
         void operator+=(Quality<T> &quality);
         void operator-=(Quality<T> &quality);

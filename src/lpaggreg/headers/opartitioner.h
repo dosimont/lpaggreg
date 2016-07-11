@@ -3,6 +3,7 @@
 
 #include "partitioner.h"
 #include "quality.h"
+#include "tradeoff.h"
 
 namespace lpaggreg{
 
@@ -10,11 +11,11 @@ namespace lpaggreg{
     {
     public:
         OPartitioner();
-        OPartitioner(vector<vector<Quality> >* qualities);
+        OPartitioner(vector<vector<Quality<lp_quality_type> > >* qualities);
         void computeBestPartitions(float threshold);
         void computeBestCuts(float parameter);
     private:
-        vector<vector<Quality> >* qualities;
+        vector<vector<Quality<lp_quality_type> > >* qualities;
     };
 
 }

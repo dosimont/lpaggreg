@@ -13,6 +13,12 @@ lpaggreg::Quality<T>::Quality(T gain, T loss):gain(gain),loss(loss)
 }
 
 template<typename T>
+lpaggreg::Quality<T>::Quality(Quality &quality):gain(quality.getGain()), loss(quality.getLoss())
+{
+
+}
+
+template<typename T>
 T lpaggreg::Quality<T>::getGain() const
 {
     return gain;
@@ -101,7 +107,7 @@ lpaggreg::Quality<U> operator/(lpaggreg::Quality<U> &quality1, lpaggreg::Quality
 }
 
 template<typename U>
-void operator==(lpaggreg::Quality<U> &quality1, lpaggreg::Quality<U> &quality2)
+bool operator==(lpaggreg::Quality<U> &quality1, lpaggreg::Quality<U> &quality2)
 {
     U precision=std::max(quality1.gain+quality2.gain,quality1.loss+quality2.gloss)/2*LP_PRECISION;
     return (quality1.gain||quality2.gain&&quality1.loss||quality2.loss)||
@@ -110,10 +116,9 @@ void operator==(lpaggreg::Quality<U> &quality1, lpaggreg::Quality<U> &quality2)
 }
 
 template<typename U>
-void operator!=(lpaggreg::Quality<U> &quality1, lpaggreg::Quality<U> &quality2)
+bool operator!=(lpaggreg::Quality<U> &quality1, lpaggreg::Quality<U> &quality2)
 {
     return !(quality1==quality2);
 }
 
-template class lpaggreg::Quality<double>;
-template class lpaggreg::Quality<long double>;
+template class lpaggreg::Quality<lp_quality_type>;
