@@ -4,6 +4,9 @@
 #include "partitioner.h"
 #include "quality.h"
 #include "tradeoff.h"
+#include "uppertriangularmatrix.h"
+
+using namespace std;
 
 namespace lpaggreg{
 
