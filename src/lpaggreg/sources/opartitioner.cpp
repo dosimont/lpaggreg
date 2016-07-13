@@ -15,7 +15,7 @@ void lpaggreg::OPartitioner::computeBestPartitions(float threshold)
 
 }
 
-void lpaggreg::OPartitioner::computeBestCuts(float parameter)
+vector<int> lpaggreg::OPartitioner::computeBestCuts(float parameter)
 {
     int size=qualities->size();
     vector<int> cut;
@@ -35,4 +35,5 @@ void lpaggreg::OPartitioner::computeBestCuts(float parameter)
             }
         }
     }
+    return cut;
 }

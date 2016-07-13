@@ -13,7 +13,7 @@ namespace lpaggreg{
         OPartitioner();
         OPartitioner(vector<vector<Quality<lp_quality_type> > >* qualities);
         void computeBestPartitions(float threshold);
-        void computeBestCuts(float parameter);
+        vector<int> computeBestCuts(float parameter);
     private:
         vector<vector<Quality<lp_quality_type> > >* qualities;
     };
