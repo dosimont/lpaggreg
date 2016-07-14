@@ -2,6 +2,7 @@
 #define OQUALITIES_H
 
 #include <vector>
+#include <memory>
 #include "quality.h"
 #include "ovalues.h"
 #include "uppertriangularmatrix.h"
@@ -14,21 +15,22 @@ namespace lpaggreg{
     class OQualities
     {
     public:
-        OQualities(OValues* values);
+        OQualities(shared_ptr<OValues> values);
         void normalize();
         void computeQualities();
 
-        OValues *getValues() const;
-        void setValues(OValues *value);
-
-        double & operator() (unsigned int i, unsigned int j) const {return qualities[index];}
-        double operator() (unsigned int i, unsigned int j) {return qualities[index];}
+        //double & operator() (unsigned int i, unsigned int j) const {return qualities->operator()(i, j);}
+        //double operator() (unsigned int i, unsigned int j) {return qualities->operator()(i, j);}
 
         unsigned int size();
 
+        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality<lp_quality_type> > > > getQualities() const;
+
+        shared_ptr<OValues> getValues() const;
+
     private:
-        OValues* values;
-        UpperTriangularMatrix<Quality<lp_quality_type>> qualities;
+        shared_ptr<OValues> values;
+        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality<lp_quality_type> > > >qualities;
     };
 
 }

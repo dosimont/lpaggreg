@@ -2,6 +2,7 @@
 #define UPPERTRIANGULARMATRIX_H
 
 #include <vector>
+#include <memory>
 #include "quality.h"
 
 using namespace std;
@@ -15,14 +16,23 @@ namespace lpaggreg{
         int elements;
     public:
         UpperTriangularMatrix(unsigned int size);
-        vector<double> &operator()(unsigned int i, unsigned int j) const{return matrix[(j-i)*size-(j-i)*((j-i)-1)/2+i];}
-        vector<double> operator()(unsigned int i, unsigned int j) {return matrix[(j-i)*size-(j-i)*((j-i)-1)/2+i];}
-        vector<double> &operator[](unsigned int i) const{return matrix[i];}
-        vector<double> operator[](unsigned int i) {return matrix[i];}
+        T &operator()(unsigned int i, unsigned int j) const;
+        T operator()(unsigned int i, unsigned int j);
+        void operator()(unsigned int i, unsigned int j, T value);
+        T &operator[](unsigned int i) const;
+        T operator[](unsigned int i);
         vector<T> matrix;
         int getElements() const;
         int getSize() const;
-};
+    };
+
+    template<>
+    UpperTriangularMatrix<double>::UpperTriangularMatrix(unsigned int size);
+
+    template<>
+    UpperTriangularMatrix<shared_ptr<lpaggreg::Quality<lp_quality_type> > >::UpperTriangularMatrix(unsigned int size);
+
+
 }
 
 #endif // UPPERTRIANGULARMATRIX_H

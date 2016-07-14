@@ -1,6 +1,8 @@
 #ifndef OPARTITIONER_H
 #define OPARTITIONER_H
 
+#include <vector>
+#include <memory>
 #include "partitioner.h"
 #include "quality.h"
 #include "tradeoff.h"
@@ -13,12 +15,11 @@ namespace lpaggreg{
     class OPartitioner : public Partitioner
     {
     public:
-        OPartitioner();
-        OPartitioner(UpperTriangularMatrix<Quality<lp_quality_type> >* qualities);
+        OPartitioner(shared_ptr<UpperTriangularMatrix<shared_ptr<Quality<lp_quality_type> > > > qualities);
         void computeBestPartitions(float threshold);
         vector<int> computeBestCuts(float parameter);
     private:
-        UpperTriangularMatrix<Quality<lp_quality_type> >* qualities;
+        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality<lp_quality_type> > > > qualities;
     };
 
 }

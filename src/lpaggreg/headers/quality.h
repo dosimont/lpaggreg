@@ -55,6 +55,11 @@ namespace lpaggreg{
         void operator*=(Quality<T> &quality);
         void operator/=(Quality<T> &quality);
 
+        void operator+=(Quality<T> *quality);
+        void operator-=(Quality<T> *quality);
+        void operator*=(Quality<T> *quality);
+        void operator/=(Quality<T> *quality);
+
         template<typename U>
         friend Quality<U> operator+(Quality<U> &quality1, Quality<U> &quality2);
         template<typename U>
