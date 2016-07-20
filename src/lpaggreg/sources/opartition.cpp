@@ -21,43 +21,38 @@ void lpaggreg::OPart::setEnd(int value)
     end = value;
 }
 
-
-lpaggreg::OPartition::OPartition()
-{
-
-}
-
-vector<int> lpaggreg::OPartition::getCuts() const
+template<typename T>
+vector<int> lpaggreg::OPartition<T>::getCuts() const
 {
     return cuts;
 }
 
-void lpaggreg::OPartition::setCuts(const vector<int> &value)
+template<typename T>
+void lpaggreg::OPartition<T>::setCuts(const vector<int> &value)
 {
     cuts = value;
 }
 
-vector<OPart> lpaggreg::OPartition::getParts() const
+template<typename T>
+vector<lpaggreg::OPart> lpaggreg::OPartition<T>::getParts() const
 {
     return parts;
 }
 
-void lpaggreg::OPartition::setParts(const vector<OPart> &value)
-{
-    parts = value;
-}
-
-shared_ptr<lpaggreg::Quality<lp_quality_type> > lpaggreg::OPartition::getQuality() const
+template<typename T>
+shared_ptr<lpaggreg::Quality<lp_quality_type> > lpaggreg::OPartition<T>::getQuality() const
 {
     return quality;
 }
 
-void lpaggreg::OPartition::setQuality(const shared_ptr<Quality<lp_quality_type> > &value)
+template<typename T>
+void lpaggreg::OPartition<T>::setQuality(const shared_ptr<Quality<lp_quality_type> > &value)
 {
     quality = value;
 }
 
-void lpaggreg::OPartition::computeParts()
+template<typename T>
+void lpaggreg::OPartition<T>::computeParts()
 {
     for (int i=0; i<cuts.size();i=cuts[i]+1){
         parts.push_back(OPart(i, cuts[i]));
