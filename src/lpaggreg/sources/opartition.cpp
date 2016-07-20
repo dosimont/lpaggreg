@@ -22,15 +22,16 @@ void lpaggreg::OPart::setEnd(int value)
 }
 
 template<typename T>
-vector<int> lpaggreg::OPartition<T>::getCuts() const
+lpaggreg::OPartition<T>::OPartition(vector<int> cuts, shared_ptr<UpperTriangularMatrix<shared_ptr<Quality<T> > > > qualities, float parameter):parameter(parameter), cuts(cuts), qualities(qualities)
 {
-    return cuts;
+    computeParts();
+    computeQuality();
 }
 
 template<typename T>
-void lpaggreg::OPartition<T>::setCuts(const vector<int> &value)
+vector<int> lpaggreg::OPartition<T>::getCuts() const
 {
-    cuts = value;
+    return cuts;
 }
 
 template<typename T>
@@ -40,21 +41,79 @@ vector<lpaggreg::OPart> lpaggreg::OPartition<T>::getParts() const
 }
 
 template<typename T>
-shared_ptr<lpaggreg::Quality<lp_quality_type> > lpaggreg::OPartition<T>::getQuality() const
-{
-    return quality;
-}
-
-template<typename T>
-void lpaggreg::OPartition<T>::setQuality(const shared_ptr<Quality<lp_quality_type> > &value)
-{
-    quality = value;
-}
-
-template<typename T>
 void lpaggreg::OPartition<T>::computeParts()
 {
     for (int i=0; i<cuts.size();i=cuts[i]+1){
         parts.push_back(OPart(i, cuts[i]));
     }
 }
+
+template<typename T>
+void lpaggreg::OPartition<T>::computeQuality()
+{
+    quality=shared_ptr<Quality<T> >(new Quality<T>());
+    for (OPart it: parts){
+        quality+=qualities(it.getStart(),it.getEnd());
+    }
+}
+
+template<typename T>
+float lpaggreg::OPartition<T>::getParameter() const
+{
+    return parameter;
+}
+
+template<typename T>
+shared_ptr<lpaggreg::UpperTriangularMatrix<shared_ptr<lpaggreg::Quality<T> > > > lpaggreg::OPartition<T>::getQualities() const
+{
+    return qualities;
+}
+
+bool lpaggreg::operator==(lpaggreg::OPart &opart1, lpaggreg::OPart &opart2)
+{
+    return (opart1.getStart()==opart2.getStart()&&opart1.getEnd()==opart2.getEnd());
+}
+
+bool lpaggreg::operator!=(lpaggreg::OPart &opart1, lpaggreg::OPart &opart2)
+{
+    return !(opart1==opart2);
+}
+
+#ifndef PARTITION_COMPARE_QUALITY
+template<typename T>
+bool operator==(lpaggreg::OPartition<T> &opartition1, lpaggreg::OPartition<T> &opartition2)
+{
+    if (opartition1.getParts().size()!=opartition2.getParts().size()){
+        return false;
+    }else{
+        for (int i=0; i<opartition1.getParts().size(); i++){
+            if (opartition1.getParts().operator [](i)!=opartition2.getParts().operator [](i)){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+#endif
+
+#ifdef PARTITION_COMPARE_QUALITY
+template<typename T>
+bool operator==(lpaggreg::OPartition<T> &opartition1, lpaggreg::OPartition<T> &opartition2)
+{
+    return (opartition1.getQuality()==opartition2.getQuality());
+}
+#endif
+
+template<typename T>
+bool operator!=(lpaggreg::OPartition<T> &opartition1, lpaggreg::OPartition<T> &opartition2)
+{
+    return !(opartition1==opartition2);
+}
+
+
+
+
+
+
+
+

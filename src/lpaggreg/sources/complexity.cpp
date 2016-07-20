@@ -49,4 +49,3 @@ double entropyReduction(double val, double ent) {
 double divergence(int size, double value, double ent) {
 	return (value) * log(size) / ln - entropyReduction(value, ent);
 }
-

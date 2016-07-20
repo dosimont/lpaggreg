@@ -2,6 +2,7 @@
 #define PARTITIONER_H
 
 #include <vector>
+#include <memory>
 #include "lpglobal.h"
 #include "quality.h"
 
@@ -13,11 +14,11 @@ namespace lpaggreg{
     {
     public:
         Partitioner();
-        vector<float> *getPList() const;
-        virtual void computeBestPartitions(float threshold)=0;
+        virtual void computeBestPartitions(float threshold, float min=0.0, float max=1.0)=0;
+        vector<float> getPList() const;
 
-    private:
-        vector<float>* pList;
+    protected:
+        vector<float> pList;
     };
 
 }

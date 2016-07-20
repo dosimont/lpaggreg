@@ -110,8 +110,6 @@ void lpaggreg::Quality<T>::operator/=(lpaggreg::Quality<T>* quality)
     loss/=quality->loss;
 }
 
-
-
 template<typename U>
 lpaggreg::Quality<U> operator+(lpaggreg::Quality<U> &quality1, lpaggreg::Quality<U> &quality2)
 {

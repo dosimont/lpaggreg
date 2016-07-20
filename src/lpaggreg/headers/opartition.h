@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 #include "quality.h"
+#include "uppertriangularmatrix.h"
+#include "lpglobal.h"
 
 using namespace std;
 
@@ -20,6 +22,9 @@ namespace lpaggreg{
         int getEnd() const;
         void setEnd(int value);
 
+        friend bool operator==(OPart &opart1, OPart &opart2);
+        friend bool operator!=(OPart &opart1, OPart &opart2);
+
     private:
         int start;
         int end;
@@ -29,23 +34,27 @@ namespace lpaggreg{
     class OPartition
     {
     public:
-        OPartition(vector<int> cuts, shared_ptr<Quality<lp_quality_type> > quality);
+        OPartition(vector<int> cuts, shared_ptr<UpperTriangularMatrix<shared_ptr<Quality<T> > > > qualities, float parameter);
         vector<int> getCuts() const;
-        void setCuts(const vector<int> &value);
-
         vector<OPart> getParts() const;
+        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality<T> > > > getQualities() const;
 
-        shared_ptr<Quality<lp_quality_type> > getQuality() const;
-        void setQuality(const shared_ptr<Quality<lp_quality_type> > &value);
+        float getParameter() const;
 
     private:
         void computeParts();
-
+        void computeQuality();
+        float parameter;
         vector<int> cuts;
         vector<OPart> parts;
-        shared_ptr<Quality<lp_quality_type> > quality;
+        shared_ptr<Quality<T> > quality;
+        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality<T> > > > qualities;
     };
 
+    template<typename T>
+    bool operator==(OPartition<T> &opartition1, OPartition<T> &opartition2);
+    template<typename T>
+    bool operator!=(OPartition<T> &opartition1, OPartition<T> &opartition2);
 }
 
 #endif // OPARTITION_H

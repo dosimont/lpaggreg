@@ -1,17 +1,24 @@
 #include "opartitioner.h"
 
-
 lpaggreg::OPartitioner::OPartitioner(shared_ptr<UpperTriangularMatrix<shared_ptr<Quality<lp_quality_type> > > >):qualities(qualities)
 {
 
 }
 
-void lpaggreg::OPartitioner::computeBestPartitions(float threshold)
+void lpaggreg::OPartitioner::computeBestPartitions(float threshold, float min, float max)
 {
-
+    shared_ptr<OPartition <lp_quality_type> > bestPartitionMin;
+    shared_ptr<OPartition <lp_quality_type> > bestPartitionMax;
+    bestPartitionMin=computeBestPartition(min);
+    pList.push_back(min);
+    partitions[min]=bestPartitionMin;
+    bestPartitionMax=computeBestPartition(max);
+    addBestQualities(threshold, bestPartitionMin, bestPartitionMax);
+    pList.push_back(max);
+    partitions[max]=bestPartitionMax;
 }
 
-vector<int> lpaggreg::OPartitioner::computeBestCuts(float parameter)
+shared_ptr<lpaggreg::OPartition<lp_quality_type> > lpaggreg::OPartitioner::computeBestPartition(float parameter)
 {
     int size=qualities->getSize();
     vector<int> cut(size, size-1);
@@ -28,5 +35,23 @@ vector<int> lpaggreg::OPartitioner::computeBestCuts(float parameter)
             }
         }
     }
-    return cut;
+    shared_ptr<OPartition <lp_quality_type> > partition=shared_ptr<OPartition <lp_quality_type> >(new OPartition<lp_quality_type>(cut, qualities, parameter));
+    return partition;
 }
+
+void lpaggreg::OPartitioner::addBestQualities(float threshold, shared_ptr<OPartition<lp_quality_type> > bestPartitionMin, shared_ptr<OPartition<lp_quality_type> > bestPartitionMax)
+{
+    if (bestPartitionMin!=bestPartitionMax||bestPartitionMax->getParameter()-bestPartitionMin->getParameter()<=threshold){
+        float parameter=bestPartitionMin->getParameter()+(bestPartitionMax->getParameter()-bestPartitionMin->getParameter())/2;
+        shared_ptr<OPartition <lp_quality_type> > bestPartitionMid;
+        bestPartitionMid=computeBestPartition(parameter);
+        if (bestPartitionMid!=bestPartitionMin&&bestPartitionMid!=bestPartitionMax){
+            addBestQualities(threshold, bestPartitionMin, bestPartitionMid);
+            pList.push_back(parameter);
+            partitions[parameter]=bestPartitionMid;
+            addBestQualities(threshold, bestPartitionMid, bestPartitionMax);
+        }
+    }
+}
+
+
