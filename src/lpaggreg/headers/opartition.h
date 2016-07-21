@@ -33,10 +33,10 @@ namespace lpaggreg{
     class OPartition
     {
     public:
-        OPartition(vector<int> cuts, shared_ptr<UpperTriangularMatrix<shared_ptr<Quality > > > qualities, float parameter);
+        OPartition(vector<int> cuts, shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > qualities, float parameter);
         vector<int> getCuts() const;
         vector<OPart> getParts() const;
-        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality > > > getQualities() const;
+        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > getQualities() const;
 
         float getParameter() const;
 
