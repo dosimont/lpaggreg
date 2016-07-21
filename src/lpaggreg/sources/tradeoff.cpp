@@ -1,127 +1,127 @@
 #include "tradeoff.h"
 
 
-template<typename T>
-T lpaggreg::Tradeoff<T>::getValue() const
+
+T lpaggreg::Tradeoff::getValue() const
 {
     return value;
 }
 
-template<typename T>
-void lpaggreg::Tradeoff<T>::computePIC(float p)
+
+void lpaggreg::Tradeoff::computePIC(float p)
 {
     value=(p*quality->getGain())+((p-1)*quality->getLoss());
 }
 
-template<typename T>
-void lpaggreg::Tradeoff<T>::set(shared_ptr<lpaggreg::Quality<T> > quality, float p)
+
+void lpaggreg::Tradeoff::set(shared_ptr<lpaggreg::Quality> quality, float p)
 {
     this->quality=quality;
     computePIC(p);
 }
 
-template<typename T>
-shared_ptr<lpaggreg::Quality<T> > lpaggreg::Tradeoff<T>::getQuality() const
+
+shared_ptr<lpaggreg::Quality> lpaggreg::Tradeoff::getQuality() const
 {
     return quality;
 }
 
-template<typename T>
-lpaggreg::Tradeoff<T>::Tradeoff()
+
+lpaggreg::Tradeoff::Tradeoff()
 {
 
 }
 
-template<typename T>
-lpaggreg::Tradeoff<T>::Tradeoff(Tradeoff<T> &tradeoff):value(tradeoff.getValue()), quality(tradeoff.getQuality())
+
+lpaggreg::Tradeoff::Tradeoff(Tradeoff &tradeoff):value(tradeoff.getValue()), quality(tradeoff.getQuality())
 {
 
 }
 
-template<typename T>
-lpaggreg::Tradeoff<T>::Tradeoff(T value, shared_ptr<lpaggreg::Quality<T> > quality):value(value), quality(quality)
+
+lpaggreg::Tradeoff::Tradeoff(lp_quality_type value, shared_ptr<lpaggreg::Quality> quality):value(value), quality(quality)
 {
 }
 
-template<typename T>
-lpaggreg::Tradeoff<T>::Tradeoff(shared_ptr<lpaggreg::Quality<T> > quality,float p):quality(quality)
+
+lpaggreg::Tradeoff::Tradeoff(shared_ptr<lpaggreg::Quality> quality,float p):quality(quality)
 {
     computePIC(p);
 }
 
-template<typename T>
-lpaggreg::Tradeoff<T>::Tradeoff(shared_ptr<lpaggreg::Quality<T> > quality):quality(quality)
+
+lpaggreg::Tradeoff::Tradeoff(shared_ptr<lpaggreg::Quality> quality):quality(quality)
 {
     value=0;
 }
 
-template<typename T>
-void lpaggreg::Tradeoff<T>::operator+=(lpaggreg::Tradeoff<T> &tradeoff)
+
+void lpaggreg::Tradeoff::operator+=(lpaggreg::Tradeoff &tradeoff)
 {
     *quality+=*(tradeoff.quality);
     value+=tradeoff.value;
 }
 
-template<typename T>
-void lpaggreg::Tradeoff<T>::operator-=(lpaggreg::Tradeoff<T> &tradeoff)
+
+void lpaggreg::Tradeoff::operator-=(lpaggreg::Tradeoff &tradeoff)
 {
     *quality-=*(tradeoff.quality);
     value-=tradeoff.value;
 }
 
-template<typename T>
-void lpaggreg::Tradeoff<T>::operator*=(lpaggreg::Tradeoff<T> &tradeoff)
+
+void lpaggreg::Tradeoff::operator*=(lpaggreg::Tradeoff &tradeoff)
 {
     *quality*=*(tradeoff.quality);
     value*=tradeoff.value;
 }
 
-template<typename T>
-void lpaggreg::Tradeoff<T>::operator/=(lpaggreg::Tradeoff<T> &tradeoff)
+
+void lpaggreg::Tradeoff::operator/=(lpaggreg::Tradeoff &tradeoff)
 {
     *quality/=*(tradeoff.quality);
     value/=tradeoff.value;
 }
 
-template<typename T>
-lpaggreg::Tradeoff<T> operator+(lpaggreg::Tradeoff<T> &tradeoff1, lpaggreg::Tradeoff<T> &tradeoff2)
+
+lpaggreg::Tradeoff operator+(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
 {
-    return lpaggreg::Tradeoff<T>(tradeoff1.getValue()+tradeoff2.getValue(), tradeoff1.getQuality()+tradeoff2.getQuality());
+    return lpaggreg::Tradeoff(tradeoff1.getValue()+tradeoff2.getValue(), tradeoff1.getQuality()+tradeoff2.getQuality());
 }
 
-template<typename T>
-lpaggreg::Tradeoff<T> operator-(lpaggreg::Tradeoff<T> &tradeoff1, lpaggreg::Tradeoff<T> &tradeoff2)
+
+lpaggreg::Tradeoff operator-(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
 {
-    return lpaggreg::Tradeoff<T>(tradeoff1.getValue()-tradeoff2.getValue(), tradeoff1.getQuality()-tradeoff2.getQuality());
+    return lpaggreg::Tradeoff(tradeoff1.getValue()-tradeoff2.getValue(), tradeoff1.getQuality()-tradeoff2.getQuality());
 }
 
-template<typename T>
-lpaggreg::Tradeoff<T> operator*(lpaggreg::Tradeoff<T> &tradeoff1, lpaggreg::Tradeoff<T> &tradeoff2)
+
+lpaggreg::Tradeoff operator*(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
 {
-    return lpaggreg::Tradeoff<T>(tradeoff1.getValue()*tradeoff2.getValue(), tradeoff1.getQuality()*tradeoff2.getQuality());
+    return lpaggreg::Tradeoff(tradeoff1.getValue()*tradeoff2.getValue(), tradeoff1.getQuality()*tradeoff2.getQuality());
 }
 
-template<typename T>
-lpaggreg::Tradeoff<T> operator/(lpaggreg::Tradeoff<T> &tradeoff1, lpaggreg::Tradeoff<T> &tradeoff2)
+
+lpaggreg::Tradeoff operator/(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
 {
-    return lpaggreg::Tradeoff<T>(tradeoff1.getValue()/tradeoff2.getValue(), tradeoff1.getQuality()/tradeoff2.getQuality());
+    return lpaggreg::Tradeoff(tradeoff1.getValue()/tradeoff2.getValue(), tradeoff1.getQuality()/tradeoff2.getQuality());
 }
 
-template<typename T>
-bool lpaggreg::operator==(lpaggreg::Tradeoff<T> &tradeoff1, lpaggreg::Tradeoff<T> &tradeoff2)
+
+bool lpaggreg::operator==(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
 {
     return tradeoff1.getValue()==tradeoff2.getValue();
 
 }
 
-template<typename T>
-bool lpaggreg::operator!=(lpaggreg::Tradeoff<T> &tradeoff1, lpaggreg::Tradeoff<T> &tradeoff2)
+
+bool lpaggreg::operator!=(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
 {
     return !(tradeoff1.getValue()==tradeoff2.getValue());
 }
 
-template<typename T>
-bool lpaggreg::operator>(lpaggreg::Tradeoff<T> &tradeoff1, lpaggreg::Tradeoff<T> &tradeoff2)
+
+bool lpaggreg::operator>(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
 {
     return (tradeoff1.getValue()>tradeoff2.getValue()||(tradeoff1.getValue()==tradeoff2.getValue())&&
             (tradeoff1.getQuality().getGain()>tradeoff2.getQuality().getGain()||
@@ -129,23 +129,20 @@ bool lpaggreg::operator>(lpaggreg::Tradeoff<T> &tradeoff1, lpaggreg::Tradeoff<T>
              tradeoff1.getQuality().getLoss()<tradeoff2.getQuality().getLoss())));
 }
 
-template<typename T>
-bool lpaggreg::operator<=(lpaggreg::Tradeoff<T> &tradeoff1, lpaggreg::Tradeoff<T> &tradeoff2)
+
+bool lpaggreg::operator<=(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
 {
     return !(tradeoff1>tradeoff2);
 }
 
-template<typename T>
-bool lpaggreg::operator<(lpaggreg::Tradeoff<T> &tradeoff1, lpaggreg::Tradeoff<T> &tradeoff2)
+
+bool lpaggreg::operator<(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
 {
     return !(tradeoff1>tradeoff2||tradeoff1==tradeoff2);
 }
 
-template<typename T>
-bool lpaggreg::operator>=(lpaggreg::Tradeoff<T> &tradeoff1, lpaggreg::Tradeoff<T> &tradeoff2)
+
+bool lpaggreg::operator>=(lpaggreg::Tradeoff &tradeoff1, lpaggreg::Tradeoff &tradeoff2)
 {
     return !(tradeoff1<tradeoff2);
 }
-
-template class
-lpaggreg::Tradeoff<lp_quality_type>;

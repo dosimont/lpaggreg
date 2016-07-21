@@ -8,57 +8,45 @@ using namespace std;
 
 namespace lpaggreg{
 
-    template<typename T> class Tradeoff;
-
-    template<typename T> class Tradeoff
+    class Tradeoff
     {
 
     private:
 
-        shared_ptr<Quality<T> > quality;
+        shared_ptr<Quality> quality;
         T value;
 
     public:
         Tradeoff();
-        Tradeoff(Tradeoff<T> &tradeoff);
-        Tradeoff(shared_ptr<Quality<T> > quality);
-        Tradeoff(T value, shared_ptr<Quality<T> > quality);
-        Tradeoff(shared_ptr<Quality<T> > quality, float p);
+        Tradeoff(Tradeoff &tradeoff);
+        Tradeoff(shared_ptr<Quality> quality);
+        Tradeoff(T value, shared_ptr<Quality> quality);
+        Tradeoff(shared_ptr<Quality> quality, float p);
 
         void computePIC(float p);
 
-        void operator+=(Tradeoff<T> &tradeoff);
-        void operator-=(Tradeoff<T> &tradeoff);
-        void operator*=(Tradeoff<T> &tradeoff);
-        void operator/=(Tradeoff<T> &tradeoff);
+        void operator+=(Tradeoff &tradeoff);
+        void operator-=(Tradeoff &tradeoff);
+        void operator*=(Tradeoff &tradeoff);
+        void operator/=(Tradeoff &tradeoff);
 
         T getValue() const;
 
-        void set(shared_ptr<Quality<T> > quality, float p);
+        void set(shared_ptr<Quality> quality, float p);
 
-        shared_ptr<Quality<T> > getQuality() const;
+        shared_ptr<Quality> getQuality() const;
 };
 
-template<typename T>
-Tradeoff<T> operator+(Tradeoff<T> &tradeoff1, Tradeoff<T> &tradeoff2);
-template<typename T>
-Tradeoff<T> operator-(Tradeoff<T> &tradeoff1, Tradeoff<T> &tradeoff2);
-template<typename T>
-Tradeoff<T> operator*(Tradeoff<T> &tradeoff1, Tradeoff<T> &tradeoff2);
-template<typename T>
-Tradeoff<T> operator/(Tradeoff<T> &tradeoff1, Tradeoff<T> &tradeoff2);
-template<typename T>
-bool operator==(Tradeoff<T> &tradeoff1, Tradeoff<T> &tradeoff2);
-template<typename T>
-bool operator!=(Tradeoff<T> &tradeoff1, Tradeoff<T> &tradeoff2);
-template<typename T>
-bool operator<(Tradeoff<T> &tradeoff1, Tradeoff<T> &tradeoff2);
-template<typename T>
-bool operator>(Tradeoff<T> &tradeoff1, Tradeoff<T> &tradeoff2);
-template<typename T>
-bool operator<=(Tradeoff<T> &tradeoff1, Tradeoff<T> &tradeoff2);
-template<typename T>
-bool operator>=(Tradeoff<T> &tradeoff1, Tradeoff<T> &tradeoff2);
+Tradeoff operator+(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
+Tradeoff operator-(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
+Tradeoff operator*(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
+Tradeoff operator/(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
+bool operator==(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
+bool operator!=(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
+bool operator<(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
+bool operator>(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
+bool operator<=(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
+bool operator>=(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
 
 }
 
