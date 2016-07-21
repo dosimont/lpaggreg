@@ -10,7 +10,6 @@ OPTION(OPENMP "Use the parallel version" OFF)
 
 #Should not be modified
 
-project(lpaggreg)
 cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -32,7 +31,10 @@ else()
   message(ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
+enable_testing()
+
 ADD_SUBDIRECTORY(src)
+ADD_SUBDIRECTORY(test)
 
 export(PACKAGE ${PROJECT_NAME})
 
