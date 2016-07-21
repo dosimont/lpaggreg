@@ -20,7 +20,7 @@ namespace lpaggreg{
         Tradeoff();
         Tradeoff(Tradeoff &tradeoff);
         Tradeoff(shared_ptr<Quality> quality);
-        Tradeoff(T value, shared_ptr<Quality> quality);
+        Tradeoff(lp_quality_type value, shared_ptr<Quality> quality);
         Tradeoff(shared_ptr<Quality> quality, float p);
 
         void computePIC(float p);
