@@ -34,8 +34,13 @@ void lpaggreg::UpperTriangularMatrix<T>::operator()(unsigned int i, unsigned int
 template<typename T>
 T lpaggreg::UpperTriangularMatrix<T>::operator[](unsigned int i) {return matrix[i];}
 
-template<typename T>
+/*template<typename T>
 T &lpaggreg::UpperTriangularMatrix<T>::operator[](unsigned int i) const{return matrix[i];}
 
 template<typename T>
-T &lpaggreg::UpperTriangularMatrix<T>::operator()(unsigned int i, unsigned int j) const{return matrix[(j-i)*size-(j-i)*((j-i)-1)/2+i];}
+T &lpaggreg::UpperTriangularMatrix<T>::operator()(unsigned int i, unsigned int j) const{return matrix[(j-i)*size-(j-i)*((j-i)-1)/2+i];}*/
+
+template class lpaggreg::UpperTriangularMatrix<shared_ptr<lpaggreg::Quality<lp_quality_type> > >;
+
+template class
+lpaggreg::UpperTriangularMatrix<double>;

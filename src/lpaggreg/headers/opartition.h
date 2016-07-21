@@ -30,14 +30,13 @@ namespace lpaggreg{
         int end;
     };
 
-    template<typename T>
     class OPartition
     {
     public:
-        OPartition(vector<int> cuts, shared_ptr<UpperTriangularMatrix<shared_ptr<Quality<T> > > > qualities, float parameter);
+        OPartition(vector<int> cuts, shared_ptr<UpperTriangularMatrix<shared_ptr<Quality > > > qualities, float parameter);
         vector<int> getCuts() const;
         vector<OPart> getParts() const;
-        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality<T> > > > getQualities() const;
+        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality > > > getQualities() const;
 
         float getParameter() const;
 
@@ -47,14 +46,12 @@ namespace lpaggreg{
         float parameter;
         vector<int> cuts;
         vector<OPart> parts;
-        shared_ptr<Quality<T> > quality;
-        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality<T> > > > qualities;
+        shared_ptr<Quality> quality;
+        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > qualities;
     };
 
-    template<typename T>
-    bool operator==(OPartition<T> &opartition1, OPartition<T> &opartition2);
-    template<typename T>
-    bool operator!=(OPartition<T> &opartition1, OPartition<T> &opartition2);
+    bool operator==(OPartition &opartition1, OPartition &opartition2);
+    bool operator!=(OPartition &opartition1, OPartition &opartition2);
 }
 
 #endif // OPARTITION_H

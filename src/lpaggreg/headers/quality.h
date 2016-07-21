@@ -7,15 +7,15 @@
 
 namespace lpaggreg{
 
-    template<typename T> class Quality
+    class Quality
     {
     private:
 
         /*Gain*/
-        T gain;
+        lp_quality_type gain;
 
         /*Loss*/
-        T loss;
+        lp_quality_type loss;
 
     public:
 
@@ -25,53 +25,47 @@ namespace lpaggreg{
         Quality(Quality &quality);
 
         /*Constructor with parameters*/
-        Quality(T gain, T loss);
+        Quality(lp_quality_type gain, lp_quality_type loss);
 
         /*Destructor*/
         virtual ~Quality();
 
         /*Gain getter*/
-        T getGain() const;
+        lp_quality_type getGain() const;
 
         /*Gain setter*/
-        void setGain(T gain);
+        void setGain(lp_quality_type gain);
 
         /*Loss getter*/
-        T getLoss() const;
+        lp_quality_type getLoss() const;
 
         /*Loss setter*/
-        void setLoss(T loss);
+        void setLoss(lp_quality_type loss);
 
-        /*Add a value to current gain*/
-        void addToGain(T gain);
+        /*Add a value to currenlp_quality_type gain*/
+        void addToGain(lp_quality_type gain);
 
-        /*Add a value to current loss*/
-        void addToLoss(T loss);
+        /*Add a value to currenlp_quality_type loss*/
+        void addToLoss(lp_quality_type loss);
 
         /*Override operators*/
 
-        void operator+=(Quality<T> &quality);
-        void operator-=(Quality<T> &quality);
-        void operator*=(Quality<T> &quality);
-        void operator/=(Quality<T> &quality);
+        void operator+=(Quality &quality);
+        void operator-=(Quality &quality);
+        void operator*=(Quality &quality);
+        void operator/=(Quality &quality);
 
-        void operator+=(Quality<T> *quality);
-        void operator-=(Quality<T> *quality);
-        void operator*=(Quality<T> *quality);
-        void operator/=(Quality<T> *quality);
+        void operator+=(Quality *quality);
+        void operator-=(Quality *quality);
+        void operator*=(Quality *quality);
+        void operator/=(Quality *quality);
 
-        template<typename U>
-        friend Quality<U> operator+(Quality<U> &quality1, Quality<U> &quality2);
-        template<typename U>
-        friend Quality<U> operator-(Quality<U> &quality1, Quality<U> &quality2);
-        template<typename U>
-        friend Quality<U> operator*(Quality<U> &quality1, Quality<U> &quality2);
-        template<typename U>
-        friend Quality<U> operator/(Quality<U> &quality1, Quality<U> &quality2);
-        template<typename U>
-        friend bool operator==(Quality<U> &quality1, Quality<U> &quality2);
-        template<typename U>
-        friend bool operator!=(Quality<U> &quality1, Quality<U> &quality2);
+        friend Quality operator+(Quality &quality1, Quality &quality2);
+        friend Quality operator-(Quality &quality1, Quality &quality2);
+        friend Quality operator*(Quality &quality1, Quality &quality2);
+        friend Quality operator/(Quality &quality1, Quality &quality2);
+        friend bool operator==(Quality &quality1, Quality &quality2);
+        friend bool operator!=(Quality &quality1, Quality &quality2);
     };
 
 }

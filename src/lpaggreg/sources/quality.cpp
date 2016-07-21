@@ -1,152 +1,127 @@
 #include "quality.h"
 
-template<typename T>
-lpaggreg::Quality<T>::Quality():gain(0),loss(0)
+lpaggreg::Quality::Quality():gain(0),loss(0)
 {
 
 }
 
-template<typename T>
-lpaggreg::Quality<T>::Quality(T gain, T loss):gain(gain),loss(loss)
+lpaggreg::Quality::Quality(lp_quality_typegain, lp_quality_typeloss):gain(gain),loss(loss)
 {
 
 }
 
-template<typename T>
-lpaggreg::Quality<T>::Quality(Quality &quality):gain(quality.getGain()), loss(quality.getLoss())
+lpaggreg::Quality::Quality(Quality &quality):gain(quality.getGain()), loss(quality.getLoss())
 {
 
 }
 
-template<typename T>
-T lpaggreg::Quality<T>::getGain() const
+lp_quality_typelpaggreg::Quality::getGain() const
 {
     return gain;
 }
 
-template<typename T>
-void lpaggreg::Quality<T>::setGain(T gain)
+void lpaggreg::Quality::setGain(lp_quality_typegain)
 {
     this->gain=gain;
 }
 
-template<typename T>
-T lpaggreg::Quality<T>::getLoss() const
+lp_quality_typelpaggreg::Quality::getLoss() const
 {
     return loss;
 }
 
-template<typename T>
-void lpaggreg::Quality<T>::setLoss(T loss)
+void lpaggreg::Quality::setLoss(lp_quality_typeloss)
 {
     this->loss=loss;
 }
 
-template<typename T>
-void lpaggreg::Quality<T>::addToGain(T gain)
+void lpaggreg::Quality::addToGain(lp_quality_typegain)
 {
     this->gain+=gain;
 }
 
-template<typename T>
-void lpaggreg::Quality<T>::addToLoss(T loss)
+void lpaggreg::Quality::addToLoss(lp_quality_typeloss)
 {
     this->loss+=loss;
 }
 
-template<typename T>
-void lpaggreg::Quality<T>::operator+=(lpaggreg::Quality<T> &quality)
+void lpaggreg::Quality::operator+=(lpaggreg::Quality &quality)
 {
     gain+=quality.gain;
     loss+=quality.loss;
 }
 
-template<typename T>
-void lpaggreg::Quality<T>::operator-=(lpaggreg::Quality<T> &quality)
+void lpaggreg::Quality::operator-=(lpaggreg::Quality &quality)
 {
     gain-=quality.gain;
     loss-=quality.loss;
 }
 
-template<typename T>
-void lpaggreg::Quality<T>::operator*=(lpaggreg::Quality<T> &quality)
+void lpaggreg::Quality::operator*=(lpaggreg::Quality &quality)
 {
     gain*=quality.gain;
     loss*=quality.loss;
 }
 
-template<typename T>
-void lpaggreg::Quality<T>::operator/=(lpaggreg::Quality<T> &quality)
+void lpaggreg::Quality::operator/=(lpaggreg::Quality &quality)
 {
     gain/=quality.gain;
     loss/=quality.loss;
 }
 
-template<typename T>
-void lpaggreg::Quality<T>::operator+=(lpaggreg::Quality<T>* quality)
+void lpaggreg::Quality::operator+=(lpaggreg::Quality* quality)
 {
     gain+=quality->gain;
     loss+=quality->loss;
 }
 
-template<typename T>
-void lpaggreg::Quality<T>::operator-=(lpaggreg::Quality<T>* quality)
+void lpaggreg::Quality::operator-=(lpaggreg::Quality* quality)
 {
     gain-=quality->gain;
     loss-=quality->loss;
 }
 
-template<typename T>
-void lpaggreg::Quality<T>::operator*=(lpaggreg::Quality<T>* quality)
+void lpaggreg::Quality::operator*=(lpaggreg::Quality* quality)
 {
     gain*=quality->gain;
     loss*=quality->loss;
 }
 
-template<typename T>
-void lpaggreg::Quality<T>::operator/=(lpaggreg::Quality<T>* quality)
+void lpaggreg::Quality::operator/=(lpaggreg::Quality* quality)
 {
     gain/=quality->gain;
     loss/=quality->loss;
 }
 
-template<typename U>
-lpaggreg::Quality<U> operator+(lpaggreg::Quality<U> &quality1, lpaggreg::Quality<U> &quality2)
+lpaggreg::Quality operator+(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
 {
-    return lpaggreg::Quality<U>(quality1.gain+quality2.gain, quality1.loss+quality2.loss);
+    return lpaggreg::Quality(quality1.gain+quality2.gain, quality1.loss+quality2.loss);
 }
 
-template<typename U>
-lpaggreg::Quality<U> operator-(lpaggreg::Quality<U> &quality1, lpaggreg::Quality<U> &quality2)
+lpaggreg::Quality operator-(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
 {
-    return lpaggreg::Quality<U>(quality1.gain-quality2.gain, quality1.loss-quality2.loss);
+    return lpaggreg::Quality(quality1.gain-quality2.gain, quality1.loss-quality2.loss);
 }
 
-template<typename U>
-lpaggreg::Quality<U> operator*(lpaggreg::Quality<U> &quality1, lpaggreg::Quality<U> &quality2)
+lpaggreg::Quality operator*(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
 {
-    return lpaggreg::Quality<U>(quality1.gain*quality2.gain, quality1.loss*quality2.loss);
+    return lpaggreg::Quality(quality1.gain*quality2.gain, quality1.loss*quality2.loss);
 }
 
-template<typename U>
-lpaggreg::Quality<U> operator/(lpaggreg::Quality<U> &quality1, lpaggreg::Quality<U> &quality2)
+lpaggreg::Quality operator/(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
 {
-    return lpaggreg::Quality<U>(quality1.gain/quality2.gain, quality1.loss/quality2.loss);
+    return lpaggreg::Quality(quality1.gain/quality2.gain, quality1.loss/quality2.loss);
 }
 
-template<typename U>
-bool operator==(lpaggreg::Quality<U> &quality1, lpaggreg::Quality<U> &quality2)
+bool operator==(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
 {
-    U precision=std::max(quality1.gain+quality2.gain,quality1.loss+quality2.gloss)/2*LP_PRECISION;
+    lp_quality_type precision=std::max(quality1.gain+quality2.gain,quality1.loss+quality2.gloss)/2*LP_PRECISION;
     return (quality1.gain||quality2.gain&&quality1.loss||quality2.loss)||
             ((std::abs(quality1.gain-quality2.gain)<precision)&&
             (std::abs(quality1.gain-quality2.gain)<precision));
 }
 
-template<typename U>
-bool operator!=(lpaggreg::Quality<U> &quality1, lpaggreg::Quality<U> &quality2)
+bool operator!=(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
 {
     return !(quality1==quality2);
 }
-
-template class lpaggreg::Quality<lp_quality_type>;

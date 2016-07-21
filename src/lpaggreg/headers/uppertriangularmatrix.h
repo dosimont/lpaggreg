@@ -16,10 +16,10 @@ namespace lpaggreg{
         int elements;
     public:
         UpperTriangularMatrix(unsigned int size);
-        T &operator()(unsigned int i, unsigned int j) const;
+        /*T &operator()(unsigned int i, unsigned int j) const;*/
         T operator()(unsigned int i, unsigned int j);
         void operator()(unsigned int i, unsigned int j, T value);
-        T &operator[](unsigned int i) const;
+        /*T &operator[](unsigned int i) const;*/
         T operator[](unsigned int i);
         vector<T> matrix;
         int getElements() const;
