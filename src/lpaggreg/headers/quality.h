@@ -3,7 +3,10 @@
 
 #include <cmath>
 #include <algorithm>
+#include <memory>
 #include "lpglobal.h"
+
+using namespace std;
 
 namespace lpaggreg{
 
@@ -22,13 +25,8 @@ namespace lpaggreg{
         /*Constructor, initialize gain and loss with value 0*/
         Quality();
 
-        Quality(Quality &quality);
-
         /*Constructor with parameters*/
         Quality(lp_quality_type gain, lp_quality_type loss);
-
-        /*Destructor*/
-        virtual ~Quality();
 
         /*Gain getter*/
         lp_quality_type getGain() const;
@@ -55,18 +53,14 @@ namespace lpaggreg{
         void operator*=(Quality &quality);
         void operator/=(Quality &quality);
 
-        void operator+=(Quality *quality);
-        void operator-=(Quality *quality);
-        void operator*=(Quality *quality);
-        void operator/=(Quality *quality);
-
-        friend Quality operator+(Quality &quality1, Quality &quality2);
-        friend Quality operator-(Quality &quality1, Quality &quality2);
-        friend Quality operator*(Quality &quality1, Quality &quality2);
-        friend Quality operator/(Quality &quality1, Quality &quality2);
-        friend bool operator==(Quality &quality1, Quality &quality2);
-        friend bool operator!=(Quality &quality1, Quality &quality2);
     };
+
+    Quality operator+(Quality &quality1, Quality &quality2);
+    Quality operator-(Quality &quality1, Quality &quality2);
+    Quality operator*(Quality &quality1, Quality &quality2);
+    Quality operator/(Quality &quality1, Quality &quality2);
+    bool operator==(Quality &quality1, Quality &quality2);
+    bool operator!=(Quality &quality1, Quality &quality2);
 
 }
 

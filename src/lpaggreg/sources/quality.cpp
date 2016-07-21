@@ -5,42 +5,37 @@ lpaggreg::Quality::Quality():gain(0),loss(0)
 
 }
 
-lpaggreg::Quality::Quality(lp_quality_typegain, lp_quality_typeloss):gain(gain),loss(loss)
+lpaggreg::Quality::Quality(lp_quality_type gain, lp_quality_type loss):gain(gain),loss(loss)
 {
 
 }
 
-lpaggreg::Quality::Quality(Quality &quality):gain(quality.getGain()), loss(quality.getLoss())
-{
-
-}
-
-lp_quality_typelpaggreg::Quality::getGain() const
+lp_quality_type lpaggreg::Quality::getGain() const
 {
     return gain;
 }
 
-void lpaggreg::Quality::setGain(lp_quality_typegain)
+void lpaggreg::Quality::setGain(lp_quality_type gain)
 {
     this->gain=gain;
 }
 
-lp_quality_typelpaggreg::Quality::getLoss() const
+lp_quality_type lpaggreg::Quality::getLoss() const
 {
     return loss;
 }
 
-void lpaggreg::Quality::setLoss(lp_quality_typeloss)
+void lpaggreg::Quality::setLoss(lp_quality_type loss)
 {
     this->loss=loss;
 }
 
-void lpaggreg::Quality::addToGain(lp_quality_typegain)
+void lpaggreg::Quality::addToGain(lp_quality_type gain)
 {
     this->gain+=gain;
 }
 
-void lpaggreg::Quality::addToLoss(lp_quality_typeloss)
+void lpaggreg::Quality::addToLoss(lp_quality_type loss)
 {
     this->loss+=loss;
 }
@@ -69,59 +64,35 @@ void lpaggreg::Quality::operator/=(lpaggreg::Quality &quality)
     loss/=quality.loss;
 }
 
-void lpaggreg::Quality::operator+=(lpaggreg::Quality* quality)
+lpaggreg::Quality lpaggreg::operator+(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
 {
-    gain+=quality->gain;
-    loss+=quality->loss;
+    return lpaggreg::Quality(quality1.getGain()+quality2.getGain(), quality1.getLoss()+quality2.getLoss());
 }
 
-void lpaggreg::Quality::operator-=(lpaggreg::Quality* quality)
+lpaggreg::Quality lpaggreg::operator-(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
 {
-    gain-=quality->gain;
-    loss-=quality->loss;
+    return lpaggreg::Quality(quality1.getGain()-quality2.getGain(), quality1.getLoss()-quality2.getLoss());
 }
 
-void lpaggreg::Quality::operator*=(lpaggreg::Quality* quality)
+lpaggreg::Quality lpaggreg::operator*(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
 {
-    gain*=quality->gain;
-    loss*=quality->loss;
+    return lpaggreg::Quality(quality1.getGain()*quality2.getGain(), quality1.getLoss()*quality2.getLoss());
 }
 
-void lpaggreg::Quality::operator/=(lpaggreg::Quality* quality)
+lpaggreg::Quality lpaggreg::operator/(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
 {
-    gain/=quality->gain;
-    loss/=quality->loss;
+    return lpaggreg::Quality(quality1.getGain()/quality2.getGain(), quality1.getLoss()/quality2.getLoss());
 }
 
-lpaggreg::Quality operator+(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
+bool lpaggreg::operator==(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
 {
-    return lpaggreg::Quality(quality1.gain+quality2.gain, quality1.loss+quality2.loss);
+    lp_quality_type precision=std::max(quality1.getGain()+quality2.getGain(),quality1.getLoss()+quality2.getLoss())/2*LP_PRECISION;
+    return (quality1.getGain()||quality2.getGain()&&quality1.getLoss()||quality2.getLoss())||
+            ((std::abs(quality1.getGain()-quality2.getGain())<precision)&&
+            (std::abs(quality1.getGain()-quality2.getGain())<precision));
 }
 
-lpaggreg::Quality operator-(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
-{
-    return lpaggreg::Quality(quality1.gain-quality2.gain, quality1.loss-quality2.loss);
-}
-
-lpaggreg::Quality operator*(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
-{
-    return lpaggreg::Quality(quality1.gain*quality2.gain, quality1.loss*quality2.loss);
-}
-
-lpaggreg::Quality operator/(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
-{
-    return lpaggreg::Quality(quality1.gain/quality2.gain, quality1.loss/quality2.loss);
-}
-
-bool operator==(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
-{
-    lp_quality_type precision=std::max(quality1.gain+quality2.gain,quality1.loss+quality2.gloss)/2*LP_PRECISION;
-    return (quality1.gain||quality2.gain&&quality1.loss||quality2.loss)||
-            ((std::abs(quality1.gain-quality2.gain)<precision)&&
-            (std::abs(quality1.gain-quality2.gain)<precision));
-}
-
-bool operator!=(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
+bool lpaggreg::operator!=(lpaggreg::Quality &quality1, lpaggreg::Quality &quality2)
 {
     return !(quality1==quality2);
 }

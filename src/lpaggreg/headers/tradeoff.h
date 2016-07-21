@@ -14,13 +14,13 @@ namespace lpaggreg{
     private:
 
         shared_ptr<Quality> quality;
-        T value;
+        lp_quality_type value;
 
     public:
         Tradeoff();
-        Tradeoff(Tradeoff &tradeoff);
+        //Tradeoff(Tradeoff &tradeoff);
         Tradeoff(shared_ptr<Quality> quality);
-        Tradeoff(lp_quality_type value, shared_ptr<Quality> quality);
+        Tradeoff(lp_quality_type value, shared_ptr<lpaggreg::Quality> quality);
         Tradeoff(shared_ptr<Quality> quality, float p);
 
         void computePIC(float p);
@@ -30,12 +30,11 @@ namespace lpaggreg{
         void operator*=(Tradeoff &tradeoff);
         void operator/=(Tradeoff &tradeoff);
 
-        T getValue() const;
-
         void set(shared_ptr<Quality> quality, float p);
 
         shared_ptr<Quality> getQuality() const;
-};
+        lp_quality_type getValue() const;
+    };
 
 Tradeoff operator+(Tradeoff &tradeoff1, Tradeoff &tradeoff2);
 Tradeoff operator-(Tradeoff &tradeoff1, Tradeoff &tradeoff2);

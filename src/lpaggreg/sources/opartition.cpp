@@ -1,6 +1,11 @@
 #include "opartition.h"
 
 
+lpaggreg::OPart::OPart(int start, int end):start(start), end(end)
+{
+
+}
+
 int lpaggreg::OPart::getStart() const
 {
     return start;
@@ -53,7 +58,7 @@ void lpaggreg::OPartition::computeQuality()
 {
     quality=shared_ptr<Quality>(new Quality());
     for (OPart it: parts){
-        quality+=qualities(it.getStart(),it.getEnd());
+        *quality+=*(qualities->operator ()(it.getStart(),it.getEnd()));
     }
 }
 
@@ -81,7 +86,7 @@ bool lpaggreg::operator!=(lpaggreg::OPart &opart1, lpaggreg::OPart &opart2)
 
 #ifndef PARTITION_COMPARE_QUALITY
 
-bool operator==(lpaggreg::OPartition &opartition1, lpaggreg::OPartition &opartition2)
+bool lpaggreg::operator==(lpaggreg::OPartition &opartition1, lpaggreg::OPartition &opartition2)
 {
     if (opartition1.getParts().size()!=opartition2.getParts().size()){
         return false;
@@ -98,14 +103,14 @@ bool operator==(lpaggreg::OPartition &opartition1, lpaggreg::OPartition &opartit
 
 #ifdef PARTITION_COMPARE_QUALITY
 
-bool operator==(lpaggreg::OPartition &opartition1, lpaggreg::OPartition &opartition2)
+bool lpaggreg::operator==(lpaggreg::OPartition &opartition1, lpaggreg::OPartition &opartition2)
 {
     return (opartition1.getQuality()==opartition2.getQuality());
 }
 #endif
 
 
-bool operator!=(lpaggreg::OPartition &opartition1, lpaggreg::OPartition &opartition2)
+bool lpaggreg::operator!=(lpaggreg::OPartition &opartition1, lpaggreg::OPartition &opartition2)
 {
     return !(opartition1==opartition2);
 }

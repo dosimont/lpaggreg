@@ -35,7 +35,7 @@ shared_ptr<lpaggreg::OPartition> lpaggreg::OPartitioner::computeBestPartition(fl
             }
         }
     }
-    shared_ptr<OPartition> partition=shared_ptr<OPartition>(new OPartition<lp_quality_type>(cut, qualities, parameter));
+    shared_ptr<OPartition> partition=shared_ptr<OPartition>(new OPartition(cut, qualities, parameter));
     return partition;
 }
 
