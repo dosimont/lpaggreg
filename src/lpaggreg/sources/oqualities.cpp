@@ -2,7 +2,7 @@
 
 void lpaggreg::OQualities::normalize()
 {
-    shared_ptr<Quality<lp_quality_type> > max=(*qualities)(0, values->getOsize()-1);
+    shared_ptr<Quality> max=(*qualities)(0, values->getOsize()-1);
     for (int i=0; i<qualities->getElements(); i++){
         (*(*qualities)[i])/=(*max);
     }
@@ -14,7 +14,7 @@ void lpaggreg::OQualities::computeQualities()
     unsigned vsize=values->getVsize();
     UpperTriangularMatrix<double> sum(osize);
     UpperTriangularMatrix<double> info(osize);
-    qualities=shared_ptr<UpperTriangularMatrix<shared_ptr<Quality<lp_quality_type> > > >(new UpperTriangularMatrix<shared_ptr<Quality<lp_quality_type> > >(osize));
+    qualities=shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > >(new UpperTriangularMatrix<shared_ptr<Quality> >(osize));
     for (int k = 0; k < vsize; k++) {
         for (int i = osize-1; i >=0; i--) {
             sum(i,i,(*values)[k][i]);
@@ -39,7 +39,7 @@ shared_ptr<lpaggreg::OValues> lpaggreg::OQualities::getValues() const
     return values;
 }
 
-shared_ptr<lpaggreg::UpperTriangularMatrix<shared_ptr<lpaggreg::Quality<lp_quality_type> > > > lpaggreg::OQualities::getQualities() const
+shared_ptr<lpaggreg::UpperTriangularMatrix<shared_ptr<lpaggreg::Quality> > > lpaggreg::OQualities::getQualities() const
 {
     return qualities;
 }

@@ -24,13 +24,13 @@ namespace lpaggreg{
 
         unsigned int size();
 
-        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality<lp_quality_type> > > > getQualities() const;
+        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > getQualities() const;
 
         shared_ptr<OValues> getValues() const;
 
     private:
         shared_ptr<OValues> values;
-        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality<lp_quality_type> > > >qualities;
+        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > >qualities;
     };
 
 }
