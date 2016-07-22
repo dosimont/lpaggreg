@@ -2,15 +2,11 @@
 
 OPTION(STATIC "Build a static library" OFF)
 
-#Not implemented yet
-OPTION(CROSS_WIN "Cross compilation for Windows" OFF)
-OPTION(TIMERS "Activate the timers (Linux Only)" OFF)
-OPTION(COUNTERS "Activate the counters" OFF)
-OPTION(OPENMP "Use the parallel version" OFF)
-
 #Should not be modified
 
 cmake_minimum_required(VERSION 2.8)
+
+set(CMAKE_BUILD_TYPE Debug)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 

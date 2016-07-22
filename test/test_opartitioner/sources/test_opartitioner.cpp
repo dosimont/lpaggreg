@@ -66,6 +66,8 @@ int main()
     }
     cout<<endl;
     cout<<"Computing Best Partitions"<<endl;
-    //opartitioner.computeBestPartitions(0.01);
+    opartitioner.computeBestPartitions(0.001);
+    for (float pr : opartitioner.getPList())
+    cout<<pr<<endl;
     return 0;
 }

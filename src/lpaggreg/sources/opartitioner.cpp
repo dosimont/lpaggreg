@@ -21,6 +21,13 @@ void lpaggreg::OPartitioner::computeBestPartitions(float threshold, float min, f
     addBestQualities(threshold, bestPartitionMin, bestPartitionMax);
     pList.push_back(max);
     partitions[max]=bestPartitionMax;
+    for (auto it = pList.end(); it!=pList.begin();it--){
+        auto it2=it-1;
+        if (*(partitions[*it])==*(partitions[*it2])){
+            partitions.erase(partitions.find(*it));
+            pList.erase(it);
+        }
+    }
 }
 
 shared_ptr<lpaggreg::OPartition> lpaggreg::OPartitioner::computeBestPartition(float parameter)
@@ -49,16 +56,14 @@ shared_ptr<lpaggreg::OPartition> lpaggreg::OPartitioner::computeBestPartition(fl
 
 void lpaggreg::OPartitioner::addBestQualities(float threshold, shared_ptr<OPartition> bestPartitionMin, shared_ptr<OPartition> bestPartitionMax)
 {
-    if (bestPartitionMin!=bestPartitionMax||bestPartitionMax->getParameter()-bestPartitionMin->getParameter()<=threshold){
+    if ((*bestPartitionMin!=*bestPartitionMax)&&bestPartitionMax->getParameter()-bestPartitionMin->getParameter()>threshold){
         float parameter=bestPartitionMin->getParameter()+(bestPartitionMax->getParameter()-bestPartitionMin->getParameter())/2;
         shared_ptr<OPartition> bestPartitionMid;
         bestPartitionMid=computeBestPartition(parameter);
-        if (bestPartitionMid!=bestPartitionMin&&bestPartitionMid!=bestPartitionMax){
-            addBestQualities(threshold, bestPartitionMin, bestPartitionMid);
-            pList.push_back(parameter);
-            partitions[parameter]=bestPartitionMid;
-            addBestQualities(threshold, bestPartitionMid, bestPartitionMax);
-        }
+        addBestQualities(threshold, bestPartitionMin, bestPartitionMid);
+        pList.push_back(parameter);
+        partitions[parameter]=bestPartitionMid;
+        addBestQualities(threshold, bestPartitionMid, bestPartitionMax);
     }
 }
 
