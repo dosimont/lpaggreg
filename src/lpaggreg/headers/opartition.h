@@ -1,6 +1,7 @@
 #ifndef OPARTITION_H
 #define OPARTITION_H
 
+#include <iostream>
 #include <vector>
 #include <memory>
 #include "quality.h"
@@ -39,6 +40,8 @@ namespace lpaggreg{
         shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > getQualities() const;
 
         float getParameter() const;
+
+        shared_ptr<Quality> getQuality() const;
 
     private:
         void computeParts();

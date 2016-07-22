@@ -2,13 +2,13 @@
 
 void lpaggreg::Tradeoff::computePIC(float p)
 {
-    value=(p*quality->getGain())+((p-1)*quality->getLoss());
+    value=(p*quality->getGain())-((1-p)*quality->getLoss());
 }
 
 
 void lpaggreg::Tradeoff::set(shared_ptr<lpaggreg::Quality> quality, float p)
 {
-    this->quality=quality;
+    this->quality=shared_ptr<Quality>(new Quality(quality->getGain(), quality->getLoss()));
     computePIC(p);
 }
 
@@ -36,19 +36,22 @@ lpaggreg::Tradeoff::Tradeoff()
 }*/
 
 
-lpaggreg::Tradeoff::Tradeoff(lp_quality_type value, shared_ptr<lpaggreg::Quality> quality):value(value), quality(quality)
+lpaggreg::Tradeoff::Tradeoff(lp_quality_type value, shared_ptr<lpaggreg::Quality> quality):value(value)
 {
+    this->quality=shared_ptr<Quality>(new Quality(quality->getGain(), quality->getLoss()));
 }
 
 
-lpaggreg::Tradeoff::Tradeoff(shared_ptr<lpaggreg::Quality> quality,float p):quality(quality)
+lpaggreg::Tradeoff::Tradeoff(shared_ptr<lpaggreg::Quality> quality,float p)
 {
+    this->quality=shared_ptr<Quality>(new Quality(quality->getGain(), quality->getLoss()));
     computePIC(p);
 }
 
 
-lpaggreg::Tradeoff::Tradeoff(shared_ptr<lpaggreg::Quality> quality):quality(quality)
+lpaggreg::Tradeoff::Tradeoff(shared_ptr<lpaggreg::Quality> quality)
 {
+    this->quality=shared_ptr<Quality>(new Quality(quality->getGain(), quality->getLoss()));
     value=0;
 }
 

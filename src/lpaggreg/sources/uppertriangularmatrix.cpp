@@ -19,10 +19,21 @@ template<>
 lpaggreg::UpperTriangularMatrix<double>::UpperTriangularMatrix(unsigned int size):size(size), elements(((size+1)*size/2)){matrix=vector<double>(elements, 0);}
 
 template<>
-lpaggreg::UpperTriangularMatrix<shared_ptr<lpaggreg::Quality > >::UpperTriangularMatrix(unsigned int size):size(size), elements(((size+1)*size/2)){matrix=vector<shared_ptr<lpaggreg::Quality > >(elements, shared_ptr<lpaggreg::Quality >(new Quality()));}
+lpaggreg::UpperTriangularMatrix<lp_quality_type>::UpperTriangularMatrix(unsigned int size):size(size), elements(((size+1)*size/2)){matrix=vector<lp_quality_type>(elements, 0);}
+
+template<>
+lpaggreg::UpperTriangularMatrix<shared_ptr<lpaggreg::Quality > >::UpperTriangularMatrix(unsigned int size):size(size), elements(((size+1)*size/2)){
+    matrix=vector<shared_ptr<lpaggreg::Quality > >();
+    for (int i; i<elements; i++){
+        matrix.push_back(shared_ptr<lpaggreg::Quality>(new Quality));
+    }
+}
+
 
 template<typename T>
-T lpaggreg::UpperTriangularMatrix<T>::operator()(unsigned int i, unsigned int j) {return matrix[(j-i)*size-(j-i)*((j-i)-1)/2+i];}
+T lpaggreg::UpperTriangularMatrix<T>::operator()(unsigned int i, unsigned int j) {
+    return matrix[(j-i)*size-(j-i)*((j-i)-1)/2+i];
+}
 
 
 template<typename T>
@@ -42,5 +53,6 @@ T &lpaggreg::UpperTriangularMatrix<T>::operator()(unsigned int i, unsigned int j
 
 template class lpaggreg::UpperTriangularMatrix<shared_ptr<lpaggreg::Quality > >;
 
-template class
-lpaggreg::UpperTriangularMatrix<double>;
+template class lpaggreg::UpperTriangularMatrix<double>;
+
+template class lpaggreg::UpperTriangularMatrix<lp_quality_type>;

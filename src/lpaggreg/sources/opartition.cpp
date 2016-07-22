@@ -62,6 +62,11 @@ void lpaggreg::OPartition::computeQuality()
     }
 }
 
+shared_ptr<lpaggreg::Quality> lpaggreg::OPartition::getQuality() const
+{
+    return quality;
+}
+
 
 float lpaggreg::OPartition::getParameter() const
 {

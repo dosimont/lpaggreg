@@ -36,12 +36,14 @@
 #ifndef COMPLEXITY_H_
 #define COMPLEXITY_H_
 
+#include "lpglobal.h"
+
 #include <cmath>
 
-double entropy(double val);
-double entropyReduction(double val, double ent);
-double divergence(int size, double value, double ent);
+lp_quality_type  entropy(lp_quality_type  val);
+lp_quality_type  entropyReduction(lp_quality_type  val, lp_quality_type  ent);
+lp_quality_type  divergence(int size, lp_quality_type  value, lp_quality_type  ent);
 
-static const double ln = log(2.0);
+static const lp_quality_type  ln = log(2.0);
 
 #endif /* COMPLEXITY_H_ */

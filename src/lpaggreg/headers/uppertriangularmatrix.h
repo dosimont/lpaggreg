@@ -30,6 +30,9 @@ namespace lpaggreg{
     UpperTriangularMatrix<double>::UpperTriangularMatrix(unsigned int size);
 
     template<>
+    UpperTriangularMatrix<lp_quality_type>::UpperTriangularMatrix(unsigned int size);
+
+    template<>
     UpperTriangularMatrix<shared_ptr<lpaggreg::Quality> >::UpperTriangularMatrix(unsigned int size);
 
 

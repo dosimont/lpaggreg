@@ -1,6 +1,11 @@
 #include "opartitioner.h"
 
-lpaggreg::OPartitioner::OPartitioner(shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > >):qualities(qualities)
+lpaggreg::OPartitioner::OPartitioner(shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > qualities):qualities(qualities)
+{
+
+}
+
+lpaggreg::OPartitioner::OPartitioner(lpaggreg::OQualities qualities):qualities(qualities.getQualities())
 {
 
 }
@@ -22,16 +27,19 @@ shared_ptr<lpaggreg::OPartition> lpaggreg::OPartitioner::computeBestPartition(fl
 {
     int size=qualities->getSize();
     vector<int> cut(size, size-1);
-    vector<shared_ptr<Tradeoff> > tradeoff= vector<shared_ptr<Tradeoff> >(size, shared_ptr<Tradeoff>(new Tradeoff()));
+    vector<shared_ptr<Tradeoff> > tradeoff= vector<shared_ptr<Tradeoff> >();
+    for (int i=0; i<size; i++){
+        tradeoff.push_back(shared_ptr<Tradeoff>(new Tradeoff()));
+    }
     shared_ptr<Tradeoff> tradeoff_t=shared_ptr<Tradeoff>(new Tradeoff());
     for (int i=size-1;i>=0;i--){
         (tradeoff[i])->set(qualities->operator()(i,size-1), parameter);
-        for (int cut_t=i; cut_t<size-2; cut_t++){
+        for (int cut_t=i; cut_t<size-1; cut_t++){
             tradeoff_t->set(qualities->operator()(i,cut_t), parameter);
-            *tradeoff_t+=*tradeoff[cut_t+1];
-            if (*tradeoff_t>*tradeoff[i]){
+            *tradeoff_t+=*(tradeoff[cut_t+1]);
+            if (*tradeoff_t>*(tradeoff[i])){
                 cut[i]=cut_t;
-                tradeoff[i]=tradeoff_t;
+                *(tradeoff[i])=*(tradeoff_t);
             }
         }
     }
@@ -52,6 +60,11 @@ void lpaggreg::OPartitioner::addBestQualities(float threshold, shared_ptr<OParti
             addBestQualities(threshold, bestPartitionMid, bestPartitionMax);
         }
     }
+}
+
+map<float, shared_ptr<lpaggreg::OPartition> > lpaggreg::OPartitioner::getPartitions() const
+{
+    return partitions;
 }
 
 

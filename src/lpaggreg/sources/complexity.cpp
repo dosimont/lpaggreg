@@ -35,17 +35,17 @@
 
 #include "complexity.h"
 
-double entropy(double val) {
+lp_quality_type  entropy(lp_quality_type  val) {
 	return val * log(val) / ln;
 }
 
-double entropyReduction(double val, double ent) {
+lp_quality_type  entropyReduction(lp_quality_type  val, lp_quality_type  ent) {
 	if (val> 0)
 		return entropy(val) - ent;
 	else
 		return 0;
 }
 
-double divergence(int size, double value, double ent) {
+lp_quality_type  divergence(int size, lp_quality_type  value, lp_quality_type  ent) {
 	return (value) * log(size) / ln - entropyReduction(value, ent);
 }
