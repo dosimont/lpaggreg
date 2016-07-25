@@ -52,7 +52,7 @@ unsigned int lpaggreg::OValuesN3::toJ(unsigned int index){
 
 lpaggreg::OValuesN3::OValuesN3(vector<vector<vector<double> > > values):
     OValues(values.size()>0&&values.operator [](0).size()>0?values.operator [](0).operator [](0).size():0,
-            (values.size()>0?values.operator [](0).size():0)*values.size()), values(values)
+            (values.size()>0?values.operator [](0).size():0)*values.size()), i(values.size()), j((values.size()>0?values.operator [](0).size():0)), values(values)
 {
 
 }
@@ -88,7 +88,10 @@ unsigned int lpaggreg::OValuesN4::toK(unsigned int index){
 lpaggreg::OValuesN4::OValuesN4(vector<vector<vector<vector<double> > > > values):
     OValues(values.operator [](0).operator [](0).size()?values.operator [](0).operator [](0).operator [](0).size():0,
             values.size()*(values.size()>0?values.operator [](0).size():0)*
-            (values.size()>0&&values.operator [](0).size()>0?values.operator [](0).operator [](0).size():0)), values(values)
+            (values.size()>0&&values.operator [](0).size()>0?values.operator [](0).operator [](0).size():0)),
+             i(values.size()), j(values.size()>0?values.operator [](0).size():0),
+             k(values.size()>0&&values.operator [](0).size()>0?values.operator [](0).operator [](0).size():0),
+             values(values)
 {
 
 }

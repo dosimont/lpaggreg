@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(opartitioner_1d_standard)
+project(opartitioner_2d_standard)
 
 file(GLOB_RECURSE SRC_FILES ${CMAKE_HOME_DIRECTORY}/test/${PROJECT_NAME}/sources/*.cpp)
 set(HEADER_DIR ${CMAKE_HOME_DIRECTORY}/test/${PROJECT_NAME}/headers)
