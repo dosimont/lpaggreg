@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(test_opartitioner)
+project(opartitioner_1d_standard)
 
-file(GLOB_RECURSE SRC_FILES ${CMAKE_HOME_DIRECTORY}/test/test_opartitioner/sources/*.cpp)
-set(HEADER_DIR ${CMAKE_HOME_DIRECTORY}/test/test_opartitioner/headers)
+file(GLOB_RECURSE SRC_FILES ${CMAKE_HOME_DIRECTORY}/test/opartitioner_1d_standard/sources/*.cpp)
+set(HEADER_DIR ${CMAKE_HOME_DIRECTORY}/test/opartitioner_1d_standard/headers)
 file(GLOB HEADER_FILES ${HEADER_DIR}/*.h)
 
 include_directories(${HEADER_DIR} ${lpaggreg_INCLUDE_DIRS})

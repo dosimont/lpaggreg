@@ -1,6 +1,7 @@
 #ifndef QUALITY_H
 #define QUALITY_H
 
+#include <iostream>
 #include <cmath>
 #include <algorithm>
 #include <memory>
@@ -61,6 +62,8 @@ namespace lpaggreg{
     Quality operator/(Quality &quality1, Quality &quality2);
     bool operator==(Quality &quality1, Quality &quality2);
     bool operator!=(Quality &quality1, Quality &quality2);
+    ostream& operator<<(std::ostream& stream, Quality &quality);
+
 
 }
 

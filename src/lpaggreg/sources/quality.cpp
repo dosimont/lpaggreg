@@ -96,3 +96,9 @@ bool lpaggreg::operator!=(lpaggreg::Quality &quality1, lpaggreg::Quality &qualit
 {
     return !(quality1==quality2);
 }
+
+std::ostream &lpaggreg::operator<<(std::ostream& stream, lpaggreg::Quality &quality)
+{
+    stream<<"("<<quality.getGain()<<","<<quality.getLoss()<<")";
+    return stream;
+}
