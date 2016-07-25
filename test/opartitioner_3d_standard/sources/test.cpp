@@ -28,8 +28,6 @@ int main()
     ordered_set.push_back(sub_ordered_set2);
     cout<<"Converting to OValuesN3"<<endl;
     shared_ptr<OValuesN3> values = shared_ptr<OValuesN3>(new OValuesN3(ordered_set));
-    cout<<values->getOsize()<<endl;
-    cout<<values->getVsize()<<endl;
     cout<<"Instanciating OQualities"<<endl;
     OQualities oqualities = OQualities(values);
     cout<<"Computing qualities"<<endl;
