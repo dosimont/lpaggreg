@@ -42,6 +42,16 @@ void lpaggreg::OValuesN2::operator()(unsigned int o, unsigned int a, double val)
     values[a][o]=val;
 }
 
+unsigned int lpaggreg::OValuesN3::getI() const
+{
+    return i;
+}
+
+unsigned int lpaggreg::OValuesN3::getJ() const
+{
+    return j;
+}
+
 unsigned int lpaggreg::OValuesN3::toI(unsigned int index){
     return index/j;
 }
@@ -71,6 +81,21 @@ double lpaggreg::OValuesN3::operator()(unsigned int o, unsigned int a, unsigned 
 
 void lpaggreg::OValuesN3::operator()(unsigned int o, unsigned int a, unsigned int b, double val) {
     values[a][b][o]=val;
+}
+
+unsigned int lpaggreg::OValuesN4::getI() const
+{
+    return i;
+}
+
+unsigned int lpaggreg::OValuesN4::getJ() const
+{
+    return j;
+}
+
+unsigned int lpaggreg::OValuesN4::getK() const
+{
+    return k;
 }
 
 unsigned int lpaggreg::OValuesN4::toI(unsigned int index){

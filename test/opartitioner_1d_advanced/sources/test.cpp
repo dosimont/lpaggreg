@@ -31,7 +31,7 @@ int main()
         return 1;
     }
 
-    cout<<"Instanciating OQualities"<<endl;
+    cout<<"Instantiating OQualities"<<endl;
     OQualities oqualities = OQualities(values);
 
     cout<<"Computing qualities"<<endl;
@@ -42,7 +42,7 @@ int main()
         return 2;
     }
 
-    cout<<"Instanciating OPartitioner"<<endl;
+    cout<<"Instantiating OPartitioner"<<endl;
     OPartitioner opartitioner = OPartitioner(oqualities);
 
     cout<<"Evaluating Best Partition for several values of p"<<endl;

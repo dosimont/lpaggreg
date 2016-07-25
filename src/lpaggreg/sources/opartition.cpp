@@ -26,6 +26,11 @@ void lpaggreg::OPart::setEnd(int value)
     end = value;
 }
 
+int lpaggreg::OPart::getSize()
+{
+    return end-start+1;
+}
+
 
 lpaggreg::OPartition::OPartition(vector<int> cuts, shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > qualities, float parameter):parameter(parameter), cuts(cuts), qualities(qualities)
 {

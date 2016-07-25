@@ -20,13 +20,13 @@ int main()
     ordered_set.push_back(sub_ordered_set2);
     cout<<"Converting to OValuesN2"<<endl;
     shared_ptr<OValuesN2> values = shared_ptr<OValuesN2>(new OValuesN2(ordered_set));
-    cout<<"Instanciating OQualities"<<endl;
+    cout<<"Instantiating OQualities"<<endl;
     OQualities oqualities = OQualities(values);
     cout<<"Computing qualities"<<endl;
     oqualities.computeQualities();
     cout<<"Normalizing qualities"<<endl;
     oqualities.normalize();
-    cout<<"Instanciating OPartitioner"<<endl;
+    cout<<"Instantiating OPartitioner"<<endl;
     OPartitioner opartitioner = OPartitioner(oqualities);
     float p=P;
     cout<<"Computing Best Partition for "<<p<<endl;

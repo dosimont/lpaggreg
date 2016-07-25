@@ -23,6 +23,8 @@ namespace lpaggreg{
         int getEnd() const;
         void setEnd(int value);
 
+        int getSize();
+
         friend bool operator==(OPart &opart1, OPart &opart2);
         friend bool operator!=(OPart &opart1, OPart &opart2);
 

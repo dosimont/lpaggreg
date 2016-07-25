@@ -16,13 +16,13 @@ int main()
     vector<double> ordered_set = {50.0/355.0, 100.0/355.0, 0.0, 200.0/355.0, 5.0/355.0};
     cout<<"Converting to OValuesN1"<<endl;
     shared_ptr<OValuesN1> values = shared_ptr<OValuesN1>(new OValuesN1(ordered_set));
-    cout<<"Instanciating OQualities"<<endl;
+    cout<<"Instantiating OQualities"<<endl;
     OQualities oqualities = OQualities(values);
     cout<<"Computing qualities"<<endl;
     oqualities.computeQualities();
     cout<<"Normalizing qualities"<<endl;
     oqualities.normalize();
-    cout<<"Instanciating OPartitioner"<<endl;
+    cout<<"Instantiating OPartitioner"<<endl;
     OPartitioner opartitioner = OPartitioner(oqualities);
     float p=P;
     cout<<"Computing Best Partition for "<<p<<endl;
