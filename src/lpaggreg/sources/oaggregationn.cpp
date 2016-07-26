@@ -115,6 +115,11 @@ lpaggreg::OAggregation1::OAggregation1(shared_ptr<lpaggreg::OPartition> opartiti
     }
 }
 
+lpaggreg::OAggregation1::OAggregation1(shared_ptr<lpaggreg::OPartition> opartition, OQualities qualities):OAggregation1(opartition,dynamic_pointer_cast<lpaggreg::OValuesN1>(qualities.getValues()))
+{
+
+}
+
 vector<lpaggreg::OAggregate1> lpaggreg::OAggregation1::getAggregates() const
 {
     return aggregates;
@@ -125,6 +130,11 @@ lpaggreg::OAggregation2::OAggregation2(shared_ptr<lpaggreg::OPartition> opartiti
     for (auto it: opartition->getParts()){
         aggregates.push_back(OAggregate2(it, values));
     }
+}
+
+lpaggreg::OAggregation2::OAggregation2(shared_ptr<lpaggreg::OPartition> opartition, OQualities qualities):OAggregation2(opartition,dynamic_pointer_cast<lpaggreg::OValuesN2>(qualities.getValues()))
+{
+
 }
 
 vector<lpaggreg::OAggregate2> lpaggreg::OAggregation2::getAggregates() const
@@ -139,6 +149,11 @@ lpaggreg::OAggregation3::OAggregation3(shared_ptr<lpaggreg::OPartition> opartiti
     }
 }
 
+lpaggreg::OAggregation3::OAggregation3(shared_ptr<lpaggreg::OPartition> opartition, OQualities qualities):OAggregation3(opartition,dynamic_pointer_cast<lpaggreg::OValuesN3>(qualities.getValues()))
+{
+
+}
+
 vector<lpaggreg::OAggregate3> lpaggreg::OAggregation3::getAggregates() const
 {
     return aggregates;
@@ -149,6 +164,11 @@ lpaggreg::OAggregation4::OAggregation4(shared_ptr<lpaggreg::OPartition> opartiti
     for (auto it: opartition->getParts()){
         aggregates.push_back(OAggregate4(it, values));
     }
+}
+
+lpaggreg::OAggregation4::OAggregation4(shared_ptr<lpaggreg::OPartition> opartition, OQualities qualities):OAggregation4(opartition,dynamic_pointer_cast<lpaggreg::OValuesN4>(qualities.getValues()))
+{
+
 }
 
 vector<lpaggreg::OAggregate4> lpaggreg::OAggregation4::getAggregates() const

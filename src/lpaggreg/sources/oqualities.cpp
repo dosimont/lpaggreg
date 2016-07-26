@@ -5,6 +5,26 @@ lpaggreg::OQualities::OQualities(shared_ptr<lpaggreg::OValues> values):values(va
 
 }
 
+lpaggreg::OQualities::OQualities(vector<double> original_values):values(shared_ptr<lpaggreg::OValuesN1>(new OValuesN1(original_values)))
+{
+
+}
+
+lpaggreg::OQualities::OQualities(vector<vector<double> > original_values):values(shared_ptr<lpaggreg::OValuesN2>(new OValuesN2(original_values)))
+{
+
+}
+
+lpaggreg::OQualities::OQualities(vector<vector<vector<double> > > original_values):values(shared_ptr<lpaggreg::OValuesN3>(new OValuesN3(original_values)))
+{
+
+}
+
+lpaggreg::OQualities::OQualities(vector<vector<vector<vector<double> > > > original_values):values(shared_ptr<lpaggreg::OValuesN4>(new OValuesN4(original_values)))
+{
+
+}
+
 void lpaggreg::OQualities::normalize()
 {
     shared_ptr<Quality> max=(*qualities)(0, values->getOsize()-1);

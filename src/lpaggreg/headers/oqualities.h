@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 #include "quality.h"
-#include "ovalues.h"
+#include "ovaluesn.h"
 #include "uppertriangularmatrix.h"
 #include "complexity.h"
 
@@ -16,11 +16,13 @@ namespace lpaggreg{
     {
     public:
         OQualities(shared_ptr<OValues> values);
+        OQualities(vector<double> original_values);
+        OQualities(vector<vector<double> > original_values);
+        OQualities(vector<vector<vector<double> > > original_values);
+        OQualities(vector<vector<vector<vector<double> > > >original_values);
+
         void normalize();
         void computeQualities();
-
-        //double & operator() (unsigned int i, unsigned int j) const {return qualities->operator()(i, j);}
-        //double operator() (unsigned int i, unsigned int j) {return qualities->operator()(i, j);}
 
         unsigned int size();
 
