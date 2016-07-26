@@ -5,6 +5,7 @@
 #include "oqualities.h"
 #include "opartitioner.h"
 #include "ovaluesn.h"
+#include "oaggregationn.h"
 
 using namespace std;
 using namespace lpaggreg;
@@ -52,6 +53,11 @@ int main()
             cerr<<"Invalid partition: p="<<it.first<<", qualities="<<*(opartition->getQuality())<<endl;
             return 3;
         }
+        OAggregation1 oaggregation=OAggregation1(opartition, values);
+        for (OAggregate1 it: oaggregation.getAggregates()){
+            cout<<it.getPart().getStart()<<"-"<<it.getPart().getEnd()<<": "<<it.getSum()<<", "<<it.getMean()<<endl;
+        }
+
     }
     cout<<"Evaluating Best Partitions"<<endl;
     opartitioner.computeBestPartitions(0.001);

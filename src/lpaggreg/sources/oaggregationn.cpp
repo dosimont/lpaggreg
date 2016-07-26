@@ -2,7 +2,7 @@
 
 lpaggreg::OAggregate1::OAggregate1(lpaggreg::OPart part, shared_ptr<lpaggreg::OValuesN1> values): OAggregate(part), values(values)
 {
-
+    compute();
 }
 
 void lpaggreg::OAggregate1::compute()
@@ -12,6 +12,16 @@ void lpaggreg::OAggregate1::compute()
         sum+=(*values)(o);
     }
     mean=sum/part.getSize();
+}
+
+double lpaggreg::OAggregate1::getMean() const
+{
+    return mean;
+}
+
+double lpaggreg::OAggregate1::getSum() const
+{
+    return sum;
 }
 
 lpaggreg::OAggregate2::OAggregate2(lpaggreg::OPart part, shared_ptr<lpaggreg::OValuesN2> values): OAggregate(part), values(values)
@@ -30,6 +40,16 @@ void lpaggreg::OAggregate2::compute()
     }
 }
 
+vector<double> lpaggreg::OAggregate2::getMean() const
+{
+    return mean;
+}
+
+vector<double> lpaggreg::OAggregate2::getSum() const
+{
+    return sum;
+}
+
 lpaggreg::OAggregate3::OAggregate3(lpaggreg::OPart part, shared_ptr<lpaggreg::OValuesN3> values): OAggregate(part), values(values)
 {
     compute();
@@ -46,6 +66,16 @@ void lpaggreg::OAggregate3::compute()
             mean[i][j]=sum[i][j]/part.getSize();
         }
     }
+}
+
+vector<vector<double> > lpaggreg::OAggregate3::getMean() const
+{
+    return mean;
+}
+
+vector<vector<double> > lpaggreg::OAggregate3::getSum() const
+{
+    return sum;
 }
 
 lpaggreg::OAggregate4::OAggregate4(lpaggreg::OPart part, shared_ptr<lpaggreg::OValuesN4> values): OAggregate(part), values(values)
@@ -68,22 +98,60 @@ void lpaggreg::OAggregate4::compute()
     }
 }
 
-lpaggreg::OAggregation1::OAggregation1(shared_ptr<lpaggreg::OPartition> opartition, shared_ptr<lpaggreg::OValuesN1> values):OAggregation(opartition)
+vector<vector<vector<double> > > lpaggreg::OAggregate4::getMean() const
 {
-
+    return mean;
 }
 
-lpaggreg::OAggregation2::OAggregation2(shared_ptr<lpaggreg::OPartition> opartition, shared_ptr<lpaggreg::OValuesN2> values):OAggregation(opartition)
+vector<vector<vector<double> > > lpaggreg::OAggregate4::getSum() const
 {
-
+    return sum;
 }
 
-lpaggreg::OAggregation3::OAggregation3(shared_ptr<lpaggreg::OPartition> opartition, shared_ptr<lpaggreg::OValuesN3> values):OAggregation(opartition)
+lpaggreg::OAggregation1::OAggregation1(shared_ptr<lpaggreg::OPartition> opartition, shared_ptr<lpaggreg::OValuesN1> values):OAggregation(opartition), values(values)
 {
-
+    for (auto it: opartition->getParts()){
+        aggregates.push_back(OAggregate1(it, values));
+    }
 }
 
-lpaggreg::OAggregation4::OAggregation4(shared_ptr<lpaggreg::OPartition> opartition, shared_ptr<lpaggreg::OValuesN4> values):OAggregation(opartition)
+vector<lpaggreg::OAggregate1> lpaggreg::OAggregation1::getAggregates() const
 {
+    return aggregates;
+}
 
+lpaggreg::OAggregation2::OAggregation2(shared_ptr<lpaggreg::OPartition> opartition, shared_ptr<lpaggreg::OValuesN2> values):OAggregation(opartition), values(values)
+{
+    for (auto it: opartition->getParts()){
+        aggregates.push_back(OAggregate2(it, values));
+    }
+}
+
+vector<lpaggreg::OAggregate2> lpaggreg::OAggregation2::getAggregates() const
+{
+    return aggregates;
+}
+
+lpaggreg::OAggregation3::OAggregation3(shared_ptr<lpaggreg::OPartition> opartition, shared_ptr<lpaggreg::OValuesN3> values):OAggregation(opartition), values(values)
+{
+    for (auto it: opartition->getParts()){
+        aggregates.push_back(OAggregate3(it, values));
+    }
+}
+
+vector<lpaggreg::OAggregate3> lpaggreg::OAggregation3::getAggregates() const
+{
+    return aggregates;
+}
+
+lpaggreg::OAggregation4::OAggregation4(shared_ptr<lpaggreg::OPartition> opartition, shared_ptr<lpaggreg::OValuesN4> values):OAggregation(opartition), values(values)
+{
+    for (auto it: opartition->getParts()){
+        aggregates.push_back(OAggregate4(it, values));
+    }
+}
+
+vector<lpaggreg::OAggregate4> lpaggreg::OAggregation4::getAggregates() const
+{
+    return aggregates;
 }
