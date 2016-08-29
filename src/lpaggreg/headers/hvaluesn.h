@@ -25,7 +25,7 @@ namespace lpaggreg{
     public:
         HValuesN2(vector< vector<double> > values);
         HValuesN2(unsigned int vsize, unsigned int osize);
-        vector<double> operator[] (unsigned int index);
+        HValuesN2Proxy operator[] (unsigned int index);
         double operator()(unsigned int h, unsigned int a);
         void operator()(unsigned int h, unsigned int a, double val);
     };
@@ -33,10 +33,10 @@ namespace lpaggreg{
     class HValuesN2Proxy
     {
     private:
-        int a;
+        int index;
         HValuesN2 hvalues;
     public:
-        HValuesN2Proxy(int a, HValuesN2 hvalues);
+        HValuesN2Proxy(int index, HValuesN2 hvalues);
         double operator[](unsigned int h);
     };
 
@@ -56,6 +56,16 @@ namespace lpaggreg{
         void operator()(unsigned int h, unsigned int a, unsigned int b, double val);
         unsigned int getI() const;
         unsigned int getJ() const;
+    };
+
+    class HValuesN3Proxy
+    {
+    private:
+        int index;
+        HValuesN3 hvalues;
+    public:
+        HValuesN3Proxy(int index, HValuesN3 hvalues);
+        double operator[](unsigned int h);
     };
 
     class HValuesN4: public HValues
