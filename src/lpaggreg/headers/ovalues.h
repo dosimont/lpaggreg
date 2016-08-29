@@ -18,8 +18,6 @@ namespace lpaggreg{
         unsigned int getVsize();
         unsigned int getOsize();
     };
-
-
 }
 
 #endif // OVALUES_H
