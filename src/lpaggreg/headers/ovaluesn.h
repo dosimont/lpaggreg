@@ -2,6 +2,7 @@
 #define OVALUESN_H
 
 #include "ovalues.h"
+#include "lpglobal.h"
 
 namespace lpaggreg{
 

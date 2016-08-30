@@ -2,6 +2,7 @@
 #define HVALUESN_H
 
 #include "hvalues.h"
+#include "lpglobal.h"
 
 namespace lpaggreg{
 
@@ -10,39 +11,29 @@ namespace lpaggreg{
     private:
         vector<double> values;
     public:
-        HValuesN1(vector<double> values);
-        HValuesN1(unsigned int hsize);
-        vector<double> operator[] (unsigned int index);
+        HValuesN1(vector<double> values, vector<int>parents);
+        HValuesN1(unsigned int hsize, vector<int>parents);
+        HValuesProxy operator[] (unsigned int index);
         double operator()(unsigned int h);
         void operator()(unsigned int h, double val);
+        double getValue(int h, int index);
     };
 
     class HValuesN2: public HValues
     {
-    friend class HValuesN2Proxy;
     private:
         vector< vector<double> > values;
     public:
-        HValuesN2(vector< vector<double> > values);
-        HValuesN2(unsigned int vsize, unsigned int hsize);
-        HValuesN2Proxy operator[] (unsigned int index);
+        HValuesN2(vector< vector<double> > values, vector<int>parents);
+        HValuesN2(unsigned int hsize, unsigned int vsize, vector<int>parents);
+        HValuesProxy operator[] (unsigned int index);
         double operator()(unsigned int h, unsigned int a);
         void operator()(unsigned int h, unsigned int a, double val);
-    };
-
-    class HValuesN2Proxy
-    {
-    private:
-        int index;
-        HValuesN2 hvalues;
-    public:
-        HValuesN2Proxy(int index, HValuesN2 hvalues);
-        double operator[](unsigned int h);
+        double getValue(int h, int index);
     };
 
     class HValuesN3: public HValues
     {
-        friend class HValuesN3Proxy;
     private:
         vector< vector< vector<double> > > values;
         unsigned int i;
@@ -50,28 +41,18 @@ namespace lpaggreg{
         unsigned int toI(unsigned int index);
         unsigned int toJ(unsigned int index);
     public:
-        HValuesN3(vector< vector< vector<double> > > values);
-        HValuesN3(unsigned int i, unsigned int j, unsigned int hsize);
-        vector<double> operator[] (unsigned int index);
+        HValuesN3(vector< vector< vector<double> > > values, vector<int>parents);
+        HValuesN3(unsigned int hsize, unsigned int i, unsigned int j, vector<int>parents);
+        HValuesProxy operator[] (unsigned int index);
         double operator()(unsigned int h, unsigned int a, unsigned int b);
         void operator()(unsigned int h, unsigned int a, unsigned int b, double val);
+        double getValue(int h, int index);
         unsigned int getI() const;
         unsigned int getJ() const;
     };
 
-    class HValuesN3Proxy
-    {
-    private:
-        int index;
-        HValuesN3 hvalues;
-    public:
-        HValuesN3Proxy(int index, HValuesN3 hvalues);
-        double operator[](unsigned int h);
-    };
-
     class HValuesN4: public HValues
     {
-        friend class HValuesN4Proxy;
     private:
         vector< vector< vector < vector< double> > > > values;
         unsigned int i;
@@ -81,24 +62,15 @@ namespace lpaggreg{
         unsigned int toJ(unsigned int index);
         unsigned int toK(unsigned int index);
     public:
-        HValuesN4(vector< vector< vector < vector< double> > > > values);
-        HValuesN4(unsigned int i, unsigned int j, unsigned int k, unsigned int hsize);
-        vector<double> operator[] (unsigned int index);
+        HValuesN4(vector< vector< vector < vector< double> > > > values, vector<int>parents);
+        HValuesN4(unsigned int hsize, unsigned int i, unsigned int j, unsigned int k, vector<int>parents);
+        HValuesProxy operator[] (unsigned int index);
         double operator()(unsigned int h, unsigned int a, unsigned int b, unsigned int c);
         void operator()(unsigned int h, unsigned int a, unsigned int b, unsigned int c, double val);
         unsigned int getI() const;
         unsigned int getJ() const;
         unsigned int getK() const;
-    };
-
-    class HValuesN4Proxy
-    {
-    private:
-        int index;
-        HValuesN4 hvalues;
-    public:
-        HValuesN4Proxy(int index, HValuesN4 hvalues);
-        double operator[](unsigned int h);
+        double getValue(int h, int index);
     };
 
 }
