@@ -28,6 +28,12 @@ void lpaggreg::OPartitioner::computeBestPartitions(float threshold, float min, f
             pList.erase(it);
         }
     }
+    for (auto it : partitions){
+        for (auto it2 : it.second->getParts()){
+            tuple<float, int, int> t(it.first, it2.getStart(), it2.getEnd());
+            partitionsTuples.push_back(t);
+        }
+    }
 }
 
 shared_ptr<lpaggreg::OPartition> lpaggreg::OPartitioner::computeBestPartition(float parameter)
@@ -65,6 +71,11 @@ void lpaggreg::OPartitioner::addBestQualities(float threshold, shared_ptr<OParti
         partitions[parameter]=bestPartitionMid;
         addBestQualities(threshold, bestPartitionMid, bestPartitionMax);
     }
+}
+
+list<tuple<float, int, int> > lpaggreg::OPartitioner::getPartitionsTuples() const
+{
+    return partitionsTuples;
 }
 
 map<float, shared_ptr<lpaggreg::OPartition> > lpaggreg::OPartitioner::getPartitions() const
