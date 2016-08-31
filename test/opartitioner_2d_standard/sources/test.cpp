@@ -18,8 +18,10 @@ int main()
     vector< vector<double> > ordered_set;
     ordered_set.push_back(sub_ordered_set1);
     ordered_set.push_back(sub_ordered_set2);
+    cout<<"Converting to OValuesN2"<<endl;
+    shared_ptr<OValuesN2> values = shared_ptr<OValuesN2>(new OValuesN2(ordered_set));
     cout<<"Instantiating OQualities"<<endl;
-    OQualities oqualities = OQualities(ordered_set);
+    OQualities oqualities = OQualities(values);
     cout<<"Computing qualities"<<endl;
     oqualities.computeQualities();
     cout<<"Normalizing qualities"<<endl;
