@@ -76,7 +76,6 @@ namespace lpaggreg{
     {
     public:
         OAggregation1(shared_ptr<OPartition> opartition, shared_ptr<OValuesN1> values);
-        OAggregation1(shared_ptr<OPartition> opartition, OQualities qualities);
         vector<OAggregate1> getAggregates() const;
 
     private:
@@ -89,7 +88,6 @@ namespace lpaggreg{
     {
     public:
         OAggregation2(shared_ptr<OPartition> opartition, shared_ptr<OValuesN2> values);
-        OAggregation2(shared_ptr<OPartition> opartition, OQualities qualities);
         vector<OAggregate2> getAggregates() const;
 
     private:
@@ -101,7 +99,6 @@ namespace lpaggreg{
     {
     public:
         OAggregation3(shared_ptr<OPartition> opartition, shared_ptr<OValuesN3> values);
-        OAggregation3(shared_ptr<OPartition> opartition, OQualities qualities);
         vector<OAggregate3> getAggregates() const;
 
     private:
@@ -113,7 +110,6 @@ namespace lpaggreg{
     {
     public:
         OAggregation4(shared_ptr<OPartition> opartition, shared_ptr<OValuesN4> values);
-        OAggregation4(shared_ptr<OPartition> opartition, OQualities qualities);
         vector<OAggregate4> getAggregates() const;
 
     private:
