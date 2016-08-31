@@ -12,6 +12,35 @@ namespace lpaggreg{
 
     class HValuesProxy;
 
+    class HValuesMetaData
+    {
+    public:
+        friend class HValues;
+        HValuesMetaData(unsigned int hsize, vector<int> parents);
+
+        void setPath();
+
+        unsigned int getHsize() const;
+
+        vector<int> getParents() const;
+
+        map<int, int> getSize() const;
+
+        vector<int> getPath() const;
+
+        int getRoot() const;
+
+        int getLeaves() const;
+
+    private:
+        unsigned int hsize;
+        vector<int>parents;
+        map<int, int>size;
+        vector<int> path;
+        int root;
+        int leaves;
+    };
+
     class HValues
     {
     protected:
@@ -20,14 +49,15 @@ namespace lpaggreg{
         vector<int>parents;
         map<int, int>size;
         vector<int> path;
-        void setPath();
-        int index;
+        int root;
+        int leaves;
+        HValuesMetaData metaData;
     public:
         HValues(unsigned int hsize, unsigned int vsize, vector<int>parents);
         virtual HValuesProxy operator[] (unsigned int index)=0;
         unsigned int getVsize();
-        unsigned int getHsize();
         virtual double getValue(int h, int index)=0;
+        HValuesMetaData getMetaData() const;
     };
 
     class HValuesProxy

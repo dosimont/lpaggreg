@@ -53,6 +53,7 @@ vector<lpaggreg::OPart> lpaggreg::OPartition::getParts() const
 
 void lpaggreg::OPartition::computeParts()
 {
+    parts.clear();
     for (int i=0; i<cuts.size();i=cuts[i]+1){
         parts.push_back(OPart(i, cuts[i]));
     }

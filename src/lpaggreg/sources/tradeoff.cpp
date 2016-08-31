@@ -26,9 +26,9 @@ lp_quality_type lpaggreg::Tradeoff::getValue() const
 
 lpaggreg::Tradeoff::Tradeoff()
 {
-
+    this->quality=shared_ptr<Quality>(new Quality());
+    value=0;
 }
-
 
 /*lpaggreg::Tradeoff::Tradeoff(Tradeoff &tradeoff):value(tradeoff.getValue()), quality(tradeoff.getQuality())
 {

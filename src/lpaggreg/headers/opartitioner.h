@@ -26,7 +26,6 @@ namespace lpaggreg{
         shared_ptr<OPartition> computeBestPartition(float parameter);    
         map<float, shared_ptr<OPartition> > getPartitions() const;
         list<tuple<float, int, int> > getPartitionsTuples() const;
-
     private:
         void addBestQualities(float threshold, shared_ptr<OPartition> bestPartitionMin, shared_ptr<OPartition> bestPartitionMax);
         shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > qualities;

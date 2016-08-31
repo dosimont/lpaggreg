@@ -15,7 +15,7 @@ namespace lpaggreg{
     class HQualities: Qualities
     {
     public:
-        HQualities(shared_ptr<vector< shared_ptr<Quality> > > qualities);
+        HQualities(shared_ptr<vector< shared_ptr<Quality> > > qualities, HValuesMetaData metaData);
         HQualities(shared_ptr<HValues> values);
 
         void normalize();
@@ -25,9 +25,12 @@ namespace lpaggreg{
 
         shared_ptr<vector<shared_ptr<Quality> > > getQualities() const;
 
+        HValuesMetaData getMetaData() const;
+
     private:
         shared_ptr<HValues> values;
         shared_ptr<vector< shared_ptr<Quality> > > qualities;
+        HValuesMetaData metaData;
 
     };
 
