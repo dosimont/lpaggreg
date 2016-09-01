@@ -26,8 +26,8 @@ lpaggreg::HValuesN1::HValuesN1(vector<double> values, vector<int>parents):HValue
 
 }
 
-lpaggreg::HValuesN1::HValuesN1(unsigned int hsize, vector<int>parents):HValues(hsize, 1, parents){
-    values=vector<double>(hsize, 0);
+lpaggreg::HValuesN1::HValuesN1(unsigned int leaves, vector<int>parents):HValues(leaves, 1, parents){
+    values=vector<double>(leaves, 0);
 }
 
 lpaggreg::HValuesProxy lpaggreg::HValuesN1::operator[](unsigned int index) {
@@ -47,8 +47,8 @@ lpaggreg::HValuesN2::HValuesN2(vector<vector<double> > values, vector<int>parent
 
 }
 
-lpaggreg::HValuesN2::HValuesN2(unsigned int hsize, unsigned int vsize, vector<int>parents):HValues(hsize, vsize, parents){
-    values=vector< vector <double > >(hsize, vector<double>(vsize, 0));
+lpaggreg::HValuesN2::HValuesN2(unsigned int leaves, unsigned int vsize, vector<int>parents):HValues(leaves, vsize, parents){
+    values=vector< vector <double > >(leaves, vector<double>(vsize, 0));
 }
 
 lpaggreg::HValuesProxy lpaggreg::HValuesN2::operator[](unsigned int index) {
@@ -87,8 +87,8 @@ lpaggreg::HValuesN3::HValuesN3(vector<vector<vector<double> > > values, vector<i
 
 }
 
-lpaggreg::HValuesN3::HValuesN3(unsigned int hsize, unsigned int i, unsigned int j, vector<int>parents):HValues(hsize, i*j, parents), i(i),j(j){
-    values=vector< vector < vector<double > > >(hsize, vector< vector<double> >(i, vector<double>(j, 0)));
+lpaggreg::HValuesN3::HValuesN3(unsigned int leaves, unsigned int i, unsigned int j, vector<int>parents):HValues(leaves, i*j, parents), i(i),j(j){
+    values=vector< vector < vector<double > > >(leaves, vector< vector<double> >(i, vector<double>(j, 0)));
 }
 
 lpaggreg::HValuesProxy lpaggreg::HValuesN3::operator[](unsigned int index) {
@@ -136,8 +136,8 @@ lpaggreg::HValuesN4::HValuesN4(vector<vector<vector<vector<double> > > > values,
 
 }
 
-lpaggreg::HValuesN4::HValuesN4(unsigned int hsize, unsigned int i, unsigned int j, unsigned int k, vector<int> parents):HValues(hsize, i*j*k, parents), i(i),j(j),k(k){
-    values=vector< vector < vector <vector<double > > > >(i, vector < vector< vector<double> > >(j, vector< vector<double> >(k, vector<double>(hsize, 0))));
+lpaggreg::HValuesN4::HValuesN4(unsigned int leaves, unsigned int i, unsigned int j, unsigned int k, vector<int> parents):HValues(leaves, i*j*k, parents), i(i),j(j),k(k){
+    values=vector< vector < vector <vector<double > > > >(i, vector < vector< vector<double> > >(j, vector< vector<double> >(k, vector<double>(leaves, 0))));
 }
 
 lpaggreg::HValuesProxy lpaggreg::HValuesN4::operator[](unsigned int index) {

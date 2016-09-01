@@ -8,13 +8,9 @@ lpaggreg::HValues::HValues(unsigned int hsize, unsigned int vsize, vector<int> p
 
 void lpaggreg::HValuesMetaData::setPath()
 {
-    leaves=0;
-    for (int h=0; h<hsize; h++){
-        if(!(std::find(parents.begin(), parents.end(), h) != parents.end())) {
-            path.push_back(h);
-            size[h]=1;
-            leaves++;
-        }
+    for (int h=0; h<leaves; h++){
+        path.push_back(h);
+        size[h]=1;
     }
     for (int i=0; parents[path[i]]!=-1; i++){
         if (size.count(parents[path[i]])) {
@@ -75,8 +71,8 @@ int lpaggreg::HValuesMetaData::getLeaves() const
     return leaves;
 }
 
-lpaggreg::HValuesMetaData::HValuesMetaData(unsigned int hsize, vector<int> parents)
-    : hsize(hsize), parents(parents)
+lpaggreg::HValuesMetaData::HValuesMetaData(unsigned int leaves, vector<int> parents)
+    : hsize(parents.size()), parents(parents), leaves(leaves)
 {
 
 }

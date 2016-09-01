@@ -16,7 +16,7 @@ namespace lpaggreg{
     {
     public:
         friend class HValues;
-        HValuesMetaData(unsigned int hsize, vector<int> parents);
+        HValuesMetaData(unsigned int leaves, vector<int> parents);
 
         void setPath();
 

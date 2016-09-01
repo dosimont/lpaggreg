@@ -52,7 +52,6 @@ shared_ptr<lpaggreg::HPartition> lpaggreg::HPartitioner::computeBestPartition(fl
     for (int h = metaData.getPath().operator [](i); i < metaData.getLeaves(); h = metaData.getPath().operator [](i++)){
         (tradeoff[h])->set((*qualities)[h], parameter);
         (*tradeoffChildren[(metaData.getParents())[h]])+=*(tradeoff[h]);
-
     }
     for (int h = metaData.getPath().operator [](i); i < hsize; h = metaData.getPath().operator [](i++)){
         (tradeoff[h])->set((*qualities)[h], parameter);

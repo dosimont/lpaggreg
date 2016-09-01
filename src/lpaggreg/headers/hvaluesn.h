@@ -12,7 +12,7 @@ namespace lpaggreg{
         vector<double> values;
     public:
         HValuesN1(vector<double> values, vector<int>parents);
-        HValuesN1(unsigned int hsize, vector<int>parents);
+        HValuesN1(unsigned int leaves, vector<int>parents);
         HValuesProxy operator[] (unsigned int index);
         double operator()(unsigned int h);
         void operator()(unsigned int h, double val);
@@ -25,7 +25,7 @@ namespace lpaggreg{
         vector< vector<double> > values;
     public:
         HValuesN2(vector< vector<double> > values, vector<int>parents);
-        HValuesN2(unsigned int hsize, unsigned int vsize, vector<int>parents);
+        HValuesN2(unsigned int leaves, unsigned int vsize, vector<int>parents);
         HValuesProxy operator[] (unsigned int index);
         double operator()(unsigned int h, unsigned int a);
         void operator()(unsigned int h, unsigned int a, double val);
@@ -42,7 +42,7 @@ namespace lpaggreg{
         unsigned int toJ(unsigned int index);
     public:
         HValuesN3(vector< vector< vector<double> > > values, vector<int>parents);
-        HValuesN3(unsigned int hsize, unsigned int i, unsigned int j, vector<int>parents);
+        HValuesN3(unsigned int leaves, unsigned int i, unsigned int j, vector<int>parents);
         HValuesProxy operator[] (unsigned int index);
         double operator()(unsigned int h, unsigned int a, unsigned int b);
         void operator()(unsigned int h, unsigned int a, unsigned int b, double val);
@@ -63,7 +63,7 @@ namespace lpaggreg{
         unsigned int toK(unsigned int index);
     public:
         HValuesN4(vector< vector< vector < vector< double> > > > values, vector<int>parents);
-        HValuesN4(unsigned int hsize, unsigned int i, unsigned int j, unsigned int k, vector<int>parents);
+        HValuesN4(unsigned int leaves, unsigned int i, unsigned int j, unsigned int k, vector<int>parents);
         HValuesProxy operator[] (unsigned int index);
         double operator()(unsigned int h, unsigned int a, unsigned int b, unsigned int c);
         void operator()(unsigned int h, unsigned int a, unsigned int b, unsigned int c, double val);
