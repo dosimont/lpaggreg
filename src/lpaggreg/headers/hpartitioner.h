@@ -1,12 +1,11 @@
 #ifndef HPARTITIONER_H
 #define HPARTITIONER_H
 
-#include <iostream>
 #include <vector>
 #include <memory>
 #include <map>
 #include <list>
-//#include <tuple>
+#include <tuple>
 #include "hqualities.h"
 #include "partitioner.h"
 #include "hpartition.h"
