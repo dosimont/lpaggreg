@@ -20,7 +20,6 @@ void lpaggreg::HValuesMetaData::setPath()
             size[parents[path[i]]]=size[path[i]];
         }
     }
-    root=path[path.size()-1];
 }
 
 lpaggreg::HValuesMetaData lpaggreg::HValues::getMetaData() const

@@ -13,6 +13,7 @@ lpaggreg::HPartitioner::HPartitioner(lpaggreg::HQualities qualities):qualities(q
 
 void lpaggreg::HPartitioner::computeBestPartitions(float threshold, float min, float max)
 {
+    cout<<"test1";
     shared_ptr<HPartition> bestPartitionMin;
     shared_ptr<HPartition> bestPartitionMax;
     bestPartitionMin=computeBestPartition(min);
@@ -29,6 +30,7 @@ void lpaggreg::HPartitioner::computeBestPartitions(float threshold, float min, f
             pList.erase(it);
         }
     }
+    cout<<"test2";
     for (auto it : partitions){
         for (auto it2 : it.second->getParts()){
             tuple<float, int, int> t(it.first, it2.getH(), it2.getSize());
@@ -39,6 +41,7 @@ void lpaggreg::HPartitioner::computeBestPartitions(float threshold, float min, f
 
 shared_ptr<lpaggreg::HPartition> lpaggreg::HPartitioner::computeBestPartition(float parameter)
 {
+    cout<<"test0";
     unsigned int hsize=metaData.getHsize();
     vector<shared_ptr<Tradeoff> > tradeoff= vector<shared_ptr<Tradeoff> >();
     vector<shared_ptr<Tradeoff> > tradeoffChildren= vector<shared_ptr<Tradeoff> >();

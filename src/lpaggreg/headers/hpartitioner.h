@@ -1,6 +1,7 @@
 #ifndef HPARTITIONER_H
 #define HPARTITIONER_H
 
+#include <iostream>
 #include <vector>
 #include <memory>
 #include <map>

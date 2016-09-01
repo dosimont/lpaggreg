@@ -1,6 +1,7 @@
 #ifndef HVALUES_H
 #define HVALUES_H
 
+#include <iostream>
 #include <vector>
 #include <map>
 #include <list>
