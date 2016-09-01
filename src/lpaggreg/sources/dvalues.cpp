@@ -1,6 +1,11 @@
 #include "dvalues.h"
 
 
+lpaggreg::HValuesMetaData lpaggreg::DValues::getMetaData() const
+{
+    return metaData;
+}
+
 lpaggreg::DValuesProxy lpaggreg::DValues::operator[](unsigned int h)
 {
     return DValuesProxy(h,this);

@@ -25,8 +25,8 @@ namespace lpaggreg{
         unsigned int getOsize() const;
         unsigned int getVsize() const;
         virtual vector<double> getValue(int h, int index)=0;
-        HValuesMetaData getMetaData() const;
 
+        HValuesMetaData getMetaData() const;
     };
 
     class DValuesProxy
