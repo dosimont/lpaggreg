@@ -125,7 +125,7 @@ lpaggreg::HValuesN4::HValuesN4(vector<vector<vector<vector<double> > > > values,
 }
 
 lpaggreg::HValuesN4::HValuesN4(unsigned int leaves, unsigned int i, unsigned int j, unsigned int k, vector<int> parents):HValues(leaves, i*j*k, parents), i(i),j(j),k(k){
-    values=vector< vector < vector <vector<double > > > >(i, vector < vector< vector<double> > >(j, vector< vector<double> >(k, vector<double>(leaves, 0))));
+    values=vector< vector < vector <vector<double > > > >(leaves, vector < vector< vector<double> > >(i, vector< vector<double> >(j, vector<double>(k, 0))));
 }
 
 double lpaggreg::HValuesN4::operator()(unsigned int h, unsigned int a, unsigned int b, unsigned int c) {
