@@ -12,6 +12,8 @@ lpaggreg::OPartitioner::OPartitioner(lpaggreg::OQualities qualities):qualities(q
 
 void lpaggreg::OPartitioner::computeBestPartitions(float threshold, float min, float max)
 {
+    pList.clear();
+    partitions.clear();
     shared_ptr<OPartition> bestPartitionMin;
     shared_ptr<OPartition> bestPartitionMax;
     bestPartitionMin=computeBestPartition(min);

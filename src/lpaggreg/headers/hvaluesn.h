@@ -13,7 +13,7 @@ namespace lpaggreg{
     public:
         HValuesN1(vector<double> values, vector<int>parents);
         HValuesN1(unsigned int leaves, vector<int>parents);
-        HValuesProxy operator[] (unsigned int index);
+        HValuesProxy operator[] (unsigned int h);
         double operator()(unsigned int h);
         void operator()(unsigned int h, double val);
         double getValue(int h, int index);
@@ -26,7 +26,7 @@ namespace lpaggreg{
     public:
         HValuesN2(vector< vector<double> > values, vector<int>parents);
         HValuesN2(unsigned int leaves, unsigned int vsize, vector<int>parents);
-        HValuesProxy operator[] (unsigned int index);
+        HValuesProxy operator[] (unsigned int h);
         double operator()(unsigned int h, unsigned int a);
         void operator()(unsigned int h, unsigned int a, double val);
         double getValue(int h, int index);
@@ -43,7 +43,7 @@ namespace lpaggreg{
     public:
         HValuesN3(vector< vector< vector<double> > > values, vector<int>parents);
         HValuesN3(unsigned int leaves, unsigned int i, unsigned int j, vector<int>parents);
-        HValuesProxy operator[] (unsigned int index);
+        HValuesProxy operator[] (unsigned int h);
         double operator()(unsigned int h, unsigned int a, unsigned int b);
         void operator()(unsigned int h, unsigned int a, unsigned int b, double val);
         double getValue(int h, int index);
@@ -64,7 +64,7 @@ namespace lpaggreg{
     public:
         HValuesN4(vector< vector< vector < vector< double> > > > values, vector<int>parents);
         HValuesN4(unsigned int leaves, unsigned int i, unsigned int j, unsigned int k, vector<int>parents);
-        HValuesProxy operator[] (unsigned int index);
+        HValuesProxy operator[] (unsigned int h);
         double operator()(unsigned int h, unsigned int a, unsigned int b, unsigned int c);
         void operator()(unsigned int h, unsigned int a, unsigned int b, unsigned int c, double val);
         unsigned int getI() const;

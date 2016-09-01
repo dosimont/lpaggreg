@@ -17,15 +17,10 @@ int main()
     vector<int> parents = {5, 5, 6, 6, 6, 7, 7, -1};
     cout<<"Converting to HValuesN1"<<endl;
     shared_ptr<HValuesN1> values = shared_ptr<HValuesN1>(new HValuesN1(hierarchical_set, parents));
-    cout<<"Leaves:"<<values->getMetaData().getLeaves()<<endl;
-    cout<<"HSize:"<<values->getMetaData().getHsize()<<endl;
-    cout<<"Root:"<<values->getMetaData().getRoot()<<endl;
     cout<<"Instantiating HQualities"<<endl;
     HQualities hqualities = HQualities(values);
     cout<<"Computing qualities"<<endl;
     hqualities.computeQualities();
-    cout<<"Quality size:"<<hqualities.size()<<endl;
-    cout<<hqualities.getQualities()->operator [](7)->getGain()<<endl;
     cout<<"Normalizing qualities"<<endl;
     hqualities.normalize();
     cout<<"Instantiating HPartitioner"<<endl;
@@ -33,7 +28,7 @@ int main()
     float p=P;
     cout<<"Computing Best Partition for "<<p<<endl;
     shared_ptr<HPartition> partition=hpartitioner.computeBestPartition(p);
-    cout<<"Quality:"<<partition->getQuality()->getGain()<<endl;
+    //cout<<"Quality:"<<partition->getQuality()->getGain()<<endl;
     cout<<"Computing Best Partitions"<<endl;
     hpartitioner.computeBestPartitions(0.001);
     return 0;

@@ -60,7 +60,8 @@ bool lpaggreg::operator!=(lpaggreg::HPartition &hpartition1, lpaggreg::HPartitio
 lpaggreg::HPartition::HPartition(vector<bool> aggregated, shared_ptr<vector<shared_ptr<lpaggreg::Quality> > > qualities, float parameter, lpaggreg::HValuesMetaData metaData):
     aggregated(aggregated), qualities(qualities), parameter(parameter), metaData(metaData)
 {
-
+    computeParts();
+    computeQuality();
 }
 
 void lpaggreg::HPartition::computeParts()
@@ -72,7 +73,7 @@ void lpaggreg::HPartition::computeParts()
         return;
     }
     int i=metaData.getHsize()-2;
-    for (int h = metaData.getPath().operator [](i); i > 0; h = metaData.getPath().operator [](i--)){
+    for (int h = metaData.getPath().operator [](i); i >= 0; h = metaData.getPath().operator [](--i)){
         if (!(involved.find((metaData.getParents())[h]) != involved.end())){
             if(aggregated[h]){
                 parts.push_back(HPart(h,(metaData.getSize())[h]));

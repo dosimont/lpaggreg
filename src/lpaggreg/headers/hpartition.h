@@ -2,7 +2,6 @@
 #define HPARTITION_H
 
 
-#include <iostream>
 #include <vector>
 #include <memory>
 #include <set>
@@ -24,7 +23,6 @@ namespace lpaggreg{
         friend bool operator!=(HPart &hpart1, HPart &hpart2);
 
         int getH() const;
-
         int getSize() const;
 
     private:

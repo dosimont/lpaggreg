@@ -30,8 +30,8 @@ lpaggreg::HValuesN1::HValuesN1(unsigned int leaves, vector<int>parents):HValues(
     values=vector<double>(leaves, 0);
 }
 
-lpaggreg::HValuesProxy lpaggreg::HValuesN1::operator[](unsigned int index) {
-    return HValuesProxy(index,this);
+lpaggreg::HValuesProxy lpaggreg::HValuesN1::operator[](unsigned int h) {
+    return HValuesProxy(h,this);
 }
 
 double lpaggreg::HValuesN1::operator()(unsigned int h) {
@@ -51,8 +51,8 @@ lpaggreg::HValuesN2::HValuesN2(unsigned int leaves, unsigned int vsize, vector<i
     values=vector< vector <double > >(leaves, vector<double>(vsize, 0));
 }
 
-lpaggreg::HValuesProxy lpaggreg::HValuesN2::operator[](unsigned int index) {
-    return HValuesProxy(index,this);
+lpaggreg::HValuesProxy lpaggreg::HValuesN2::operator[](unsigned int h) {
+    return HValuesProxy(h,this);
 }
 
 double lpaggreg::HValuesN2::operator()(unsigned int h, unsigned int a) {
@@ -91,8 +91,8 @@ lpaggreg::HValuesN3::HValuesN3(unsigned int leaves, unsigned int i, unsigned int
     values=vector< vector < vector<double > > >(leaves, vector< vector<double> >(i, vector<double>(j, 0)));
 }
 
-lpaggreg::HValuesProxy lpaggreg::HValuesN3::operator[](unsigned int index) {
-    return HValuesProxy(index,this);
+lpaggreg::HValuesProxy lpaggreg::HValuesN3::operator[](unsigned int h) {
+    return HValuesProxy(h,this);
 }
 
 double lpaggreg::HValuesN3::operator()(unsigned int h, unsigned int a, unsigned int b) {
@@ -140,8 +140,8 @@ lpaggreg::HValuesN4::HValuesN4(unsigned int leaves, unsigned int i, unsigned int
     values=vector< vector < vector <vector<double > > > >(i, vector < vector< vector<double> > >(j, vector< vector<double> >(k, vector<double>(leaves, 0))));
 }
 
-lpaggreg::HValuesProxy lpaggreg::HValuesN4::operator[](unsigned int index) {
-    return HValuesProxy(index,this);
+lpaggreg::HValuesProxy lpaggreg::HValuesN4::operator[](unsigned int h) {
+    return HValuesProxy(h,this);
 }
 
 double lpaggreg::HValuesN4::operator()(unsigned int h, unsigned int a, unsigned int b, unsigned int c) {

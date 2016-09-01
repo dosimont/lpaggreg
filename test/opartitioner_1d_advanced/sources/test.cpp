@@ -53,8 +53,8 @@ int main()
             cerr<<"Invalid partition: p="<<it.first<<", qualities="<<*(opartition->getQuality())<<endl;
             return 3;
         }
-        OAggregation1 oaggregation=OAggregation1(opartition, values);
-        for (OAggregate1 it: oaggregation.getAggregates()){
+        OAggregationN1 oaggregation=OAggregationN1(opartition, values);
+        for (OAggregateN1 it: oaggregation.getAggregates()){
             cout<<it.getPart().getStart()<<"-"<<it.getPart().getEnd()<<": "<<it.getSum()<<", "<<it.getMean()<<endl;
         }
 

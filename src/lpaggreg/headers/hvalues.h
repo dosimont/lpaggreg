@@ -1,7 +1,6 @@
 #ifndef HVALUES_H
 #define HVALUES_H
 
-#include <iostream>
 #include <vector>
 #include <map>
 #include <list>
@@ -17,7 +16,7 @@ namespace lpaggreg{
     {
     public:
         friend class HValues;
-        HValuesMetaData(unsigned int leaves, vector<int> parents);
+        HValuesMetaData(unsigned int leaveSize, vector<int> parents);
 
         void setPath();
 
@@ -31,15 +30,18 @@ namespace lpaggreg{
 
         int getRoot() const;
 
-        int getLeaves() const;
+        int getLeaveSize() const;
+
+        vector<vector<int> > getLeaves() const;
 
     private:
         unsigned int hsize;
         vector<int>parents;
+        vector<vector<int> >leaves;
         map<int, int>size;
         vector<int> path;
         int root;
-        int leaves;
+        int leaveSize;
     };
 
     class HValues
@@ -49,7 +51,7 @@ namespace lpaggreg{
         HValuesMetaData metaData;
     public:
         HValues(unsigned int leaves, unsigned int vsize, vector<int>parents);
-        virtual HValuesProxy operator[] (unsigned int index)=0;
+        virtual HValuesProxy operator[] (unsigned int h)=0;
         unsigned int getVsize();
         virtual double getValue(int h, int index)=0;
         HValuesMetaData getMetaData() const;
@@ -59,9 +61,9 @@ namespace lpaggreg{
     {
     private:
         HValues* hvalues;
-        int index;
+        int h;
     public:
-        HValuesProxy(int index, HValues *hvalues);
+        HValuesProxy(int h, HValues *hvalues);
         double operator[](unsigned int h);
     };
 }

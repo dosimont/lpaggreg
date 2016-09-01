@@ -2,7 +2,6 @@
 #define OAGGREGATIONN_H
 
 #include "oaggregation.h"
-
 #include <memory>
 #include "ovaluesn.h"
 #include "opartition.h"
@@ -12,12 +11,11 @@ using namespace std;
 
 namespace lpaggreg{
 
-    class OAggregate1: public OAggregate
+    class OAggregateN1: public OAggregate
     {
     public:
-        OAggregate1(OPart part, shared_ptr<OValuesN1> values);
+        OAggregateN1(OPart part, shared_ptr<OValuesN1> values);
         double getSum() const;
-
         double getMean() const;
 
     private:
@@ -27,10 +25,10 @@ namespace lpaggreg{
         double mean;
     };
 
-    class OAggregate2: public OAggregate
+    class OAggregateN2: public OAggregate
     {
     public:
-        OAggregate2(OPart part, shared_ptr<OValuesN2> values);
+        OAggregateN2(OPart part, shared_ptr<OValuesN2> values);
         vector<double> getSum() const;
 
         vector<double> getMean() const;
@@ -42,10 +40,10 @@ namespace lpaggreg{
         vector<double> mean;
     };
 
-    class OAggregate3: public OAggregate
+    class OAggregateN3: public OAggregate
     {
     public:
-        OAggregate3(OPart part, shared_ptr<OValuesN3> values);
+        OAggregateN3(OPart part, shared_ptr<OValuesN3> values);
         vector<vector<double> > getSum() const;
 
         vector<vector<double> > getMean() const;
@@ -57,10 +55,10 @@ namespace lpaggreg{
         vector<vector<double> > mean;
     };
 
-    class OAggregate4: public OAggregate
+    class OAggregateN4: public OAggregate
     {
     public:
-        OAggregate4(OPart part, shared_ptr<OValuesN4> values);
+        OAggregateN4(OPart part, shared_ptr<OValuesN4> values);
         vector<vector<vector<double> > > getSum() const;
 
         vector<vector<vector<double> > > getMean() const;
@@ -72,49 +70,49 @@ namespace lpaggreg{
         vector<vector<vector<double> > > mean;
     };
 
-    class OAggregation1: public OAggregation
+    class OAggregationN1: public OAggregation
     {
     public:
-        OAggregation1(shared_ptr<OPartition> opartition, shared_ptr<OValuesN1> values);
-        vector<OAggregate1> getAggregates() const;
+        OAggregationN1(shared_ptr<OPartition> opartition, shared_ptr<OValuesN1> values);
+        vector<OAggregateN1> getAggregates() const;
 
     private:
         shared_ptr<OValuesN1> values;
-        vector<OAggregate1> aggregates;
+        vector<OAggregateN1> aggregates;
 
     };
 
-    class OAggregation2: public OAggregation
+    class OAggregationN2: public OAggregation
     {
     public:
-        OAggregation2(shared_ptr<OPartition> opartition, shared_ptr<OValuesN2> values);
-        vector<OAggregate2> getAggregates() const;
+        OAggregationN2(shared_ptr<OPartition> opartition, shared_ptr<OValuesN2> values);
+        vector<OAggregateN2> getAggregates() const;
 
     private:
         shared_ptr<OValuesN2> values;
-        vector<OAggregate2> aggregates;
+        vector<OAggregateN2> aggregates;
     };
 
-    class OAggregation3: public OAggregation
+    class OAggregationN3: public OAggregation
     {
     public:
-        OAggregation3(shared_ptr<OPartition> opartition, shared_ptr<OValuesN3> values);
-        vector<OAggregate3> getAggregates() const;
+        OAggregationN3(shared_ptr<OPartition> opartition, shared_ptr<OValuesN3> values);
+        vector<OAggregateN3> getAggregates() const;
 
     private:
         shared_ptr<OValuesN3> values;
-        vector<OAggregate3> aggregates;
+        vector<OAggregateN3> aggregates;
     };
 
-    class OAggregation4: public OAggregation
+    class OAggregationN4: public OAggregation
     {
     public:
-        OAggregation4(shared_ptr<OPartition> opartition, shared_ptr<OValuesN4> values);
-        vector<OAggregate4> getAggregates() const;
+        OAggregationN4(shared_ptr<OPartition> opartition, shared_ptr<OValuesN4> values);
+        vector<OAggregateN4> getAggregates() const;
 
     private:
         shared_ptr<OValuesN4> values;
-        vector<OAggregate4> aggregates;
+        vector<OAggregateN4> aggregates;
     };
 }
 

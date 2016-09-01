@@ -13,7 +13,8 @@ lpaggreg::HPartitioner::HPartitioner(lpaggreg::HQualities qualities):qualities(q
 
 void lpaggreg::HPartitioner::computeBestPartitions(float threshold, float min, float max)
 {
-    cout<<"test1";
+    pList.clear();
+    partitions.clear();
     shared_ptr<HPartition> bestPartitionMin;
     shared_ptr<HPartition> bestPartitionMax;
     bestPartitionMin=computeBestPartition(min);
@@ -30,7 +31,6 @@ void lpaggreg::HPartitioner::computeBestPartitions(float threshold, float min, f
             pList.erase(it);
         }
     }
-    cout<<"test2";
     for (auto it : partitions){
         for (auto it2 : it.second->getParts()){
             tuple<float, int, int> t(it.first, it2.getH(), it2.getSize());
@@ -41,7 +41,6 @@ void lpaggreg::HPartitioner::computeBestPartitions(float threshold, float min, f
 
 shared_ptr<lpaggreg::HPartition> lpaggreg::HPartitioner::computeBestPartition(float parameter)
 {
-    cout<<"test0";
     unsigned int hsize=metaData.getHsize();
     vector<shared_ptr<Tradeoff> > tradeoff= vector<shared_ptr<Tradeoff> >();
     vector<shared_ptr<Tradeoff> > tradeoffChildren= vector<shared_ptr<Tradeoff> >();
@@ -52,17 +51,23 @@ shared_ptr<lpaggreg::HPartition> lpaggreg::HPartitioner::computeBestPartition(fl
         aggregated.push_back(true);
     }
     int i=0;
-    for (int h = metaData.getPath().operator [](i); i < metaData.getLeaves(); h = metaData.getPath().operator [](i++)){
+    int h;
+    for (h = metaData.getPath().operator [](i); i < metaData.getLeaveSize(); h = metaData.getPath().operator [](++i)){
         (tradeoff[h])->set((*qualities)[h], parameter);
         (*tradeoffChildren[(metaData.getParents())[h]])+=*(tradeoff[h]);
     }
-    for (int h = metaData.getPath().operator [](i); i < hsize; h = metaData.getPath().operator [](i++)){
+    for (h = metaData.getPath().operator [](i); i < hsize-1; h = metaData.getPath().operator [](++i)){
         (tradeoff[h])->set((*qualities)[h], parameter);
         if ((*tradeoff[h])<(*tradeoffChildren[h])){
             aggregated[h]=false;
             (*tradeoff[h])=(*tradeoffChildren[h]);
         }
         (*tradeoffChildren[(metaData.getParents())[h]])+=*(tradeoff[h]);
+    }
+    (tradeoff[h])->set((*qualities)[h], parameter);
+    if ((*tradeoff[h])<(*tradeoffChildren[h])){
+        aggregated[h]=false;
+        (*tradeoff[h])=(*tradeoffChildren[h]);
     }
     shared_ptr<HPartition> partition=shared_ptr<HPartition>(new HPartition(aggregated, qualities, parameter, metaData));
     return partition;

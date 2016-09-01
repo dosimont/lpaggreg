@@ -35,21 +35,18 @@ void lpaggreg::HQualities::computeQualities()
         int h;
         vector<lp_quality_type> sum(hsize,0);
         vector<lp_quality_type> info(hsize,0);
-        for (h = metaData.getPath().operator [](i); i < metaData.getLeaves(); h = metaData.getPath().operator [](++i)){
-            cout<<h<<",";
+        for (h = metaData.getPath().operator [](i); i < metaData.getLeaveSize(); h = metaData.getPath().operator [](++i)){
             sum[h] = (*values)[h][v];
             sum[(metaData.getParents())[h]]+=sum[h];
             info[h] = entropyReduction(sum[h], 0);
             info[(metaData.getParents())[h]]+=info[h];
         }
         for (h = metaData.getPath().operator [](i); i < hsize-1; h = metaData.getPath().operator [](++i)){
-            cout<<h<<",";
             sum[(metaData.getParents())[h]]+=sum[h];
             info[(metaData.getParents())[h]]+=info[h];
             (*qualities)[h]->addToGain(entropyReduction(sum[h], info[h]));
             (*qualities)[h]->addToLoss(divergence((metaData.getSize())[h],sum[h], info[h]));
         }
-        cout<<h<<",";
         (*qualities)[h]->addToGain(entropyReduction(sum[h], info[h]));
         (*qualities)[h]->addToLoss(divergence((metaData.getSize())[h],sum[h], info[h]));
     }
