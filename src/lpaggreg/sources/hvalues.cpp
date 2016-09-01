@@ -18,10 +18,10 @@ void lpaggreg::HValuesMetaData::setPath()
     }
     for (int i=0; parents[path[i]]!=-1; i++){
         if (size.count(parents[path[i]])) {
-            size[parents[path[i]]]++;
+            size[parents[path[i]]]+=size[path[i]];
         }else{
             path.push_back(parents[path[i]]);
-            size[parents[path[i]]]=1;
+            size[parents[path[i]]]=size[path[i]];
         }
     }
     root=path[path.size()-1];
