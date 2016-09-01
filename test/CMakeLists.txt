@@ -8,4 +8,4 @@ add_subdirectory(opartitioner_3d_standard)
 add_subdirectory(opartitioner_3d_advanced)
 add_subdirectory(opartitioner_4d_standard)
 add_subdirectory(opartitioner_4d_advanced)
-
+add_subdirectory(hpartitioner_1d_standard)
