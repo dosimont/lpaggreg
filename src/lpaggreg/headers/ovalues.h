@@ -13,7 +13,7 @@ namespace lpaggreg{
         unsigned int osize;
         unsigned int vsize;
     public:
-        OValues(unsigned int osize, unsigned int vsize);
+        OValues(unsigned int vsize, unsigned int osize);
         virtual vector<double> operator[] (unsigned int index)=0;
         unsigned int getVsize();
         unsigned int getOsize();

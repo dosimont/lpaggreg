@@ -34,7 +34,7 @@ void lpaggreg::OAggregateN2::compute()
     for (int i=0; i<values->getVsize(); i++){
         sum[i]=0;
         for (int o=part.getStart(); o<=part.getEnd();o++){
-            sum[i]+=(*values)(o, i);
+            sum[i]+=(*values)(i, o);
         }
         mean[i]=sum[i]/part.getSize();
     }
@@ -61,7 +61,7 @@ void lpaggreg::OAggregateN3::compute()
         for (int j=0; j<values->getJ(); j++){
             sum[i][j]=0;
             for (int o=part.getStart(); o<=part.getEnd();o++){
-                sum[i][j]+=(*values)(o, i, j);
+                sum[i][j]+=(*values)(i, j, o);
             }
             mean[i][j]=sum[i][j]/part.getSize();
         }
@@ -90,7 +90,7 @@ void lpaggreg::OAggregateN4::compute()
             for (int k=0; k<values->getK(); k++){
                 sum[i][j][k]=0;
                 for (int o=part.getStart(); o<=part.getEnd();o++){
-                    sum[i][j][k]+=(*values)(o, i, j, k);
+                    sum[i][j][k]+=(*values)(i, j, k, o);
                 }
                 mean[i][j][k]=sum[i][j][k]/part.getSize();
             }

@@ -26,8 +26,8 @@ namespace lpaggreg{
         OValuesN2(vector< vector<double> > values);
         OValuesN2(unsigned int vsize, unsigned int osize);
         vector<double> operator[] (unsigned int index);
-        double operator()(unsigned int o, unsigned int a);
-        void operator()(unsigned int o, unsigned int a, double val);
+        double operator()(unsigned int a, unsigned int o);
+        void operator()(unsigned int a, unsigned int o, double val);
     };
 
     class OValuesN3: public OValues
@@ -42,8 +42,8 @@ namespace lpaggreg{
         OValuesN3(vector< vector< vector<double> > > values);
         OValuesN3(unsigned int i, unsigned int j, unsigned int osize);
         vector<double> operator[] (unsigned int index);
-        double operator()(unsigned int o, unsigned int a, unsigned int b);
-        void operator()(unsigned int o, unsigned int a, unsigned int b, double val);
+        double operator()(unsigned int a, unsigned int b, unsigned int o);
+        void operator()(unsigned int a, unsigned int b, unsigned int o, double val);
         unsigned int getI() const;
         unsigned int getJ() const;
     };
@@ -62,8 +62,8 @@ namespace lpaggreg{
         OValuesN4(vector< vector< vector < vector< double> > > > values);
         OValuesN4(unsigned int i, unsigned int j, unsigned int k, unsigned int osize);
         vector<double> operator[] (unsigned int index);
-        double operator()(unsigned int o, unsigned int a, unsigned int b, unsigned int c);
-        void operator()(unsigned int o, unsigned int a, unsigned int b, unsigned int c, double val);
+        double operator()(unsigned int a, unsigned int b, unsigned int c, unsigned int o);
+        void operator()(unsigned int a, unsigned int b, unsigned int c, unsigned int o, double val);
         unsigned int getI() const;
         unsigned int getJ() const;
         unsigned int getK() const;

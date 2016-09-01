@@ -1,6 +1,6 @@
 #include "ovalues.h"
 
-lpaggreg::OValues::OValues(unsigned int osize, unsigned int vsize):osize(osize), vsize(vsize)
+lpaggreg::OValues::OValues(unsigned int vsize, unsigned int osize):osize(osize), vsize(vsize)
 {
 
 }

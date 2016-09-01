@@ -51,7 +51,7 @@ namespace lpaggreg{
         HValuesMetaData metaData;
     public:
         HValues(unsigned int leaves, unsigned int vsize, vector<int>parents);
-        virtual HValuesProxy operator[] (unsigned int h)=0;
+        HValuesProxy operator[] (unsigned int h);
         unsigned int getVsize();
         virtual double getValue(int h, int index)=0;
         HValuesMetaData getMetaData() const;
@@ -64,7 +64,7 @@ namespace lpaggreg{
         int h;
     public:
         HValuesProxy(int h, HValues *hvalues);
-        double operator[](unsigned int h);
+        double operator[](unsigned int index);
     };
 }
 

@@ -2,8 +2,12 @@
 
 lpaggreg::HValues::HValues(unsigned int leaves, unsigned int vsize, vector<int> parents): vsize(vsize), metaData(HValuesMetaData(leaves, parents))
 {
-    metaData.setPath();
 
+}
+
+lpaggreg::HValuesProxy lpaggreg::HValues::operator[](unsigned int h)
+{
+    return HValuesProxy(h,this);
 }
 
 void lpaggreg::HValuesMetaData::setPath()
@@ -88,5 +92,5 @@ vector<vector<int> > lpaggreg::HValuesMetaData::getLeaves() const
 lpaggreg::HValuesMetaData::HValuesMetaData(unsigned int leaveSize, vector<int> parents)
     : hsize(parents.size()), parents(parents), leaveSize(leaveSize)
 {
-
+    setPath();
 }

@@ -1,11 +1,11 @@
 #include "ovaluesn.h"
 
-lpaggreg::OValuesN1::OValuesN1(vector<double> values):OValues(values.size(), 1), values(values)
+lpaggreg::OValuesN1::OValuesN1(vector<double> values):OValues(1, SIZE1), values(values)
 {
 
 }
 
-lpaggreg::OValuesN1::OValuesN1(unsigned int osize):OValues(osize, 1){
+lpaggreg::OValuesN1::OValuesN1(unsigned int osize):OValues(1, osize){
     values=vector<double>(osize, 0);
 }
 
@@ -21,12 +21,12 @@ void lpaggreg::OValuesN1::operator()(unsigned int o, double val) {
     values[o]=val;
 }
 
-lpaggreg::OValuesN2::OValuesN2(vector<vector<double> > values):OValues(SIZE2, SIZE1), values(values)
+lpaggreg::OValuesN2::OValuesN2(vector<vector<double> > values):OValues(SIZE1, SIZE2), values(values)
 {
 
 }
 
-lpaggreg::OValuesN2::OValuesN2(unsigned int vsize, unsigned int osize):OValues(osize, vsize){
+lpaggreg::OValuesN2::OValuesN2(unsigned int vsize, unsigned int osize):OValues(vsize, osize){
     values=vector< vector <double > >(vsize, vector<double>(osize, 0));
 }
 
@@ -34,11 +34,11 @@ vector<double> lpaggreg::OValuesN2::operator[](unsigned int index) {
     return values[index];
 }
 
-double lpaggreg::OValuesN2::operator()(unsigned int o, unsigned int a) {
+double lpaggreg::OValuesN2::operator()(unsigned int a, unsigned int o) {
     return values[a][o];
 }
 
-void lpaggreg::OValuesN2::operator()(unsigned int o, unsigned int a, double val) {
+void lpaggreg::OValuesN2::operator()(unsigned int a, unsigned int o, double val) {
     values[a][o]=val;
 }
 
@@ -61,12 +61,12 @@ unsigned int lpaggreg::OValuesN3::toJ(unsigned int index){
 }
 
 lpaggreg::OValuesN3::OValuesN3(vector<vector<vector<double> > > values):
-    OValues(SIZE3, SIZE1*SIZE2), i(SIZE1), j(SIZE2), values(values)
+    OValues(SIZE1*SIZE2, SIZE3), i(SIZE1), j(SIZE2), values(values)
 {
 
 }
 
-lpaggreg::OValuesN3::OValuesN3(unsigned int i, unsigned int j, unsigned int osize):OValues(osize, i*j), i(i),j(j){
+lpaggreg::OValuesN3::OValuesN3(unsigned int i, unsigned int j, unsigned int osize):OValues(i*j, osize), i(i),j(j){
     values=vector< vector < vector<double > > >(i, vector< vector<double> >(j, vector<double>(osize, 0)));
 }
 
@@ -74,11 +74,11 @@ vector<double> lpaggreg::OValuesN3::operator[](unsigned int index) {
     return values[toI(index)][toJ(index)];
 }
 
-double lpaggreg::OValuesN3::operator()(unsigned int o, unsigned int a, unsigned int b) {
+double lpaggreg::OValuesN3::operator()(unsigned int a, unsigned int b, unsigned int o) {
     return values[a][b][o];
 }
 
-void lpaggreg::OValuesN3::operator()(unsigned int o, unsigned int a, unsigned int b, double val) {
+void lpaggreg::OValuesN3::operator()(unsigned int a, unsigned int b, unsigned int o, double val) {
     values[a][b][o]=val;
 }
 
@@ -110,12 +110,12 @@ unsigned int lpaggreg::OValuesN4::toK(unsigned int index){
 }
 
 lpaggreg::OValuesN4::OValuesN4(vector<vector<vector<vector<double> > > > values):
-    OValues(SIZE4,SIZE1*SIZE2*SIZE3), i(SIZE1), j(SIZE2), k(SIZE3), values(values)
+    OValues(SIZE1*SIZE2*SIZE3, SIZE4), i(SIZE1), j(SIZE2), k(SIZE3), values(values)
 {
 
 }
 
-lpaggreg::OValuesN4::OValuesN4(unsigned int i, unsigned int j, unsigned int k, unsigned int osize):OValues(osize, i*j*k), i(i),j(j),k(k){
+lpaggreg::OValuesN4::OValuesN4(unsigned int i, unsigned int j, unsigned int k, unsigned int osize):OValues(i*j*k, osize), i(i),j(j),k(k){
     values=vector< vector < vector <vector<double > > > >(i, vector < vector< vector<double> > >(j, vector< vector<double> >(k, vector<double>(osize, 0))));
 }
 
@@ -123,11 +123,11 @@ vector<double> lpaggreg::OValuesN4::operator[](unsigned int index) {
     return values[toI(index)][toJ(index)][toK(index)];
 }
 
-double lpaggreg::OValuesN4::operator()(unsigned int o, unsigned int a, unsigned int b, unsigned int c) {
+double lpaggreg::OValuesN4::operator()(unsigned int a, unsigned int b, unsigned int c, unsigned int o) {
     return values[a][b][c][o];
 }
 
-void lpaggreg::OValuesN4::operator()(unsigned int o, unsigned int a, unsigned int b, unsigned int c, double val) {
+void lpaggreg::OValuesN4::operator()(unsigned int a, unsigned int b, unsigned int c, unsigned int o, double val) {
     values[a][b][c][o]=val;
 }
 

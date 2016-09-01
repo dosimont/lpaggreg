@@ -30,10 +30,6 @@ lpaggreg::HValuesN1::HValuesN1(unsigned int leaves, vector<int>parents):HValues(
     values=vector<double>(leaves, 0);
 }
 
-lpaggreg::HValuesProxy lpaggreg::HValuesN1::operator[](unsigned int h) {
-    return HValuesProxy(h,this);
-}
-
 double lpaggreg::HValuesN1::operator()(unsigned int h) {
     return values[h];
 }
@@ -49,10 +45,6 @@ lpaggreg::HValuesN2::HValuesN2(vector<vector<double> > values, vector<int>parent
 
 lpaggreg::HValuesN2::HValuesN2(unsigned int leaves, unsigned int vsize, vector<int>parents):HValues(leaves, vsize, parents){
     values=vector< vector <double > >(leaves, vector<double>(vsize, 0));
-}
-
-lpaggreg::HValuesProxy lpaggreg::HValuesN2::operator[](unsigned int h) {
-    return HValuesProxy(h,this);
 }
 
 double lpaggreg::HValuesN2::operator()(unsigned int h, unsigned int a) {
@@ -89,10 +81,6 @@ lpaggreg::HValuesN3::HValuesN3(vector<vector<vector<double> > > values, vector<i
 
 lpaggreg::HValuesN3::HValuesN3(unsigned int leaves, unsigned int i, unsigned int j, vector<int>parents):HValues(leaves, i*j, parents), i(i),j(j){
     values=vector< vector < vector<double > > >(leaves, vector< vector<double> >(i, vector<double>(j, 0)));
-}
-
-lpaggreg::HValuesProxy lpaggreg::HValuesN3::operator[](unsigned int h) {
-    return HValuesProxy(h,this);
 }
 
 double lpaggreg::HValuesN3::operator()(unsigned int h, unsigned int a, unsigned int b) {
@@ -138,10 +126,6 @@ lpaggreg::HValuesN4::HValuesN4(vector<vector<vector<vector<double> > > > values,
 
 lpaggreg::HValuesN4::HValuesN4(unsigned int leaves, unsigned int i, unsigned int j, unsigned int k, vector<int> parents):HValues(leaves, i*j*k, parents), i(i),j(j),k(k){
     values=vector< vector < vector <vector<double > > > >(i, vector < vector< vector<double> > >(j, vector< vector<double> >(k, vector<double>(leaves, 0))));
-}
-
-lpaggreg::HValuesProxy lpaggreg::HValuesN4::operator[](unsigned int h) {
-    return HValuesProxy(h,this);
 }
 
 double lpaggreg::HValuesN4::operator()(unsigned int h, unsigned int a, unsigned int b, unsigned int c) {
