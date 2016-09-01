@@ -1,6 +1,6 @@
 #include "hvalues.h"
 
-lpaggreg::HValues::HValues(unsigned int hsize, unsigned int vsize, vector<int> parents): vsize(vsize), metaData(HValuesMetaData(hsize, parents))
+lpaggreg::HValues::HValues(unsigned int leaves, unsigned int vsize, vector<int> parents): vsize(vsize), metaData(HValuesMetaData(leaves, parents))
 {
     metaData.setPath();
 

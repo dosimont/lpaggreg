@@ -44,16 +44,10 @@ namespace lpaggreg{
     class HValues
     {
     protected:
-        unsigned int hsize;
         unsigned int vsize;
-        vector<int>parents;
-        map<int, int>size;
-        vector<int> path;
-        int root;
-        int leaves;
         HValuesMetaData metaData;
     public:
-        HValues(unsigned int hsize, unsigned int vsize, vector<int>parents);
+        HValues(unsigned int leaves, unsigned int vsize, vector<int>parents);
         virtual HValuesProxy operator[] (unsigned int index)=0;
         unsigned int getVsize();
         virtual double getValue(int h, int index)=0;
