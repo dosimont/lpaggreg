@@ -52,11 +52,11 @@ shared_ptr<lpaggreg::HPartition> lpaggreg::HPartitioner::computeBestPartition(fl
     }
     int i=0;
     int h;
-    for (h = metaData.getPath().operator [](i); i < metaData.getLeaveSize(); h = metaData.getPath().operator [](++i)){
+    for (h = (metaData.getPath())[i]; i < metaData.getLeaveSize(); h = (metaData.getPath())[++i]){
         (tradeoff[h])->set((*qualities)[h], parameter);
         (*tradeoffChildren[(metaData.getParents())[h]])+=*(tradeoff[h]);
     }
-    for (h = metaData.getPath().operator [](i); i < hsize-1; h = metaData.getPath().operator [](++i)){
+    for (h = (metaData.getPath())[i]; i < hsize-1; h = (metaData.getPath())[++i]){
         (tradeoff[h])->set((*qualities)[h], parameter);
         if ((*tradeoff[h])<(*tradeoffChildren[h])){
             aggregated[h]=false;
