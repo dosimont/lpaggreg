@@ -1,6 +1,6 @@
 #include "dqualities.h"
 
-lpaggreg::DQualities::DQualities(shared_ptr<vector< shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > > > qualities, HValuesMetaData metaData):qualities(qualities), values(0), metaData(metaData)
+lpaggreg::DQualities::DQualities(dqualities qualities, HValuesMetaData metaData):qualities(qualities), values(0), metaData(metaData)
 {
 
 }
@@ -24,33 +24,55 @@ void lpaggreg::DQualities::computeQualities()
     if (values==0){
         return;
     }
-    //TODO
-    /*unsigned hsize=metaData.getHsize();
+    unsigned hsize=metaData.getHsize();
+    unsigned osize=values->getOsize();
     unsigned vsize=values->getVsize();
-    qualities=shared_ptr<vector<shared_ptr<Quality> > >(new vector<shared_ptr<Quality> >(hsize));
+    qualities=dqualities(new vector<shared_ptr<UpperTriangularMatrix<shared_ptr<lpaggreg::Quality> > > >(hsize));
     for (int h = 0; h < hsize; h++){
-        (*qualities)[h]=shared_ptr<Quality>(new Quality());
+        (*qualities)[h]=oqualities(new UpperTriangularMatrix<shared_ptr<lpaggreg::Quality> >(osize));
     }
-    for (int v=0; v < vsize; v++){
+    for (int k=0; k < vsize; k++){
         int i=0;
         int h;
-        vector<lp_quality_type> sum(hsize,0);
-        vector<lp_quality_type> info(hsize,0);
+        vector<UpperTriangularMatrix<lp_quality_type> > sum;
+        vector<UpperTriangularMatrix<lp_quality_type> > info;
+        for (h=0; h<hsize; h++){
+            sum.push_back(UpperTriangularMatrix<lp_quality_type>(osize));
+            sum.push_back(UpperTriangularMatrix<lp_quality_type>(osize));
+        }
         for (h = metaData.getPath().operator [](i); i < metaData.getLeaveSize(); h = metaData.getPath().operator [](++i)){
-            sum[h] = (*values)[h][v];
-            sum[(metaData.getParents())[h]]+=sum[h];
-            info[h] = entropyReduction(sum[h], 0);
-            info[(metaData.getParents())[h]]+=info[h];
+            for (int i = osize-1; i >=0; i--) {
+                (sum[h])(i,i,(*values)[h][k][i]);
+                (info[h])(i,i,entropyReduction((*values)[h][k][i], 0));
+                (sum[(metaData.getParents())[h]])(i,i,(sum[(metaData.getParents())[h]])(i,i)+(sum[h])(i,i));
+                (info[(metaData.getParents())[h]])(i,i,(info[(metaData.getParents())[h]])(i,i)+(info[h])(i,i));
+                for (int j = i+1; j < osize; j++) {
+                    (sum[h])(i,j,(sum[h])(i+1,j)+(sum[h])(i,i));
+                    (info[h])(i,j,(info[h])(i+1,j)+(info[h])(i,i));
+                    (*(*qualities)[h])(i,j)->addToGain(entropyReduction((sum[h])(i,j), (info[h])(i,j)));
+                    (*(*qualities)[h])(i,j)->addToLoss(divergence(j-i+1, (sum[h])(i,j), (info[h])(i,j)));
+                    (sum[(metaData.getParents())[h]])(i,j,(sum[(metaData.getParents())[h]])(i,j)+(sum[h])(i,j));
+                    (info[(metaData.getParents())[h]])(i,j,(info[(metaData.getParents())[h]])(i,j)+(info[h])(i,j));
+                }
+            }
         }
         for (h = metaData.getPath().operator [](i); i < hsize-1; h = metaData.getPath().operator [](++i)){
-            sum[(metaData.getParents())[h]]+=sum[h];
-            info[(metaData.getParents())[h]]+=info[h];
-            (*qualities)[h]->addToGain(entropyReduction(sum[h], info[h]));
-            (*qualities)[h]->addToLoss(divergence((metaData.getSize())[h],sum[h], info[h]));
+            for (int i = osize-1; i >=0; i--) {
+                for (int j = i; j < osize; j++) {
+                    (*(*qualities)[h])(i,j)->addToGain(entropyReduction((sum[h])(i,j), (info[h])(i,j)));
+                    (*(*qualities)[h])(i,j)->addToLoss(divergence((j-i+1)*(metaData.getSize())[h], (sum[h])(i,j), (info[h])(i,j)));
+                    (sum[(metaData.getParents())[h]])(i,j,(sum[(metaData.getParents())[h]])(i,j)+(sum[h])(i,j));
+                    (info[(metaData.getParents())[h]])(i,j,(info[(metaData.getParents())[h]])(i,j)+(info[h])(i,j));
+                }
+            }
         }
-        (*qualities)[h]->addToGain(entropyReduction(sum[h], info[h]));
-        (*qualities)[h]->addToLoss(divergence((metaData.getSize())[h],sum[h], info[h]));
-    }*/
+        for (int i = osize-1; i >=0; i--) {
+            for (int j = i; j < osize; j++) {
+                (*(*qualities)[h])(i,j)->addToGain(entropyReduction((sum[h])(i,j), (info[h])(i,j)));
+                (*(*qualities)[h])(i,j)->addToLoss(divergence((j-i+1)*(metaData.getSize())[h], (sum[h])(i,j), (info[h])(i,j)));
+            }
+        }
+    }
 }
 
 unsigned int lpaggreg::DQualities::size()
@@ -63,7 +85,7 @@ lpaggreg::HValuesMetaData lpaggreg::DQualities::getMetaData() const
     return metaData;
 }
 
-shared_ptr<vector<shared_ptr<lpaggreg::UpperTriangularMatrix<shared_ptr<lpaggreg::Quality> > > > > lpaggreg::DQualities::getQualities() const
+dqualities lpaggreg::DQualities::getQualities() const
 {
     return qualities;
 }

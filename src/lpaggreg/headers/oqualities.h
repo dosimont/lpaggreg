@@ -11,12 +11,14 @@
 
 using namespace std;
 
+typedef shared_ptr<lpaggreg::UpperTriangularMatrix<shared_ptr<lpaggreg::Quality> > > oqualities;
+
 namespace lpaggreg{
 
     class OQualities: Qualities
     {
     public:
-        OQualities(shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > >qualities);
+        OQualities(oqualities qualities);
         OQualities(shared_ptr<OValues> values);
 
         void normalize();
@@ -24,11 +26,11 @@ namespace lpaggreg{
 
         unsigned int size();
 
-        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > getQualities() const;
+        oqualities getQualities() const;
 
     private:
         shared_ptr<OValues> values;
-        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > >qualities;
+        oqualities qualities;
     };
 
 }

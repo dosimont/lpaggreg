@@ -1,7 +1,7 @@
 #include "hqualities.h"
 
 
-lpaggreg::HQualities::HQualities(shared_ptr<vector<shared_ptr<lpaggreg::Quality> > > qualities, HValuesMetaData metaData):qualities(qualities), values(0), metaData(metaData)
+lpaggreg::HQualities::HQualities(hqualities qualities, HValuesMetaData metaData):qualities(qualities), values(0), metaData(metaData)
 {
 
 }
@@ -26,17 +26,17 @@ void lpaggreg::HQualities::computeQualities()
     }
     unsigned hsize=metaData.getHsize();
     unsigned vsize=values->getVsize();
-    qualities=shared_ptr<vector<shared_ptr<Quality> > >(new vector<shared_ptr<Quality> >(hsize));
+    qualities=hqualities(new vector<shared_ptr<Quality> >(hsize));
     for (int h = 0; h < hsize; h++){
         (*qualities)[h]=shared_ptr<Quality>(new Quality());
     }
-    for (int v=0; v < vsize; v++){
+    for (int k=0; k < vsize; k++){
         int i=0;
         int h;
         vector<lp_quality_type> sum(hsize,0);
         vector<lp_quality_type> info(hsize,0);
         for (h = metaData.getPath().operator [](i); i < metaData.getLeaveSize(); h = metaData.getPath().operator [](++i)){
-            sum[h] = (*values)[h][v];
+            sum[h] = (*values)[h][k];
             sum[(metaData.getParents())[h]]+=sum[h];
             info[h] = entropyReduction(sum[h], 0);
             info[(metaData.getParents())[h]]+=info[h];
@@ -57,7 +57,7 @@ unsigned int lpaggreg::HQualities::size()
     return qualities->size();
 }
 
-shared_ptr<vector<shared_ptr<lpaggreg::Quality> > > lpaggreg::HQualities::getQualities() const
+hqualities lpaggreg::HQualities::getQualities() const
 {
     return qualities;
 }

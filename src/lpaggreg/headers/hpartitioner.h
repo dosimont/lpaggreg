@@ -19,7 +19,7 @@ namespace lpaggreg{
     class HPartitioner: public Partitioner
     {
     public:
-        HPartitioner(shared_ptr<vector<shared_ptr<Quality> > > qualities, HValuesMetaData metaData);
+        HPartitioner(hqualities qualities, HValuesMetaData metaData);
         HPartitioner(HQualities qualities);
         void computeBestPartitions(float threshold, float min=0.0, float max=1.0);
         shared_ptr<HPartition> computeBestPartition(float parameter);
@@ -30,7 +30,7 @@ namespace lpaggreg{
 
     private:
         void addBestQualities(float threshold, shared_ptr<HPartition> bestPartitionMin, shared_ptr<HPartition> bestPartitionMax);
-        shared_ptr<vector<shared_ptr<Quality> > > qualities;
+        hqualities qualities;
         map<float, shared_ptr<HPartition> > partitions;
         list< tuple<float, int, int> > partitionsTuples;
         HValuesMetaData metaData;

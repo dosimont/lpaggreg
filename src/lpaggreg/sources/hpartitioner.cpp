@@ -1,7 +1,7 @@
 #include "hpartitioner.h"
 
 
-lpaggreg::HPartitioner::HPartitioner(shared_ptr<vector<shared_ptr<Quality> > > qualities, HValuesMetaData metaData):qualities(qualities), metaData(metaData)
+lpaggreg::HPartitioner::HPartitioner(hqualities qualities, HValuesMetaData metaData):qualities(qualities), metaData(metaData)
 {
 
 }

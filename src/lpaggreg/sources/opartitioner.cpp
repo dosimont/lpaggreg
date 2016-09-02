@@ -1,6 +1,6 @@
 #include "opartitioner.h"
 
-lpaggreg::OPartitioner::OPartitioner(shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > qualities):qualities(qualities)
+lpaggreg::OPartitioner::OPartitioner(oqualities qualities):qualities(qualities)
 {
 
 }

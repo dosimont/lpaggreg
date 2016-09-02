@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include "qualities.h"
+#include "oqualities.h"
 #include "quality.h"
 #include "dvaluesn.h"
 #include "complexity.h"
@@ -11,12 +12,14 @@
 
 using namespace std;
 
+typedef shared_ptr<vector< shared_ptr<lpaggreg::UpperTriangularMatrix<shared_ptr<lpaggreg::Quality> > > > > dqualities;
+
 namespace lpaggreg{
 
     class DQualities: Qualities
     {
     public:
-        DQualities(shared_ptr<vector< shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > > > qualities, HValuesMetaData metaData);
+        DQualities(dqualities qualities, HValuesMetaData metaData);
         DQualities(shared_ptr<DValues> values);
 
         void normalize();
@@ -26,11 +29,11 @@ namespace lpaggreg{
 
         HValuesMetaData getMetaData() const;
 
-        shared_ptr<vector<shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > > > getQualities() const;
+        dqualities getQualities() const;
 
     private:
         shared_ptr<DValues> values;
-        shared_ptr<vector< shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > > > qualities;
+        dqualities qualities;
         HValuesMetaData metaData;
 
     };

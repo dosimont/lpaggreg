@@ -1,6 +1,6 @@
 #include "oqualities.h"
 
-lpaggreg::OQualities::OQualities(shared_ptr<UpperTriangularMatrix<shared_ptr<lpaggreg::Quality> > > qualities):qualities(qualities), values(0)
+lpaggreg::OQualities::OQualities(oqualities qualities):qualities(qualities), values(0)
 {
 
 }
@@ -27,7 +27,7 @@ void lpaggreg::OQualities::computeQualities()
     unsigned vsize=values->getVsize();
     UpperTriangularMatrix<lp_quality_type> sum(osize);
     UpperTriangularMatrix<lp_quality_type> info(osize);
-    qualities=shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > >(new UpperTriangularMatrix<shared_ptr<Quality> >(osize));
+    qualities=oqualities(new UpperTriangularMatrix<shared_ptr<Quality> >(osize));
     for (int k = 0; k < vsize; k++) {
         for (int i = osize-1; i >=0; i--) {
             sum(i,i,(*values)[k][i]);
@@ -47,7 +47,7 @@ unsigned int lpaggreg::OQualities::size()
     return qualities->getSize();
 }
 
-shared_ptr<lpaggreg::UpperTriangularMatrix<shared_ptr<lpaggreg::Quality> > > lpaggreg::OQualities::getQualities() const
+oqualities lpaggreg::OQualities::getQualities() const
 {
     return qualities;
 }

@@ -10,12 +10,14 @@
 
 using namespace std;
 
+typedef shared_ptr<vector< shared_ptr<lpaggreg::Quality> > > hqualities;
+
 namespace lpaggreg{
 
     class HQualities: Qualities
     {
     public:
-        HQualities(shared_ptr<vector< shared_ptr<Quality> > > qualities, HValuesMetaData metaData);
+        HQualities(hqualities qualities, HValuesMetaData metaData);
         HQualities(shared_ptr<HValues> values);
 
         void normalize();
@@ -23,13 +25,13 @@ namespace lpaggreg{
 
         unsigned int size();
 
-        shared_ptr<vector<shared_ptr<Quality> > > getQualities() const;
+        hqualities getQualities() const;
 
         HValuesMetaData getMetaData() const;
 
     private:
         shared_ptr<HValues> values;
-        shared_ptr<vector< shared_ptr<Quality> > > qualities;
+        hqualities qualities;
         HValuesMetaData metaData;
 
     };
