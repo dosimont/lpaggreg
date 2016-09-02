@@ -35,13 +35,13 @@ void lpaggreg::HQualities::computeQualities()
         int h;
         vector<lp_quality_type> sum(hsize,0);
         vector<lp_quality_type> info(hsize,0);
-        for (h = metaData.getPath().operator [](i); i < metaData.getLeaveSize(); h = metaData.getPath().operator [](++i)){
+        for (h = (metaData.getPath())[i]; i < metaData.getLeaveSize(); h = (metaData.getPath())[++i]){
             sum[h] = (*values)[h][k];
             sum[(metaData.getParents())[h]]+=sum[h];
             info[h] = entropyReduction(sum[h], 0);
             info[(metaData.getParents())[h]]+=info[h];
         }
-        for (h = metaData.getPath().operator [](i); i < hsize-1; h = metaData.getPath().operator [](++i)){
+        for (h = (metaData.getPath())[i]; i < hsize-1; h = (metaData.getPath())[++i]){
             sum[(metaData.getParents())[h]]+=sum[h];
             info[(metaData.getParents())[h]]+=info[h];
             (*qualities)[h]->addToGain(entropyReduction(sum[h], info[h]));

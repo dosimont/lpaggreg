@@ -103,7 +103,7 @@ bool lpaggreg::operator==(lpaggreg::OPartition &opartition1, lpaggreg::OPartitio
         return false;
     }else{
         for (int i=0; i<opartition1.getParts().size(); i++){
-            if (opartition1.getParts().operator [](i)!=opartition2.getParts().operator [](i)){
+            if ((opartition1.getParts())[i]!=(opartition2.getParts())[i]){
                 return false;
             }
         }

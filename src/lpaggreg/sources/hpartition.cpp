@@ -34,7 +34,7 @@ bool lpaggreg::operator==(lpaggreg::HPartition &hpartition1, lpaggreg::HPartitio
         return false;
     }else{
         for (int i=0; i<hpartition1.getParts().size(); i++){
-            if (hpartition1.getParts().operator [](i)!=hpartition2.getParts().operator [](i)){
+            if ((hpartition1.getParts())[i]!=(hpartition2.getParts())[i]){
                 return false;
             }
         }
@@ -73,7 +73,7 @@ void lpaggreg::HPartition::computeParts()
         return;
     }
     int i=metaData.getHsize()-2;
-    for (int h = metaData.getPath().operator [](i); i >= 0; h = metaData.getPath().operator [](--i)){
+    for (int h = (metaData.getPath())[i]; i >= 0; h = (metaData.getPath())[--i]){
         if (!(involved.find((metaData.getParents())[h]) != involved.end())){
             if(aggregated[h]){
                 parts.push_back(HPart(h,(metaData.getSize())[h]));
@@ -90,7 +90,7 @@ void lpaggreg::HPartition::computeQuality()
 {
     quality=shared_ptr<Quality>(new Quality());
     for (HPart it: parts){
-        *quality+=*qualities->operator [](it.getH());
+        *quality+=*((*qualities)[it.getH()]);
     }
 }
 

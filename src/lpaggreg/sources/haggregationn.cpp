@@ -8,7 +8,7 @@ lpaggreg::HAggregateN1::HAggregateN1(lpaggreg::HPart part, shared_ptr<lpaggreg::
 void lpaggreg::HAggregateN1::compute()
 {
     sum=0;
-       for (int h: values->getMetaData().getLeaves().operator [](part.getH())){
+    for (int h: (values->getMetaData().getLeaves())[part.getH()]){
         sum+=(*values)(h);
     }
     mean=sum/part.getSize();
@@ -33,7 +33,7 @@ void lpaggreg::HAggregateN2::compute()
 {
     for (int i=0; i<values->getVsize(); i++){
         sum[i]=0;
-        for (int h: values->getMetaData().getLeaves().operator [](part.getH())){
+        for (int h: (values->getMetaData().getLeaves())[part.getH()]){
             sum[i]+=(*values)(h, i);
         }
         mean[i]=sum[i]/part.getSize();
@@ -60,7 +60,7 @@ void lpaggreg::HAggregateN3::compute()
     for (int i=0; i<values->getI(); i++){
         for (int j=0; j<values->getJ(); j++){
             sum[i][j]=0;
-       for (int h: values->getMetaData().getLeaves().operator [](part.getH())){
+        for (int h: (values->getMetaData().getLeaves())[part.getH()]){
                 sum[i][j]+=(*values)(h, i, j);
             }
             mean[i][j]=sum[i][j]/part.getSize();
@@ -89,7 +89,7 @@ void lpaggreg::HAggregateN4::compute()
         for (int j=0; j<values->getJ(); j++){
             for (int k=0; k<values->getK(); k++){
                 sum[i][j][k]=0;
-                for (int h: values->getMetaData().getLeaves().operator [](part.getH())){
+                for (int h: (values->getMetaData().getLeaves())[part.getH()]){
                     sum[i][j][k]+=(*values)(h, i, j, k);
                 }
                 mean[i][j][k]=sum[i][j][k]/part.getSize();

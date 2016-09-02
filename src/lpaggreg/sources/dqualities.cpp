@@ -12,11 +12,12 @@ lpaggreg::DQualities::DQualities(shared_ptr<lpaggreg::DValues> values):values(va
 
 void lpaggreg::DQualities::normalize()
 {
-    //TODO
-    /*shared_ptr<Quality> max=(*qualities)[metaData.getRoot()];
-    for (auto quality : *qualities){
-        *quality/=*max;
-    }*/
+    shared_ptr<Quality> max=(*(*qualities)[metaData.getRoot()])(0, values->getOsize()-1);
+    for (int h = 0; h < metaData.getHsize(); h++){
+        for (int i=0; i<((*qualities)[h])->getElements(); i++){
+            *((*((*qualities)[h]))[i])/=(*max);
+        }
+    }
 }
 
 void lpaggreg::DQualities::computeQualities()
@@ -40,7 +41,7 @@ void lpaggreg::DQualities::computeQualities()
             sum.push_back(UpperTriangularMatrix<lp_quality_type>(osize));
             sum.push_back(UpperTriangularMatrix<lp_quality_type>(osize));
         }
-        for (h = metaData.getPath().operator [](i); i < metaData.getLeaveSize(); h = metaData.getPath().operator [](++i)){
+        for (h = (metaData.getPath())[i]; i < metaData.getLeaveSize(); h = (metaData.getPath())[++i]){
             for (int i = osize-1; i >=0; i--) {
                 (sum[h])(i,i,(*values)[h][k][i]);
                 (info[h])(i,i,entropyReduction((*values)[h][k][i], 0));
@@ -56,7 +57,7 @@ void lpaggreg::DQualities::computeQualities()
                 }
             }
         }
-        for (h = metaData.getPath().operator [](i); i < hsize-1; h = metaData.getPath().operator [](++i)){
+        for (h = (metaData.getPath())[i]; i < hsize-1; h = (metaData.getPath())[++i]){
             for (int i = osize-1; i >=0; i--) {
                 for (int j = i; j < osize; j++) {
                     (*(*qualities)[h])(i,j)->addToGain(entropyReduction((sum[h])(i,j), (info[h])(i,j)));
