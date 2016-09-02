@@ -1,7 +1,6 @@
 #ifndef OPARTITION_H
 #define OPARTITION_H
 
-#include <iostream>
 #include <vector>
 #include <memory>
 #include "quality.h"
@@ -17,7 +16,6 @@ namespace lpaggreg{
     class OPart
     {
     public:
-        OPart();
         OPart(int start, int end);
         int getStart() const;
         int getEnd() const;
