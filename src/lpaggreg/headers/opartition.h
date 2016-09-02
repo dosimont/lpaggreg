@@ -5,8 +5,10 @@
 #include <vector>
 #include <memory>
 #include "quality.h"
+#include "oqualities.h"
 #include "uppertriangularmatrix.h"
 #include "lpglobal.h"
+#include "partition.h"
 
 using namespace std;
 
@@ -18,11 +20,7 @@ namespace lpaggreg{
         OPart();
         OPart(int start, int end);
         int getStart() const;
-        void setStart(int value);
-
         int getEnd() const;
-        void setEnd(int value);
-
         int getSize();
 
         friend bool operator==(OPart &opart1, OPart &opart2);
@@ -33,26 +31,20 @@ namespace lpaggreg{
         int end;
     };
 
-    class OPartition
+    class OPartition: public Partition
     {
     public:
-        OPartition(vector<int> cuts, shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > qualities, float parameter);
+        OPartition(vector<int> cuts, oqualities qualities, float parameter);
         vector<int> getCuts() const;
         vector<OPart> getParts() const;
-        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > getQualities() const;
-
-        float getParameter() const;
-
-        shared_ptr<Quality> getQuality() const;
+        oqualities getQualities() const;
 
     private:
         void computeParts();
         void computeQuality();
-        float parameter;
         vector<int> cuts;
         vector<OPart> parts;
-        shared_ptr<Quality> quality;
-        shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > qualities;
+        oqualities qualities;
     };
 
     bool operator==(OPartition &opartition1, OPartition &opartition2);

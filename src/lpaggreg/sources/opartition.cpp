@@ -11,19 +11,9 @@ int lpaggreg::OPart::getStart() const
     return start;
 }
 
-void lpaggreg::OPart::setStart(int value)
-{
-    start = value;
-}
-
 int lpaggreg::OPart::getEnd() const
 {
     return end;
-}
-
-void lpaggreg::OPart::setEnd(int value)
-{
-    end = value;
 }
 
 int lpaggreg::OPart::getSize()
@@ -32,7 +22,7 @@ int lpaggreg::OPart::getSize()
 }
 
 
-lpaggreg::OPartition::OPartition(vector<int> cuts, shared_ptr<UpperTriangularMatrix<shared_ptr<Quality> > > qualities, float parameter):parameter(parameter), cuts(cuts), qualities(qualities)
+lpaggreg::OPartition::OPartition(vector<int> cuts, oqualities qualities, float parameter): Partition(parameter), cuts(cuts), qualities(qualities)
 {
     computeParts();
     computeQuality();
@@ -68,19 +58,8 @@ void lpaggreg::OPartition::computeQuality()
     }
 }
 
-shared_ptr<lpaggreg::Quality> lpaggreg::OPartition::getQuality() const
-{
-    return quality;
-}
 
-
-float lpaggreg::OPartition::getParameter() const
-{
-    return parameter;
-}
-
-
-shared_ptr<lpaggreg::UpperTriangularMatrix<shared_ptr<lpaggreg::Quality> > > lpaggreg::OPartition::getQualities() const
+oqualities lpaggreg::OPartition::getQualities() const
 {
     return qualities;
 }

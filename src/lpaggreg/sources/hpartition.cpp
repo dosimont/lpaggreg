@@ -58,7 +58,7 @@ bool lpaggreg::operator!=(lpaggreg::HPartition &hpartition1, lpaggreg::HPartitio
 }
 
 lpaggreg::HPartition::HPartition(vector<bool> aggregated, shared_ptr<vector<shared_ptr<lpaggreg::Quality> > > qualities, float parameter, lpaggreg::HValuesMetaData metaData):
-    aggregated(aggregated), qualities(qualities), parameter(parameter), metaData(metaData)
+    Partition(parameter), aggregated(aggregated), qualities(qualities), metaData(metaData)
 {
     computeParts();
     computeQuality();
@@ -94,11 +94,6 @@ void lpaggreg::HPartition::computeQuality()
     }
 }
 
-float lpaggreg::HPartition::getParameter() const
-{
-    return parameter;
-}
-
 
 lpaggreg::HValuesMetaData lpaggreg::HPartition::getMetaData() const
 {
@@ -108,11 +103,6 @@ lpaggreg::HValuesMetaData lpaggreg::HPartition::getMetaData() const
 shared_ptr<vector<shared_ptr<lpaggreg::Quality> > > lpaggreg::HPartition::getQualities() const
 {
     return qualities;
-}
-
-shared_ptr<lpaggreg::Quality> lpaggreg::HPartition::getQuality() const
-{
-    return quality;
 }
 
 vector<lpaggreg::HPart> lpaggreg::HPartition::getParts() const
