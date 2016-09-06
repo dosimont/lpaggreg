@@ -45,7 +45,7 @@ int lpaggreg::DPart::getSize()
     return hsize*getOSize();
 }
 
-lpaggreg::DPartition::DPartition(vector<vector<int> > cuts, dqualities qualities, float parameter, lpaggreg::HValuesMetaData metaData):Partition(parameter), cuts(cuts), qualities(qualities), metaData(metaData)
+lpaggreg::DPartition::DPartition(vector<shared_ptr<UpperTriangularMatrix<int> > > cuts, dqualities qualities, float parameter, lpaggreg::HValuesMetaData metaData):Partition(parameter), cuts(cuts), qualities(qualities), metaData(metaData)
 {
     computeParts();
     computeQuality();
@@ -54,7 +54,7 @@ lpaggreg::DPartition::DPartition(vector<vector<int> > cuts, dqualities qualities
 void lpaggreg::DPartition::computeParts()
 {
     parts.clear();
-    int h;
+    /*int h;
     for (h=0; h<metaData.getHsize(); h++){
         parts.push_back(vector<DPart>());
     }
@@ -78,7 +78,7 @@ void lpaggreg::DPartition::computeParts()
                 j++;
             }
         }
-    }
+    }*/
 }
 
 
@@ -89,6 +89,11 @@ void lpaggreg::DPartition::computeQuality()
             *quality+=*(*(*qualities)[h])(it.getStart(), it.getEnd());
         }
     }
+}
+
+vector<shared_ptr<lpaggreg::UpperTriangularMatrix<int> > > lpaggreg::DPartition::getCuts() const
+{
+    return cuts;
 }
 
 lpaggreg::HValuesMetaData lpaggreg::DPartition::getMetaData() const
@@ -104,11 +109,6 @@ dqualities lpaggreg::DPartition::getQualities() const
 vector<vector<lpaggreg::DPart> > lpaggreg::DPartition::getParts() const
 {
     return parts;
-}
-
-vector<vector<int> > lpaggreg::DPartition::getCuts() const
-{
-    return cuts;
 }
 
 bool lpaggreg::operator==(lpaggreg::DPartition &dpartition1, lpaggreg::DPartition &dpartition2)
