@@ -32,7 +32,8 @@ lpaggreg::OAggregateN2::OAggregateN2(lpaggreg::OPart part, shared_ptr<lpaggreg::
 void lpaggreg::OAggregateN2::compute()
 {
     for (int i=0; i<values->getVsize(); i++){
-        sum[i]=0;
+        sum.push_back(0);
+        mean.push_back(0);
         for (int o=part.getStart(); o<=part.getEnd();o++){
             sum[i]+=(*values)(i, o);
         }
@@ -58,8 +59,11 @@ lpaggreg::OAggregateN3::OAggregateN3(lpaggreg::OPart part, shared_ptr<lpaggreg::
 void lpaggreg::OAggregateN3::compute()
 {
     for (int i=0; i<values->getI(); i++){
+        sum.push_back(vector<double>(0));
+        mean.push_back(vector<double>(0));
         for (int j=0; j<values->getJ(); j++){
-            sum[i][j]=0;
+            sum[i].push_back(0);
+            mean[i].push_back(0);
             for (int o=part.getStart(); o<=part.getEnd();o++){
                 sum[i][j]+=(*values)(i, j, o);
             }
@@ -86,9 +90,14 @@ lpaggreg::OAggregateN4::OAggregateN4(lpaggreg::OPart part, shared_ptr<lpaggreg::
 void lpaggreg::OAggregateN4::compute()
 {
     for (int i=0; i<values->getI(); i++){
+        sum.push_back(vector<vector<double> >(0));
+        mean.push_back(vector<vector<double> >(0));
         for (int j=0; j<values->getJ(); j++){
+            sum[i].push_back(vector<double>(0));
+            mean[i].push_back(vector<double>(0));
             for (int k=0; k<values->getK(); k++){
-                sum[i][j][k]=0;
+                sum[i][j].push_back(0);
+                mean[i][j].push_back(0);
                 for (int o=part.getStart(); o<=part.getEnd();o++){
                     sum[i][j][k]+=(*values)(i, j, k, o);
                 }

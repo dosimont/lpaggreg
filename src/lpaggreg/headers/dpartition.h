@@ -47,7 +47,7 @@ namespace lpaggreg{
         DPartition(vector<shared_ptr<UpperTriangularMatrix<int> > > cuts, dqualities qualities, float parameter, HValuesMetaData metaData);
 
 
-        vector<vector<DPart> > getParts() const;
+        vector<DPart> getParts() const;
 
         dqualities getQualities() const;
 
@@ -60,7 +60,7 @@ namespace lpaggreg{
         void computeQuality();
         float parameter;
         vector<shared_ptr<UpperTriangularMatrix<int> > > cuts;
-        vector<vector<DPart> > parts;
+        vector<DPart> parts;
         dqualities qualities;
         HValuesMetaData metaData;
         void computeSubPart(int h, int i, int j);

@@ -55,9 +55,6 @@ void lpaggreg::DPartition::computeParts()
 {
     parts.clear();
     int h;
-    for (h=0; h<metaData.getHsize(); h++){
-        parts.push_back(vector<DPart>());
-    }
     h=metaData.getRoot();
     int i=0;
     int j=((*qualities)[0])->getSize()-1;
@@ -72,7 +69,7 @@ void lpaggreg::DPartition::computeSubPart(int h, int i, int j){
             computeSubPart(child, i, j);
         }
     }else{
-        parts[h].push_back(DPart(h, (metaData.getSize())[h], i, cut));
+        parts.push_back(DPart(h, (metaData.getSize())[h], i, cut));
         if (cut<j){
             computeSubPart(h, cut+1, j);
         }
@@ -82,10 +79,8 @@ void lpaggreg::DPartition::computeSubPart(int h, int i, int j){
 
 void lpaggreg::DPartition::computeQuality()
 {
-    for (int h=0; h<metaData.getHsize(); h++){
-        for (DPart it: parts[h]){
-            *quality+=*(*(*qualities)[h])(it.getStart(), it.getEnd());
-        }
+    for (DPart it: parts){
+        *quality+=*(*(*qualities)[it.getH()])(it.getStart(), it.getEnd());
     }
 }
 
@@ -104,24 +99,23 @@ dqualities lpaggreg::DPartition::getQualities() const
     return qualities;
 }
 
-vector<vector<lpaggreg::DPart> > lpaggreg::DPartition::getParts() const
+vector<lpaggreg::DPart> lpaggreg::DPartition::getParts() const
 {
     return parts;
 }
 
 bool lpaggreg::operator==(lpaggreg::DPartition &dpartition1, lpaggreg::DPartition &dpartition2)
 {
-    for (int h=0; h<dpartition1.getMetaData().getHsize(); h++){
-        if (((dpartition1.getParts())[h]).size()!=((dpartition2.getParts())[h]).size()){
-            return false;
-        }
-        for (int i=0; i<((dpartition1.getParts())[h]).size(); i++){
-            if ((dpartition1.getParts())[h][i]!=(dpartition2.getParts())[h][i]){
+    if (dpartition1.getParts().size()!=dpartition2.getParts().size()){
+        return false;
+    }else{
+        for (int i=0; i<dpartition1.getParts().size(); i++){
+            if ((dpartition1.getParts())[i]!=(dpartition2.getParts())[i]){
                 return false;
             }
         }
+        return true;
     }
-    return true;
 }
 
 #ifdef PARTITION_COMPARE_QUALITY

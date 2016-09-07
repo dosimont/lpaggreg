@@ -7,6 +7,7 @@ lpaggreg::HAggregateN1::HAggregateN1(lpaggreg::HPart part, shared_ptr<lpaggreg::
 
 void lpaggreg::HAggregateN1::compute()
 {
+    sum=0;
     sum=subSum(values->getMetaData().getRoot());
     mean=sum/part.getSize();
 }
@@ -119,7 +120,7 @@ void lpaggreg::HAggregateN4::compute()
         mean.push_back(vector<vector<double> >());
         for (int j=0; j<values->getJ(); j++){
             sum[i].push_back(vector<double>());
-            sum[i].push_back(vector<double>());
+            mean[i].push_back(vector<double>());
             for (int k=0; k<values->getK(); k++){
                 sum[i][j].push_back(subSum(values->getMetaData().getRoot(), i, j, k));
                 mean[i][j].push_back(sum[i][j][k]/part.getSize());

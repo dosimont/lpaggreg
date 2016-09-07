@@ -32,10 +32,8 @@ void lpaggreg::DPartitioner::computeBestPartitions(float threshold, float min, f
     }
     for (auto it : partitions){
         for (auto it2 : it.second->getParts()){
-            for (auto it3 : it2){
-                tuple<float, int, int, int, int> t(it.first, it3.getH(), it3.getSize(), it3.getStart(), it3.getEnd());
-                partitionsTuples.push_back(t);
-            }
+            tuple<float, int, int, int, int> t(it.first, it2.getH(), it2.getSize(), it2.getStart(), it2.getEnd());
+            partitionsTuples.push_back(t);
         }
     }
 }

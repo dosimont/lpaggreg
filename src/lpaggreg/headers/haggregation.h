@@ -26,6 +26,6 @@ namespace lpaggreg
     private:
         shared_ptr<HPartition> hpartition;
     };
-};
+}
 
 #endif // HAGGREGATION_H
