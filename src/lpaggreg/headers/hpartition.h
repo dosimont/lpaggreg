@@ -47,6 +47,7 @@ namespace lpaggreg{
         vector<HPart> parts;
         hqualities qualities;
         HValuesMetaData metaData;
+        void computeSubPart(int h);
     };
 
     bool operator==(HPartition &hpartition1, HPartition &hpartition2);

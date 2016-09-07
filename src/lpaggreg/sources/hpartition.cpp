@@ -66,21 +66,16 @@ lpaggreg::HPartition::HPartition(vector<bool> aggregated, shared_ptr<vector<shar
 
 void lpaggreg::HPartition::computeParts()
 {
-    set<int> involved;
     parts.clear();
-    if (aggregated[metaData.getRoot()]){
-        parts.push_back(HPart(metaData.getRoot(), (metaData.getSize()[metaData.getRoot()])));
-        return;
-    }
-    int i=metaData.getHsize()-2;
-    for (int h = (metaData.getPath())[i]; i >= 0; h = (metaData.getPath())[--i]){
-        if (!(involved.find((metaData.getParents())[h]) != involved.end())){
-            if(aggregated[h]){
-                parts.push_back(HPart(h,(metaData.getSize())[h]));
-                involved.insert(h);
-            }
-        }else{
-            involved.insert(h);
+    computeSubPart(metaData.getRoot());
+}
+
+void lpaggreg::HPartition::computeSubPart(int h){
+    if(aggregated[h]){
+        parts.push_back(HPart(h,(metaData.getSize())[h]));
+    }else{
+        for (int child:(metaData.getLeaves())[h]){
+            computeSubPart(child);
         }
     }
 }
