@@ -65,13 +65,13 @@ void lpaggreg::DPartition::computeParts()
 }
 
 void lpaggreg::DPartition::computeSubPart(int h, int i, int j){
-    int cut;
-    if (cut=cuts[h][i][j]==-1){
+    int cut=(*(cuts[h]))(i, j);
+    if (cut==-1){
         for (int child:(metaData.getLeaves())[h]){
             computeSubPart(child, i, j);
         }
     }else{
-        parts[h].push_back(vector<DPart>(DPart(h, (metaData.getSize())[h], i, cut)));
+        parts[h].push_back(DPart(h, (metaData.getSize())[h], i, cut));
         if (cut<j){
             computeSubPart(h, cut+1, j);
         }
