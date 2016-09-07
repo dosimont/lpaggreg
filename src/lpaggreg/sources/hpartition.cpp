@@ -71,10 +71,12 @@ void lpaggreg::HPartition::computeParts()
 }
 
 void lpaggreg::HPartition::computeSubPart(int h){
+    cout<<h<<endl;
     if(aggregated[h]){
         parts.push_back(HPart(h,(metaData.getSize())[h]));
     }else{
-        for (int child:(metaData.getLeaves())[h]){
+        for (int i; i<metaData.getChildren().operator [](h).size(); i++){
+            int child=metaData.getChildren().operator [](h).operator [](i);
             computeSubPart(child);
         }
     }

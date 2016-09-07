@@ -67,7 +67,8 @@ void lpaggreg::DPartition::computeParts()
 void lpaggreg::DPartition::computeSubPart(int h, int i, int j){
     int cut=(*(cuts[h]))(i, j);
     if (cut==-1){
-        for (int child:(metaData.getLeaves())[h]){
+        for (int k; i<metaData.getChildren().operator [](h).size(); k++){
+            int child=metaData.getChildren().operator [](h).operator [](k);
             computeSubPart(child, i, j);
         }
     }else{

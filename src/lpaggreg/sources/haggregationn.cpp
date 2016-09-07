@@ -7,11 +7,20 @@ lpaggreg::HAggregateN1::HAggregateN1(lpaggreg::HPart part, shared_ptr<lpaggreg::
 
 void lpaggreg::HAggregateN1::compute()
 {
-    sum=0;
-    for (int h: (values->getMetaData().getLeaves())[part.getH()]){
-        sum+=(*values)(h);
-    }
+    sum=subSum(values->getMetaData().getRoot());
     mean=sum/part.getSize();
+}
+
+double lpaggreg::HAggregateN1::subSum(int h)
+{
+    if (h<values->getMetaData().getLeaveSize()){
+        return (*values)(h);
+    }
+    double sum_t=0;
+    for (int h: (values->getMetaData().getChildren())[part.getH()]){
+        sum_t+=subSum(h);
+    }
+    return sum_t;
 }
 
 double lpaggreg::HAggregateN1::getMean() const
@@ -32,12 +41,21 @@ lpaggreg::HAggregateN2::HAggregateN2(lpaggreg::HPart part, shared_ptr<lpaggreg::
 void lpaggreg::HAggregateN2::compute()
 {
     for (int i=0; i<values->getVsize(); i++){
-        sum[i]=0;
-        for (int h: (values->getMetaData().getLeaves())[part.getH()]){
-            sum[i]+=(*values)(h, i);
-        }
-        mean[i]=sum[i]/part.getSize();
+        sum.push_back(subSum(values->getMetaData().getRoot(), i));
+        mean.push_back(sum[i]/part.getSize());
     }
+}
+
+double lpaggreg::HAggregateN2::subSum(int h, int i)
+{
+    if (h<values->getMetaData().getLeaveSize()){
+        return (*values)(h, i);
+    }
+    double sum_t=0;
+    for (int h: (values->getMetaData().getChildren())[part.getH()]){
+        sum_t+=subSum(h, i);
+    }
+    return sum_t;
 }
 
 vector<double> lpaggreg::HAggregateN2::getMean() const
@@ -58,14 +76,25 @@ lpaggreg::HAggregateN3::HAggregateN3(lpaggreg::HPart part, shared_ptr<lpaggreg::
 void lpaggreg::HAggregateN3::compute()
 {
     for (int i=0; i<values->getI(); i++){
+        sum.push_back(vector<double>());
+        mean.push_back(vector<double>());
         for (int j=0; j<values->getJ(); j++){
-            sum[i][j]=0;
-        for (int h: (values->getMetaData().getLeaves())[part.getH()]){
-                sum[i][j]+=(*values)(h, i, j);
-            }
-            mean[i][j]=sum[i][j]/part.getSize();
+            sum[i].push_back(subSum(values->getMetaData().getRoot(), i, j));
+            mean[i].push_back(sum[i][j]/part.getSize());
         }
     }
+}
+
+double lpaggreg::HAggregateN3::subSum(int h, int i, int j)
+{
+    if (h<values->getMetaData().getLeaveSize()){
+        return (*values)(h, i, j);
+    }
+    double sum_t=0;
+    for (int h: (values->getMetaData().getChildren())[part.getH()]){
+        sum_t+=subSum(h, i, j);
+    }
+    return sum_t;
 }
 
 vector<vector<double> > lpaggreg::HAggregateN3::getMean() const
@@ -86,16 +115,29 @@ lpaggreg::HAggregateN4::HAggregateN4(lpaggreg::HPart part, shared_ptr<lpaggreg::
 void lpaggreg::HAggregateN4::compute()
 {
     for (int i=0; i<values->getI(); i++){
+        sum.push_back(vector<vector<double> >());
+        mean.push_back(vector<vector<double> >());
         for (int j=0; j<values->getJ(); j++){
+            sum[i].push_back(vector<double>());
+            sum[i].push_back(vector<double>());
             for (int k=0; k<values->getK(); k++){
-                sum[i][j][k]=0;
-                for (int h: (values->getMetaData().getLeaves())[part.getH()]){
-                    sum[i][j][k]+=(*values)(h, i, j, k);
-                }
-                mean[i][j][k]=sum[i][j][k]/part.getSize();
+                sum[i][j].push_back(subSum(values->getMetaData().getRoot(), i, j, k));
+                mean[i][j].push_back(sum[i][j][k]/part.getSize());
             }
         }
     }
+}
+
+double lpaggreg::HAggregateN4::subSum(int h, int i, int j, int k)
+{
+    if (h<values->getMetaData().getLeaveSize()){
+        return (*values)(h, i, j, k);
+    }
+    double sum_t=0;
+    for (int h: (values->getMetaData().getChildren())[part.getH()]){
+        sum_t+=subSum(h, i, j, k);
+    }
+    return sum_t;
 }
 
 vector<vector<vector<double> > > lpaggreg::HAggregateN4::getMean() const

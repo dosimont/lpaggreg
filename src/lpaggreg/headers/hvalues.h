@@ -32,12 +32,12 @@ namespace lpaggreg{
 
         int getLeaveSize() const;
 
-        vector<vector<int> > getLeaves() const;
+        vector<vector<int> > getChildren() const;
 
     private:
         unsigned int hsize;
         vector<int>parents;
-        vector<vector<int> >leaves;
+        vector<vector<int> >children;
         map<int, int>size;
         vector<int> path;
         int root;

@@ -20,6 +20,7 @@ namespace lpaggreg{
 
     private:
         void compute();
+        double subSum(int h);
         shared_ptr<HValuesN1> values;
         double sum;
         double mean;
@@ -34,6 +35,7 @@ namespace lpaggreg{
 
     private:
         void compute();
+        double subSum(int h, int i);
         shared_ptr<HValuesN2> values;
         vector<double> sum;
         vector<double> mean;
@@ -48,6 +50,7 @@ namespace lpaggreg{
 
     private:
         void compute();
+        double subSum(int h, int i, int j);
         shared_ptr<HValuesN3> values;
         vector<vector<double> > sum;
         vector<vector<double> > mean;
@@ -62,6 +65,7 @@ namespace lpaggreg{
 
     private:
         void compute();
+        double subSum(int h, int i, int j, int k);
         shared_ptr<HValuesN4> values;
         vector<vector<vector<double> > > sum;
         vector<vector<vector<double> > > mean;
