@@ -54,31 +54,28 @@ lpaggreg::DPartition::DPartition(vector<shared_ptr<UpperTriangularMatrix<int> > 
 void lpaggreg::DPartition::computeParts()
 {
     parts.clear();
-    /*int h;
+    int h;
     for (h=0; h<metaData.getHsize(); h++){
         parts.push_back(vector<DPart>());
     }
-    int i=metaData.getHsize()-1;
-    for (int h = (metaData.getPath())[i]; i >= 0; h = (metaData.getPath())[--i]){
-        for (int j=0; j<(cuts[h]).size();){
-            if (cuts[h][j]>=0){
-                parts[h].push_back(DPart(h, (metaData.getSize())[h], j, cuts[h][j]));
-                for (int child:(metaData.getLeaves())[h]){
-                    for (int k=j; k<=cuts[h][j];k++){
-                        cuts[child][k]=-2;
-                    }
-                }
-                j=cuts[h][j]+1;
-            }else if(cuts[h][j]==-2){
-                for (int child:(metaData.getLeaves())[h]){
-                    cuts[child][j]=-2;
-                }
-                j++;
-            }else{
-                j++;
-            }
+    h=metaData.getRoot();
+    int i=0;
+    int j=((*qualities)[0])->getSize()-1;
+    computeSubPart(h, i, j);
+}
+
+void lpaggreg::DPartition::computeSubPart(int h, int i, int j){
+    int cut;
+    if (cut=cuts[h][i][j]==-1){
+        for (int child:(metaData.getLeaves())[h]){
+            computeSubPart(child, i, j);
         }
-    }*/
+    }else{
+        parts[h].push_back(vector<DPart>(DPart(h, (metaData.getSize())[h], i, cut)));
+        if (cut<j){
+            computeSubPart(h, cut+1, j);
+        }
+    }
 }
 
 

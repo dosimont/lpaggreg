@@ -53,41 +53,38 @@ shared_ptr<lpaggreg::DPartition> lpaggreg::DPartitioner::computeBestPartition(fl
         tradeoffChildren.push_back(shared_ptr<UpperTriangularMatrix< shared_ptr<Tradeoff> > >(new UpperTriangularMatrix< shared_ptr<Tradeoff> >(osize)));
         cuts.push_back(shared_ptr<UpperTriangularMatrix<int> >(new UpperTriangularMatrix<int>(osize, osize-1)));
     }
-/*
-    int i=0;
+
+    int k=0;
     int h;
-    for (h = (metaData.getPath())[i]; i < metaData.getLeaveSize(); h = (metaData.getPath())[++i]){
-        (tradeoff[h])->set((*qualities)[h], parameter);
-        (*tradeoffChildren[(metaData.getParents())[h]])+=*(tradeoff[h]);
-        shared_ptr<Tradeoff> tradeoff_t=shared_ptr<Tradeoff>(new Tradeoff());
-        for (int i=size-1;i>=0;i--){
-            *(tradeoff[h])(i,j)->set(qualities->operator()(i,size-1), parameter);
-            for (int cut_t=i; cut_t<size-1; cut_t++){
-                tradeoff_t->set(qualities->operator()(i,cut_t), parameter);
-                *tradeoff_t+=*(tradeoff[cut_t+1]);
-                if (*tradeoff_t>*(tradeoff[i])){
-                    cut[i]=cut_t;
-                    *(tradeoff[i])=*(tradeoff_t);
+    for (h = (metaData.getPath())[k]; k < hsize; h = (metaData.getPath())[++k]){
+        for (int i=osize-1;i>=0;i--){
+            for (int j=i; j<osize-1; j++){
+                (*(cuts[h]))(i, j, j);
+                ((*(tradeoff[h]))(i, j))->set((*((*qualities)[h]))(i, j), parameter);
+                if (k<hsize-1){
+                    *((*(tradeoffChildren[(metaData.getParents())[h]]))(i, j))+=*((*(tradeoff[h]))(i, j));
+                }
+                if (k>=metaData.getLeaveSize()){
+                    if (*((*(tradeoffChildren[h]))(i, j))>*((*(tradeoff[h]))(i, j))){
+                        (*(cuts[h]))(i, j, -1);
+                        *((*(tradeoff[h]))(i, j))=*((*(tradeoffChildren[h]))(i, j));
+                    }
+                }
+                for (int cut_t=i; cut_t<j; cut_t){
+                    shared_ptr<Tradeoff> tradeoff_t=shared_ptr<Tradeoff>(new Tradeoff());
+                    ((*(tradeoff[h]))(i, cut_t))->set((*((*qualities)[h]))(i, cut_t), parameter);
+                     *tradeoff_t+=*((*(tradeoff[h]))(i, cut_t));
+                     *tradeoff_t+=*((*(tradeoff[h]))(cut_t+1, j));
+                    if (*tradeoff_t>*((*(tradeoff[h]))(i, j))){
+                        (*(cuts[h]))(i, j, cut_t);
+                        *((*(tradeoff[h]))(i, j))=*tradeoff_t;
+                    }
                 }
             }
         }
     }
-    for (h = (metaData.getPath())[i]; i < hsize-1; h = (metaData.getPath())[++i]){
-        (tradeoff[h])->set((*qualities)[h], parameter);
-        if ((*tradeoff[h])<(*tradeoffChildren[h])){
-            aggregated[h]=false;
-            (*tradeoff[h])=(*tradeoffChildren[h]);
-        }
-        (*tradeoffChildren[(metaData.getParents())[h]])+=*(tradeoff[h]);
-    }
-    (tradeoff[h])->set((*qualities)[h], parameter);
-    if ((*tradeoff[h])<(*tradeoffChildren[h])){
-        aggregated[h]=false;
-        (*tradeoff[h])=(*tradeoffChildren[h]);
-    }
-    shared_ptr<HPartition> partition=shared_ptr<HPartition>(new HPartition(aggregated, qualities, parameter, metaData));
-    return partition;*/
-    return shared_ptr<DPartition>(new DPartition(cuts, qualities, parameter, metaData));
+    shared_ptr<DPartition> partition= shared_ptr<DPartition>(new DPartition(cuts, qualities, parameter, metaData));
+    return partition;
 }
 
 
