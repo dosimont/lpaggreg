@@ -14,10 +14,10 @@ int main()
 {
     vector<double> pa0 = {1, 1, 1, 1, 1};
     vector<double> pb1 = {1, 1, 1, 1, 1};
-    vector<double> pc2 = {0.66, 0.5, 0, 0, 0.33};
-    vector<double> pd2 = {0, 0, 1, 1, 0.66};
+    vector<double> pc2 = {0.67, 0.5, 0, 0, 0.33};
+    vector<double> pd2 = {0, 0, 1, 1, 0.67};
     vector<double> pd3 = {0, 0, 0.5, 1, 0.33};
-    vector<double> pe3 = {0.66, 0, 0, 0, 0};
+    vector<double> pe3 = {0.67, 0, 0, 0, 0};
     vector< vector<double> > micromodel;
     micromodel.push_back(pa0);
     micromodel.push_back(pb1);
