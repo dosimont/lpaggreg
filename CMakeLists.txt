@@ -2,16 +2,10 @@
 
 OPTION(STATIC "Build a static library" OFF)
 
-#Not implemented yet
-OPTION(CROSS_WIN "Cross compilation for Windows" OFF)
-OPTION(TIMERS "Activate the timers (Linux Only)" OFF)
-OPTION(COUNTERS "Activate the counters" OFF)
-OPTION(OPENMP "Use the parallel version" OFF)
-
 #Should not be modified
 
-project(lpaggreg)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.1)
+
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
@@ -21,7 +15,12 @@ set(LPAGGREG_VERSION_PATCH "1")
 set(LPAGGREG_VERSION "${LPAGGREG_VERSION_MAJOR}.${LPAGGREG_VERSION_MINOR}.${LPAGGREG_VERSION_PATCH}")
 #add_definitions(-D__BUILD_VERSION__="${LPAGGREG_VERSION}")
 
+set (CMAKE_CXX_STANDARD 11)
+
+enable_testing()
+
 ADD_SUBDIRECTORY(src)
+ADD_SUBDIRECTORY(test)
 
 export(PACKAGE ${PROJECT_NAME})
 
