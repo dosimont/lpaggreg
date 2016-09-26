@@ -1,0 +1,3 @@
+SSHTARGET=mt1
+APPDIR=/apps/CEPBATOOLS
+APP=lpaggreg
