@@ -1,4 +1,5 @@
 #!/bin/bash -x
+#LPAggreg install
 OBJ=lpaggreg
 DIR=$2
 if [ ! -d $1 ] 
