@@ -60,7 +60,7 @@ unsigned int lpaggreg::DValuesN4::toJ(unsigned int index)
     return index%j;
 }
 
-lpaggreg::DValuesN4::DValuesN4(vector<vector<vector<vector<double> > > > values, vector<int> parents):DValues(SIZE1, SIZE2*SIZE3, SIZE4, parents), values(values), i(i), j(j)
+lpaggreg::DValuesN4::DValuesN4(vector<vector<vector<vector<double> > > > values, vector<int> parents):DValues(SIZE1, SIZE2*SIZE3, SIZE4, parents), values(values), i(SIZE2), j(SIZE3)
 {
 
 }
