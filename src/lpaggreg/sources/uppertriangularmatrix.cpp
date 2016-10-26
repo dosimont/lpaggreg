@@ -30,7 +30,7 @@ lpaggreg::UpperTriangularMatrix<lp_quality_type>::UpperTriangularMatrix(unsigned
 template<>
 lpaggreg::UpperTriangularMatrix<shared_ptr<lpaggreg::Quality > >::UpperTriangularMatrix(unsigned int size):size(size), elements(((size+1)*size/2)){
     matrix=vector<shared_ptr<lpaggreg::Quality > >();
-    for (int i; i<elements; i++){
+    for (int i=0; i<elements; i++){
         matrix.push_back(shared_ptr<lpaggreg::Quality>(new Quality));
     }
 }
@@ -38,7 +38,7 @@ lpaggreg::UpperTriangularMatrix<shared_ptr<lpaggreg::Quality > >::UpperTriangula
 template<>
 lpaggreg::UpperTriangularMatrix<shared_ptr<lpaggreg::Tradeoff > >::UpperTriangularMatrix(unsigned int size):size(size), elements(((size+1)*size/2)){
     matrix=vector<shared_ptr<lpaggreg::Tradeoff > >();
-    for (int i; i<elements; i++){
+    for (int i=0; i<elements; i++){
         matrix.push_back(shared_ptr<lpaggreg::Tradeoff>(new Tradeoff));
     }
 }

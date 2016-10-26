@@ -75,7 +75,7 @@ void lpaggreg::HPartition::computeSubPart(int h){
     if(aggregated[h]){
         parts.push_back(HPart(h,(metaData.getSize())[h]));
     }else{
-        for (int i; i<metaData.getChildren().operator [](h).size(); i++){
+        for (int i=0; i<metaData.getChildren().operator [](h).size(); i++){
             int child=metaData.getChildren().operator [](h).operator [](i);
             computeSubPart(child);
         }
