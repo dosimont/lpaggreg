@@ -74,10 +74,13 @@ src <- '
 sourceCpp(code=src, verbose=TRUE, rebuild=TRUE)
 
 set.seed(345)
+#Synthetic example: 2 processes, 2 types, 5 timeslices (keep the same order)
 testArray = array(dim=c(2,2,5))
-testArray[1,1,] = c(50.0/355.0, 100.0/355.0, 0.0, 200.0/355.0, 5.0/355.0)
-testArray[1,2,] = c(50.0/355.0, 100.0/355.0, 0.0, 200.0/355.0, 5.0/355.0)
-testArray[2,1,] = c(50.0/355.0, 100.0/355.0, 0.0, 200.0/355.0, 5.0/355.0)
-testArray[2,2,] = c(50.0/355.0, 100.0/355.0, 0.0, 200.0/355.0, 5.0/355.0)
+testArray[1,1,] = c(0.5, 0.2, 0.0, 0.1, 0.4)
+testArray[1,2,] = c(0.5, 0.8, 1.0, 0.9, 0.6)
+testArray[2,1,] = c(0.4, 0.3, 0.1, 0.2, 0.3)
+testArray[2,2,] = c(0.6, 0.7, 0.9, 0.8, 0.7)
 print(testArray)
+#Output: a 2D matrix (n,3) with the list of parts for each parameter
+#Columns: parameter p, start timeslice, end timeslice
 oaggregate(testArray)
