@@ -79,5 +79,8 @@ Thumbs.db
 
 #Packaging
 *.tmp
+
+#R
 .RData
 .Rhistory
+lpaggreg.Rout
