@@ -24,41 +24,52 @@ src <- '
   #include <lpaggreg/oqualities.h>
   #include <lpaggreg/opartitioner.h>
   #include <lpaggreg/ovaluesn.h>  
+  #include <lpaggreg/hqualities.h>
+  #include <lpaggreg/hpartitioner.h>
+  #include <lpaggreg/hvaluesn.h>  
 
   using namespace Rcpp;
   using namespace arma;
   using namespace std;
   using namespace lpaggreg;
  
-  // [[Rcpp::export]]
-  NumericMatrix oaggregate(NumericVector myArray) {
-
-  NumericVector vecArray(myArray);
   
-  IntegerVector arrayDims = vecArray.attr("dim");
-
-  cout<<"Dimension 1:"<<arrayDims[0]<<endl;
-  cout<<"Dimension 2:"<<arrayDims[1]<<endl;
-  cout<<"Dimension 3:"<<arrayDims[2]<<endl;
-  arma::cube cubeArray(vecArray.begin(), arrayDims[0], arrayDims[1], arrayDims[2], false);
-
-  vector<vector<vector<double> > > micromodel;
-  for (int i=0; i<arrayDims[0]; i++){
-    micromodel.push_back(vector<vector<double> >());
-    for (int j=0; j<arrayDims[1]; j++){
-      (micromodel[i]).push_back(vector<double>());
-      for (int k=0; k<arrayDims[2]; k++){
-        (micromodel[i][j]).push_back(cubeArray(i, j, k));
+  vector<vector<vector<double> > > convertToMicroModel(NumericVector micro){
+    NumericVector vecArray(micro);
+    IntegerVector arrayDims = vecArray.attr("dim");
+    arma::cube cubeArray(vecArray.begin(), arrayDims[0], arrayDims[1], arrayDims[2], false);
+    vector<vector<vector<double> > > micromodel;
+    for (int i=0; i<arrayDims[0]; i++){
+      micromodel.push_back(vector<vector<double> >());
+      for (int j=0; j<arrayDims[1]; j++){
+        (micromodel[i]).push_back(vector<double>());
+        for (int k=0; k<arrayDims[2]; k++){
+          (micromodel[i][j]).push_back(cubeArray(i, j, k));
+        }
       }
     }
+    return micromodel;
   }
-  shared_ptr<OValuesN3> values = shared_ptr<OValuesN3>(new OValuesN3(micromodel));
-  OQualities oqualities = OQualities(values);
-  oqualities.computeQualities();
-  oqualities.normalize();
-  OPartitioner opartitioner = OPartitioner(oqualities);
-  opartitioner.computeBestPartitions(0.001);
-  list< tuple<float, int, int> > partitionsTuples=opartitioner.getPartitionsTuples();
+
+  vector<int > convertToHierarchy(NumericVector h){
+    NumericVector vecArray(h);
+    vector<int> hierarchy;
+    for (int i=0; i<vecArray.size(); i++){
+      hierarchy.push_back(vecArray(i)-1);
+    }
+    return hierarchy;
+  }
+  
+  // [[Rcpp::export]]
+  NumericMatrix oaggregate(NumericVector micro) {
+  
+  shared_ptr<OValuesN3> values = shared_ptr<OValuesN3>(new OValuesN3(convertToMicroModel(micro)));
+  OQualities qualities = OQualities(values);
+  qualities.computeQualities();
+  qualities.normalize();
+  OPartitioner partitioner = OPartitioner(qualities);
+  partitioner.computeBestPartitions(0.001);
+  list< tuple<float, int, int> > partitionsTuples=partitioner.getPartitionsTuples();
   NumericMatrix matrixResults(partitionsTuples.size(),3);
   int i=0;
   for (tuple<float, int, int> line: partitionsTuples){
@@ -68,12 +79,32 @@ src <- '
     i++;
   }
   return matrixResults;
-}
+  }
+
+  // [[Rcpp::export]]
+  NumericMatrix haggregate(NumericVector micro, NumericVector h) {
+  shared_ptr<HValuesN3> values = shared_ptr<HValuesN3>(new HValuesN3(convertToMicroModel(micro),convertToHierarchy(h)));
+  HQualities qualities = HQualities(values);
+  qualities.computeQualities();
+  qualities.normalize();
+  HPartitioner partitioner = HPartitioner(qualities);
+  partitioner.computeBestPartitions(0.001);
+  list< tuple<float, int, int> > partitionsTuples=partitioner.getPartitionsTuples();
+  NumericMatrix matrixResults(partitionsTuples.size(),3);
+  int i=0;
+  for (tuple<float, int, int> line: partitionsTuples){
+    matrixResults(i, 0)=get<0>(line);
+    matrixResults(i, 1)=get<1>(line);
+    matrixResults(i, 2)=get<2>(line);
+    i++;
+  }
+  return matrixResults;
+  }
 '
+options(digits=12)
 
 sourceCpp(code=src, verbose=TRUE, rebuild=TRUE)
 
-set.seed(345)
 #Synthetic example: 2 processes, 2 types, 5 timeslices (keep the same order)
 testArray = array(dim=c(2,2,5))
 testArray[1,1,] = c(0.5, 0.2, 0.0, 0.1, 0.4)
@@ -84,3 +115,5 @@ print(testArray)
 #Output: a 2D matrix (n,3) with the list of parts for each parameter
 #Columns: parameter p, start timeslice, end timeslice
 oaggregate(testArray)
+h=c(3,3,0)
+haggregate(testArray,h)

@@ -14,6 +14,7 @@ void lpaggreg::OPartitioner::computeBestPartitions(float threshold, float min, f
 {
     pList.clear();
     partitions.clear();
+    partitionsTuples.clear();
     shared_ptr<OPartition> bestPartitionMin;
     shared_ptr<OPartition> bestPartitionMax;
     bestPartitionMin=computeBestPartition(min);
@@ -23,7 +24,7 @@ void lpaggreg::OPartitioner::computeBestPartitions(float threshold, float min, f
     addBestQualities(threshold, bestPartitionMin, bestPartitionMax);
     pList.push_back(max);
     partitions[max]=bestPartitionMax;
-    for (auto it = pList.end(); it!=pList.begin();it--){
+    for (auto it = pList.end()-1; it!=pList.begin();it--){
         auto it2=it-1;
         if (*(partitions[*it])==*(partitions[*it2])){
             partitions.erase(partitions.find(*it));
