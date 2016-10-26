@@ -26,7 +26,10 @@ src <- '
   #include <lpaggreg/ovaluesn.h>  
   #include <lpaggreg/hqualities.h>
   #include <lpaggreg/hpartitioner.h>
-  #include <lpaggreg/hvaluesn.h>  
+  #include <lpaggreg/hvaluesn.h>
+  #include <lpaggreg/dqualities.h>
+  #include <lpaggreg/dpartitioner.h>
+  #include <lpaggreg/dvaluesn.h>  
 
   using namespace Rcpp;
   using namespace arma;
@@ -100,6 +103,28 @@ src <- '
   }
   return matrixResults;
   }
+
+  // [[Rcpp::export]]
+  NumericMatrix daggregate(NumericVector micro, NumericVector h) {
+  shared_ptr<DValuesN3> values = shared_ptr<DValuesN3>(new DValuesN3(convertToMicroModel(micro),convertToHierarchy(h)));
+  DQualities qualities = DQualities(values);
+  qualities.computeQualities();
+  qualities.normalize();
+  DPartitioner partitioner = DPartitioner(qualities);
+  partitioner.computeBestPartitions(0.001);
+  list< tuple<float, int, int, int, int> > partitionsTuples=partitioner.getPartitionsTuples();
+  NumericMatrix matrixResults(partitionsTuples.size(),5);
+  int i=0;
+  for (tuple<float, int, int, int, int> line: partitionsTuples){
+    matrixResults(i, 0)=get<0>(line);
+    matrixResults(i, 1)=get<1>(line);
+    matrixResults(i, 2)=get<2>(line);
+    matrixResults(i, 3)=get<2>(line);
+    matrixResults(i, 4)=get<2>(line);
+    i++;
+  }
+  return matrixResults;
+  }
 '
 options(digits=12)
 
@@ -115,5 +140,10 @@ print(testArray)
 #Output: a 2D matrix (n,3) with the list of parts for each parameter
 #Columns: parameter p, start timeslice, end timeslice
 oaggregate(testArray)
+#define hierarchy: vector[index]= index's father index; vector[index]0 means index=root
 h=c(3,3,0)
+#Columns: parameter p, node, size
 haggregate(testArray,h)
+#Columns: parameter p, node, size, start, end
+#/!\ does not work, dlpaggreg is bugged
+#daggregate(testArray,h)
