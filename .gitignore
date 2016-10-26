@@ -79,3 +79,5 @@ Thumbs.db
 
 #Packaging
 *.tmp
+.RData
+.Rhistory
