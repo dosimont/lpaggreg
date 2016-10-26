@@ -71,7 +71,6 @@ void lpaggreg::HPartition::computeParts()
 }
 
 void lpaggreg::HPartition::computeSubPart(int h){
-    cout<<h<<endl;
     if(aggregated[h]){
         parts.push_back(HPart(h,(metaData.getSize())[h]));
     }else{
