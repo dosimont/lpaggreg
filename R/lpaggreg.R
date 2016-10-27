@@ -1,8 +1,7 @@
 require(inline)
 require(Rcpp)
 require(RcppArmadillo)
-
-source("functions.R")
+source("parsepjdump.R")
 library(sets)
 
 #Modify
@@ -153,59 +152,8 @@ haggregate(testArray, h, th)
 #Columns: parameter p, node, size, start, end
 daggregate(testArray, h, th)
 
-trace <- read.table("cholesky_11520_960_starpu_25_3_dmda_1_idcin-2.grenoble.grid5000.fr_2016-08-21_20-49-12_pjdump.csv", sep=",", fill=TRUE, header=TRUE)
+dataCube=parsePJDump("cholesky_11520_960_starpu_25_3_dmda_1_idcin-2.grenoble.grid5000.fr_2016-08-21_20-49-12_pjdump.csv", 20)
 
-head(trace)
-unique(trace$Nature)
-unique(trace$ResourceId)
-unique(trace$Type)
-unique(trace$Value)
-min(trace$Start)
-max(trace$End)
-
-subtrace <- trace[trace$Depth == 0,]
-space <- unique(subtrace$ResourceId[substr(subtrace$ResourceId,1,1) == "C"])
-space <- space[order(space)]
-subtrace <- subtrace[subtrace$ResourceId %in% space,]
-
-head(subtrace)
-unique(subtrace$Nature)
-unique(subtrace$ResourceId)
-unique(subtrace$Type)
-unique(subtrace$Value)
-min(subtrace$Start)
-max(subtrace$End)
-
-stepNb <- 20
-start <- min(subtrace$Start)
-end <- max(subtrace$End)
-step <- (end-start)/stepNb
-time <- seq(start,end-step,step)
-
-value <- unique(subtrace$Value)
-value <- value[order(value)]
-
-dataCube <- array(0,
-                  dim = c(length(space), length(value), length(time)),
-                  dimnames = list("space"=space, "value"=value, "time"=time)
-)
-
-dataCube[c("CPU0","CPU1"),"Idle",]
-
-for (r in 1:nrow(subtrace)) {
-  row <- subtrace[r,]
-  for (t in time) {
-    interval <- interval_intersection(interval(row$Start,row$End),interval(t,t+step))
-    size <- 0
-    if (!interval_is_empty(interval)) { size <- max(interval) - min(interval) }
-    dataCube[as.character(row$ResourceId),as.character(row$Value),as.character(t)] <- dataCube[as.character(row$ResourceId),as.character(row$Value),as.character(t)] + size
-  }
-}
-
-
-#apply(dataCube,c(1,3),sum)
-step
-value
 dataCube
 
 oaggregate(dataCube, th)
