@@ -52,24 +52,20 @@ shared_ptr<lpaggreg::DPartition> lpaggreg::DPartitioner::computeBestPartition(fl
         tradeoffChildren.push_back(shared_ptr<UpperTriangularMatrix< shared_ptr<Tradeoff> > >(new UpperTriangularMatrix< shared_ptr<Tradeoff> >(osize)));
         cuts.push_back(shared_ptr<UpperTriangularMatrix<int> >(new UpperTriangularMatrix<int>(osize, osize-1)));
     }
-
     int k=0;
     int h;
     for (h = (metaData.getPath())[k]; k < hsize; h = (metaData.getPath())[++k]){
         for (int i=osize-1;i>=0;i--){
-            for (int j=i; j<osize-1; j++){
+            for (int j=i; j<=osize-1; j++){
                 (*(cuts[h]))(i, j, j);
                 ((*(tradeoff[h]))(i, j))->set((*((*qualities)[h]))(i, j), parameter);
-                if (k<hsize-1){
-                    *((*(tradeoffChildren[(metaData.getParents())[h]]))(i, j))+=*((*(tradeoff[h]))(i, j));
-                }
                 if (k>=metaData.getLeaveSize()){
                     if (*((*(tradeoffChildren[h]))(i, j))>*((*(tradeoff[h]))(i, j))){
                         (*(cuts[h]))(i, j, -1);
                         *((*(tradeoff[h]))(i, j))=*((*(tradeoffChildren[h]))(i, j));
                     }
                 }
-                for (int cut_t=i; cut_t<j; cut_t){
+                for (int cut_t=i; cut_t<j; cut_t++){
                     shared_ptr<Tradeoff> tradeoff_t=shared_ptr<Tradeoff>(new Tradeoff());
                     ((*(tradeoff[h]))(i, cut_t))->set((*((*qualities)[h]))(i, cut_t), parameter);
                      *tradeoff_t+=*((*(tradeoff[h]))(i, cut_t));
@@ -79,7 +75,13 @@ shared_ptr<lpaggreg::DPartition> lpaggreg::DPartitioner::computeBestPartition(fl
                         *((*(tradeoff[h]))(i, j))=*tradeoff_t;
                     }
                 }
+                if (k<hsize-1){
+                    *((*(tradeoffChildren[(metaData.getParents())[h]]))(i, j))+=*((*(tradeoff[h]))(i, j));
+                }
             }
+        }
+        if (h==metaData.getRoot()){
+            break;
         }
     }
     shared_ptr<DPartition> partition= shared_ptr<DPartition>(new DPartition(cuts, qualities, parameter, metaData));

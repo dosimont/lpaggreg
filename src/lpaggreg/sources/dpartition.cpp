@@ -1,6 +1,6 @@
 #include "dpartition.h"
 
-lpaggreg::DPart::DPart(int h, int hsize, int start, int end)
+lpaggreg::DPart::DPart(int h, int hsize, int start, int end):h(h), hsize(hsize), start(start), end(end)
 {
 
 }
@@ -79,6 +79,7 @@ void lpaggreg::DPartition::computeSubPart(int h, int i, int j){
 
 void lpaggreg::DPartition::computeQuality()
 {
+    quality=shared_ptr<Quality>(new Quality());
     for (DPart it: parts){
         *quality+=*(*(*qualities)[it.getH()])(it.getStart(), it.getEnd());
     }
@@ -110,7 +111,15 @@ bool lpaggreg::operator==(lpaggreg::DPartition &dpartition1, lpaggreg::DPartitio
         return false;
     }else{
         for (int i=0; i<dpartition1.getParts().size(); i++){
-            if ((dpartition1.getParts())[i]!=(dpartition2.getParts())[i]){
+            DPart part=(dpartition1.getParts())[i];
+            bool similar=false;
+            for (int j=0; j<dpartition2.getParts().size(); j++){
+                if (part==(dpartition2.getParts())[j]){
+                    similar=true;
+                    break;
+                }
+            }
+            if (!similar){
                 return false;
             }
         }
