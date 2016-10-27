@@ -64,66 +64,68 @@ src <- '
   }
   
   // [[Rcpp::export]]
-  NumericMatrix oaggregate(NumericVector micro) {
-  
-  shared_ptr<OValuesN3> values = shared_ptr<OValuesN3>(new OValuesN3(convertToMicroModel(micro)));
-  OQualities qualities = OQualities(values);
-  qualities.computeQualities();
-  qualities.normalize();
-  OPartitioner partitioner = OPartitioner(qualities);
-  partitioner.computeBestPartitions(0.001);
-  list< tuple<float, int, int> > partitionsTuples=partitioner.getPartitionsTuples();
-  NumericMatrix matrixResults(partitionsTuples.size(),3);
-  int i=0;
-  for (tuple<float, int, int> line: partitionsTuples){
-    matrixResults(i, 0)=get<0>(line);
-    matrixResults(i, 1)=get<1>(line)+1;
-    matrixResults(i, 2)=get<2>(line)+1;
-    i++;
-  }
+  NumericMatrix oaggregate(NumericVector micro, SEXP th) {
+    float threshold=as<float>(th);
+    shared_ptr<OValuesN3> values = shared_ptr<OValuesN3>(new OValuesN3(convertToMicroModel(micro)));
+    OQualities qualities = OQualities(values);
+    qualities.computeQualities();
+    qualities.normalize();
+    OPartitioner partitioner = OPartitioner(qualities);
+    partitioner.computeBestPartitions(threshold);
+    list< tuple<float, int, int> > partitionsTuples=partitioner.getPartitionsTuples();
+    NumericMatrix matrixResults(partitionsTuples.size(),3);
+    int i=0;
+    for (tuple<float, int, int> line: partitionsTuples){
+      matrixResults(i, 0)=get<0>(line);
+      matrixResults(i, 1)=get<1>(line)+1;
+      matrixResults(i, 2)=get<2>(line)+1;
+      i++;
+    }
   return matrixResults;
   }
 
   // [[Rcpp::export]]
-  NumericMatrix haggregate(NumericVector micro, NumericVector h) {
-  shared_ptr<HValuesN3> values = shared_ptr<HValuesN3>(new HValuesN3(convertToMicroModel(micro),convertToHierarchy(h)));
-  HQualities qualities = HQualities(values);
-  qualities.computeQualities();
-  qualities.normalize();
-  HPartitioner partitioner = HPartitioner(qualities);
-  partitioner.computeBestPartitions(0.001);
-  list< tuple<float, int, int> > partitionsTuples=partitioner.getPartitionsTuples();
-  NumericMatrix matrixResults(partitionsTuples.size(),3);
-  int i=0;
-  for (tuple<float, int, int> line: partitionsTuples){
-    matrixResults(i, 0)=get<0>(line);
-    matrixResults(i, 1)=get<1>(line)+1;
-    matrixResults(i, 2)=get<2>(line);
-    i++;
-  }
-  return matrixResults;
+  NumericMatrix haggregate(NumericVector micro, NumericVector h, SEXP th) {
+    float threshold=as<float>(th);
+    shared_ptr<HValuesN3> values = shared_ptr<HValuesN3>(new HValuesN3(convertToMicroModel(micro),convertToHierarchy(h)));
+    HQualities qualities = HQualities(values);
+    qualities.computeQualities();
+    qualities.normalize();
+    HPartitioner partitioner = HPartitioner(qualities);
+    partitioner.computeBestPartitions(threshold);
+    list< tuple<float, int, int> > partitionsTuples=partitioner.getPartitionsTuples();
+    NumericMatrix matrixResults(partitionsTuples.size(),3);
+    int i=0;
+    for (tuple<float, int, int> line: partitionsTuples){
+      matrixResults(i, 0)=get<0>(line);
+      matrixResults(i, 1)=get<1>(line)+1;
+      matrixResults(i, 2)=get<2>(line);
+      i++;
+    }
+    return matrixResults;
   }
 
   // [[Rcpp::export]]
-  NumericMatrix daggregate(NumericVector micro, NumericVector h) {
-  shared_ptr<DValuesN3> values = shared_ptr<DValuesN3>(new DValuesN3(convertToMicroModel(micro),convertToHierarchy(h)));
-  DQualities qualities = DQualities(values);
-  qualities.computeQualities();
-  qualities.normalize();
-  DPartitioner partitioner = DPartitioner(qualities);
-  partitioner.computeBestPartitions(0.001);
-  list< tuple<float, int, int, int, int> > partitionsTuples=partitioner.getPartitionsTuples();
-  NumericMatrix matrixResults(partitionsTuples.size(),5);
-  int i=0;
-  for (tuple<float, int, int, int, int> line: partitionsTuples){
-    matrixResults(i, 0)=get<0>(line);
-    matrixResults(i, 1)=get<1>(line)+1;
-    matrixResults(i, 2)=get<2>(line);
-    matrixResults(i, 3)=get<3>(line)+1;
-    matrixResults(i, 4)=get<4>(line)+1;
-    i++;
-  }
-  return matrixResults;
+  NumericMatrix daggregate(NumericVector micro, NumericVector h, SEXP th) {
+    float threshold=as<float>(th);
+    shared_ptr<DValuesN3> values = shared_ptr<DValuesN3>(new DValuesN3(convertToMicroModel(micro),convertToHierarchy(h)));
+    DQualities qualities = DQualities(values);
+    qualities.computeQualities();
+    qualities.normalize();
+    DPartitioner partitioner = DPartitioner(qualities);
+    partitioner.computeBestPartitions(threshold);
+    list< tuple<float, int, int, int, int> > partitionsTuples=partitioner.getPartitionsTuples();
+    NumericMatrix matrixResults(partitionsTuples.size(),5);
+    int i=0;
+    for (tuple<float, int, int, int, int> line: partitionsTuples){
+      matrixResults(i, 0)=get<0>(line);
+      matrixResults(i, 1)=get<1>(line)+1;
+      matrixResults(i, 2)=get<2>(line);
+      matrixResults(i, 3)=get<3>(line)+1;
+      matrixResults(i, 4)=get<4>(line)+1;
+      i++;
+    }
+    return matrixResults;
   }
 '
 options(digits=12)
@@ -137,12 +139,14 @@ testArray[1,2,] = c(0.5, 0.8, 1.0, 0.9, 0.6)
 testArray[2,1,] = c(0.4, 0.3, 0.1, 0.2, 0.3)
 testArray[2,2,] = c(0.6, 0.7, 0.9, 0.8, 0.7)
 print(testArray)
+#Threshold: 0<th<1, lower value means more accuracy for retrieving the list of partitions but longer computation time
+th=0.001
 #Output: a 2D matrix (n,3) with the list of parts for each parameter
 #Columns: parameter p, start timeslice, end timeslice
-oaggregate(testArray)
+oaggregate(testArray, th)
 #define hierarchy: vector[index]= index's father index; vector[index]0 means index=root
 h=c(3,3,0)
 #Columns: parameter p, node, size
-haggregate(testArray,h)
+haggregate(testArray, h, th)
 #Columns: parameter p, node, size, start, end
-daggregate(testArray,h)
+daggregate(testArray, h, th)
