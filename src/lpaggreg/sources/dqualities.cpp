@@ -39,7 +39,7 @@ void lpaggreg::DQualities::computeQualities()
         vector<UpperTriangularMatrix<lp_quality_type> > info;
         for (h=0; h<hsize; h++){
             sum.push_back(UpperTriangularMatrix<lp_quality_type>(osize));
-            sum.push_back(UpperTriangularMatrix<lp_quality_type>(osize));
+            info.push_back(UpperTriangularMatrix<lp_quality_type>(osize));
         }
         for (h = (metaData.getPath())[i]; i < metaData.getLeaveSize(); h = (metaData.getPath())[++i]){
             for (int i = osize-1; i >=0; i--) {

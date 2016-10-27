@@ -31,5 +31,9 @@ int main()
     //cout<<"Quality:"<<partition->getQuality()->getGain()<<endl;
     cout<<"Computing Best Partitions"<<endl;
     hpartitioner.computeBestPartitions(0.001);
+    vector<float> vec=hpartitioner.getPList();
+    for (auto i = vec.begin(); i != vec.end(); ++i){
+        std::cout << *i << ' '<<endl;
+    }
     return 0;
 }

@@ -1,6 +1,7 @@
 #ifndef DPARTITIONER_H
 #define DPARTITIONER_H
 
+#include <iostream>
 #include <vector>
 #include <memory>
 #include <map>
