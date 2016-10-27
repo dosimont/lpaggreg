@@ -77,8 +77,8 @@ src <- '
   int i=0;
   for (tuple<float, int, int> line: partitionsTuples){
     matrixResults(i, 0)=get<0>(line);
-    matrixResults(i, 1)=get<1>(line);
-    matrixResults(i, 2)=get<2>(line);
+    matrixResults(i, 1)=get<1>(line)+1;
+    matrixResults(i, 2)=get<2>(line)+1;
     i++;
   }
   return matrixResults;
@@ -97,7 +97,7 @@ src <- '
   int i=0;
   for (tuple<float, int, int> line: partitionsTuples){
     matrixResults(i, 0)=get<0>(line);
-    matrixResults(i, 1)=get<1>(line);
+    matrixResults(i, 1)=get<1>(line)+1;
     matrixResults(i, 2)=get<2>(line);
     i++;
   }
@@ -117,10 +117,10 @@ src <- '
   int i=0;
   for (tuple<float, int, int, int, int> line: partitionsTuples){
     matrixResults(i, 0)=get<0>(line);
-    matrixResults(i, 1)=get<1>(line);
+    matrixResults(i, 1)=get<1>(line)+1;
     matrixResults(i, 2)=get<2>(line);
-    matrixResults(i, 3)=get<2>(line);
-    matrixResults(i, 4)=get<2>(line);
+    matrixResults(i, 3)=get<3>(line)+1;
+    matrixResults(i, 4)=get<4>(line)+1;
     i++;
   }
   return matrixResults;
@@ -145,5 +145,4 @@ h=c(3,3,0)
 #Columns: parameter p, node, size
 haggregate(testArray,h)
 #Columns: parameter p, node, size, start, end
-#/!\ does not work, dlpaggreg is bugged
-#daggregate(testArray,h)
+daggregate(testArray,h)
