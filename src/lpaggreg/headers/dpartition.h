@@ -1,6 +1,7 @@
 #ifndef DPARTITION_H
 #define DPARTITION_H
 
+#include <iostream>
 #include <vector>
 #include <memory>
 #include <set>

@@ -27,7 +27,7 @@ int lpaggreg::DPart::getHSize() const
 
 int lpaggreg::DPart::getOSize()
 {
-    return start-end+1;
+    return end-start+1;
 }
 
 int lpaggreg::DPart::getStart() const
@@ -64,7 +64,7 @@ void lpaggreg::DPartition::computeParts()
 void lpaggreg::DPartition::computeSubPart(int h, int i, int j){
     int cut=(*(cuts[h]))(i, j);
     if (cut==-1){
-        for (int k; i<metaData.getChildren().operator [](h).size(); k++){
+        for (int k=0; k<metaData.getChildren().operator [](h).size(); k++){
             int child=metaData.getChildren().operator [](h).operator [](k);
             computeSubPart(child, i, j);
         }
