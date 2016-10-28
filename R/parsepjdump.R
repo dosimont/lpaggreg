@@ -1,40 +1,77 @@
-source("functions.R")
 library(sets)
+library(sqldf);
+library(dplyr);
 
-parsePJDump <- function (file, timeSliceNumber){
-
-trace <- read.table(file, sep=",", fill=TRUE, header=TRUE)
-
-trace
-
-subtrace <- trace[trace$Depth == 0,]
-space <- unique(subtrace$ResourceId)
-space <- space[order(space)]
-subtrace <- subtrace[subtrace$ResourceId %in% space,]
-
-stepNb <- timeSliceNumber
-start <- min(subtrace$Start)
-end <- max(subtrace$End)
-step <- (end-start)/stepNb
-time <- seq(start,end-step,step)
-
-value <- unique(subtrace$Value)
-value <- value[order(value)]
-
-dataCube <- array(0,
-                  dim = c(length(space), length(value), length(time)),
-                  dimnames = list("space"=space, "value"=value, "time"=time)
-)
-
-for (r in 1:nrow(subtrace)) {
-  row <- subtrace[r,]
-  for (t in time) {
-    interval <- interval_intersection(interval(row$Start,row$End),interval(t,t+step))
-    size <- 0
-    if (!interval_is_empty(interval)) { size <- max(interval) - min(interval) }
-    dataCube[as.character(row$ResourceId),as.character(row$Value),as.character(t)] <- dataCube[as.character(row$ResourceId),as.character(row$Value),as.character(t)] + size/step
-  }
+factor2numeric <- function(f)
+{
+  if(!is.factor(f)) stop("the input must be a factor")
+  as.numeric(levels(f))[as.integer(f)]
 }
 
-dataCube
+slicer <- function (trace, timeSliceNumber)
+{
+  start <- min(trace$Start)
+  trace$Start <- trace$Start - start
+  trace$End <- trace$End - start
+  maxts <- max(trace$End)
+  slicets = maxts/timeSliceNumber;
+  slices <- data.frame(SliceId=1:timeSliceNumber, TsStart=(0:(timeSliceNumber-1))*slicets, TsEnd=(1:timeSliceNumber)*slicets);
+  h <- sqldf('SELECT trace.ResourceId, trace.Start, trace.End, trace.Duration, trace.Value, slices.SliceId, slices.TsStart, slices.TsEnd
+                       FROM trace
+                       INNER JOIN slices
+                       ON (trace.Start+trace.Duration > slices.TsStart) AND (trace.End-trace.Duration < slices.TsEnd)')
+  h$Duration <- NULL;
+  m <- h %>% group_by(ResourceId, Start, End, SliceId, Value) %>%
+    mutate(N=n(), TinTS = (min(End,TsEnd) - max(Start,TsStart))) %>%
+    group_by(ResourceId, SliceId, Value, TsStart, TsEnd) %>%
+    summarize (Sum=sum(TinTS), Normalized=Sum/slicets) %>%
+    as.data.frame();
+  p <- expand.grid(ResourceId=unique(m$ResourceId), SliceId = 1:max(m$SliceId), Value = unique(m$Value));
+  p$TsStart = 0;
+  p$TsEnd = 0;
+  p$Sum = 0;
+  p$Normalized = 0;
+  n <- rbind(p, m);
+  o <- n %>% group_by (ResourceId, SliceId, Value) %>%
+    summarize(TsStart = max(TsStart), TsEnd = max(TsEnd), Sum = max(Sum), Normalized=max(Normalized)) %>% as.data.frame;
+  return (o);
+}
+
+
+parsePJDump <- function (file, timeSliceNumber){
+  
+  names <- c("Nature", "ResourceId", "Type", "Start", "End", "Duration", "Depth", "Value", "a", "b", "c", "d", "e", "f", "g")
+  trace <- read.table(file, sep=",", fill=TRUE, header=FALSE, col.names=names)
+  
+  trace$a <- NULL
+  trace$b <- NULL
+  trace$c <- NULL
+  trace$d <- NULL
+  trace$e <- NULL
+  trace$f <- NULL
+  trace$g <- NULL
+  subtrace <- trace[trace$Nature %in% "State",]
+  
+  
+  df <- slicer(subtrace, timeSliceNumber)
+  
+  time <- unique(df$SliceId)
+  time <- time[order(time)]
+  
+  value <- unique(df$Value)
+  value <- value[order(value)]
+  
+  space <- unique(df$ResourceId)
+  space <- space[order(space)]
+  
+  dataCube <- array(0,
+                    dim = c(length(space), length(value), length(time)),
+                    dimnames = list("space"=space, "value"=value, "time"=time)
+  )
+  
+  for (r in 1:nrow(df)) {
+      row <- df[r,]
+      dataCube[as.character(row$ResourceId),as.character(row$Value),as.character(row$SliceId)] <- row$Normalized
+    }
+  dataCube
 }

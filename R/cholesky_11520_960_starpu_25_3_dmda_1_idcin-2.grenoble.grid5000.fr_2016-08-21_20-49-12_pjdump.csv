@@ -1,4 +1,3 @@
-Nature,ResourceId,Type,Start,End,Duration,Depth,Value,Footprint ,JobId ,Params,Size,Tag
 State,4,Thread State,2286.416337,2287.055972,0.639635,0.000000,Initializing
 State,4,Thread State,2287.055972,2287.061506,0.005534,0.000000,Overhead
 State,4,Thread State,2287.061506,2287.063258,0.001752,0.000000,Scheduling

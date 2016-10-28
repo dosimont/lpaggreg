@@ -2,7 +2,6 @@ require(inline)
 require(Rcpp)
 require(RcppArmadillo)
 source("parsepjdump.R")
-library(sets)
 
 #Modify
 lpaggreg_location="/opt/ptools/lpaggreg";
@@ -162,7 +161,7 @@ haggregate(testArray, h, th)
 daggregate(testArray, h, th)
 
 #Real trace example
-dataCube=parsePJDump("cholesky_11520_960_starpu_25_3_dmda_1_idcin-2.grenoble.grid5000.fr_2016-08-21_20-49-12_pjdump.csv", 20)
+dataCube=parsePJDump("cholesky_11520_960_starpu_25_3_dmda_1_idcin-2.grenoble.grid5000.fr_2016-08-21_20-49-12_pjdump.csv",20)
 
 #Show the micromodel
 dataCube
