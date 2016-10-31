@@ -110,6 +110,7 @@ bool lpaggreg::operator==(lpaggreg::DPartition &dpartition1, lpaggreg::DPartitio
     if (dpartition1.getParts().size()!=dpartition2.getParts().size()){
         return false;
     }else{
+        //Really costly! TODO improve
         for (int i=0; i<dpartition1.getParts().size(); i++){
             DPart part=(dpartition1.getParts())[i];
             bool similar=false;
