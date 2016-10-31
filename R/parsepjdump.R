@@ -50,6 +50,7 @@ parsePJDump <- function (file, timeSliceNumber){
   trace$e <- NULL
   trace$f <- NULL
   trace$g <- NULL
+  hierachy <- trace[trace$Nature %in% "Container",]
   subtrace <- trace[trace$Nature %in% "State",]
   
   
