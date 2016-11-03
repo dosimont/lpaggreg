@@ -43,7 +43,7 @@ slicer <- function (trace, timeSliceNumber)
   return (o);
 }
 
-parsepjdump <- function (file, timeSliceNumber){
+parsepjdump <- function (file){
   
   names <- c("Nature", "ResourceId", "Type", "Start", "End", "Duration", "Depth", "Value", "a", "b", "c", "d", "e", "f", "g")
   trace <- read.table(file, sep=",", fill=TRUE, header=FALSE, col.names=names)
@@ -55,20 +55,11 @@ parsepjdump <- function (file, timeSliceNumber){
   trace$e <- NULL
   trace$f <- NULL
   trace$g <- NULL
+ 
+  trace
+}
   
-  resources <- trace[trace$Nature %in% "Container",]
-  resources$Nature <- NULL
-  resources$Type <- NULL
-  resources$Start <- NULL
-  resources$End <- NULL
-  resources$Duration <- NULL
-  resources$Value <- NULL
-  resources$ParentId <- resources$ResourceId
-  resources$ResourceId <- resources$Depth
-  resources$Depth <- NULL
-  
-  #does not work, why???
-  resources <- resources[!(resources$ResourceId %in% '0'),]
+pjdump2microstate <- function(trace, timeSliceNumber, enable_hierarchy=TRUE){
   
   subtrace <- trace[trace$Nature %in% "State",]
   
@@ -81,29 +72,49 @@ parsepjdump <- function (file, timeSliceNumber){
   value <- unique(df$Value)
   value <- value[order(value)]
   
-  parents <- unique(resources$ParentId)
-  parents<-parents[order(parents)]
-  parents<-rev(parents)
-  
-  #remove parents from df
-  df <- df[!(df$ResourceId %in% parents),]
-  
+  if (enable_hierarchy){
+    resources <- trace[trace$Nature %in% "Container",]
+    resources$Nature <- NULL
+    resources$Type <- NULL
+    resources$Start <- NULL
+    resources$End <- NULL
+    resources$Duration <- NULL
+    resources$Value <- NULL
+    resources$ParentId <- resources$ResourceId
+    resources$ResourceId <- resources$Depth
+    resources$Depth <- NULL
+    
+    #does not work, why???
+    resources <- resources[!(resources$ResourceId %in% '0'),]
+    
+    parents <- unique(resources$ParentId)
+    parents<-parents[order(parents)]
+    parents<-rev(parents)
+    
+    #remove parents from df
+    df <- df[!(df$ResourceId %in% parents),]
+  }
+
   space <- unique(df$ResourceId)
   space <- space[order(space)]
   
-  hierarchy <- factor(c(as.character(space),as.character(parents)))
-  hierarchy<-unique(hierarchy)
-  names(hierarchy)=as.character(hierarchy)
-  resources$ParentIndex=-1
-  vhierarchy <- rep(-1,length(hierarchy))
-  names(vhierarchy)=as.character(hierarchy)
+  if (enable_hierarchy){
+    hierarchy <- factor(c(as.character(space),as.character(parents)))
+    hierarchy<-unique(hierarchy)
+    names(hierarchy)=as.character(hierarchy)
+    resources$ParentIndex=-1
+    vhierarchy <- rep(-1,length(hierarchy))
+    names(vhierarchy)=as.character(hierarchy)
   
-  for (i in 1:length(vhierarchy)){
-    resources[resources$ResourceId %in% hierarchy[i],"ParentIndex"]=match(resources[resources$ResourceId %in% hierarchy[i],"ParentId"],hierarchy)[1]
-  }
-  resources[1,"ParentIndex"]=0
-  for (i in 1:length(vhierarchy)){
-    vhierarchy[i]=resources[resources$ResourceId %in% hierarchy[i],"ParentIndex"]
+    for (i in 1:length(vhierarchy)){
+      resources[resources$ResourceId %in% hierarchy[i],"ParentIndex"]=match(resources[resources$ResourceId %in% hierarchy[i],"ParentId"],hierarchy)[1]
+    }
+    resources[1,"ParentIndex"]=0
+    for (i in 1:length(vhierarchy)){
+      vhierarchy[i]=resources[resources$ResourceId %in% hierarchy[i],"ParentIndex"]
+    }
+  }else{
+    vhierarchy=0
   }
   
   dataCube <- array(0,
@@ -115,6 +126,7 @@ parsepjdump <- function (file, timeSliceNumber){
     row <- df[r,]
     dataCube[as.character(row$ResourceId),as.character(row$Value),as.character(row$SliceId)] <- row$Normalized
   }
+  
   ret<-list("data"=dataCube,"hierarchy"=vhierarchy)
   ret
 }

@@ -32,15 +32,33 @@ haggregate(testArray, h, th)
 daggregate(testArray, h, th)
 
 #Real trace example
-micro=parsepjdump("nemo.exe.128tasks.chop1.clustered.pjdump",20)
+trace=parsepjdump("nemo.exe.128tasks.chop1.clustered.pjdump")
+
+micro=pjdump2microstate(trace,20)
 
 #Temporal aggregation
 odf<-oaggregate(micro$data, th)
 hdf<-haggregate(micro$data, micro$hierarchy, th)
 #ddf<-daggregate(micro$data, micro$hierarchy, th)
 
+#Printing the algorithm output
 odf
 #hdf
 #head(ddf)
 
+#Generating a plot for a randomly chosen parameter
 oplot(omacro(odf, micro, unique(odf$Parameter)[2]))
+
+#Without hierarchy
+trace=parsepjdump("cholesky_11520_960_starpu_25_3_dmda_1_idcin-2.grenoble.grid5000.fr_2016-08-21_20-49-12_pjdump.csv")
+
+#Example of filtering
+trace<-trace[!(trace$Value %in% c('Idle','Sleeping')),]
+
+micro=pjdump2microstate(trace,50,FALSE)
+
+odf<-oaggregate(micro$data, th)
+
+odf
+
+oplot(omacro(odf, micro, unique(odf$Parameter)[4]))
