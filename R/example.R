@@ -55,6 +55,7 @@ trace=parsepjdump("cholesky_11520_960_starpu_25_3_dmda_1_idcin-2.grenoble.grid50
 #Example of filtering
 trace<-trace[!(trace$Value %in% c('Idle','Sleeping')),]
 
+#No hierarchy (because it's not present in the trace, but it should be...)
 micro=pjdump2microstate(trace,50,FALSE)
 
 odf<-oaggregate(micro$data, th)
