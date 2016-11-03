@@ -67,7 +67,7 @@ src <- '
   }
   
   // [[Rcpp::export]]
-  NumericMatrix oaggregate(NumericVector micro, SEXP th) {
+  DataFrame oaggregate(NumericVector micro, SEXP th) {
     float threshold=as<float>(th);
     shared_ptr<OValuesN3> values = shared_ptr<OValuesN3>(new OValuesN3(convertToMicroModel(micro)));
     OQualities qualities = OQualities(values);
@@ -76,19 +76,24 @@ src <- '
     OPartitioner partitioner = OPartitioner(qualities);
     partitioner.computeBestPartitions(threshold);
     list< tuple<float, int, int> > partitionsTuples=partitioner.getPartitionsTuples();
-    NumericMatrix matrixResults(partitionsTuples.size(),3);
+    NumericVector parameters(partitionsTuples.size());
+    IntegerVector start(partitionsTuples.size());
+    IntegerVector end(partitionsTuples.size());
     int i=0;
     for (tuple<float, int, int> line: partitionsTuples){
-      matrixResults(i, 0)=get<0>(line);
-      matrixResults(i, 1)=get<1>(line)+1;
-      matrixResults(i, 2)=get<2>(line)+1;
+      parameters[i]=get<0>(line);
+      start[i]=get<1>(line)+1;
+      end[i]=get<2>(line)+1;
       i++;
     }
-  return matrixResults;
+    DataFrame results = DataFrame::create(Named("Parameter")=parameters,
+				                                  Named("Start")=start,
+				                                  Named("End")=end);
+    return results;
   }
 
   // [[Rcpp::export]]
-  NumericMatrix haggregate(NumericVector micro, NumericVector h, SEXP th) {
+  DataFrame haggregate(NumericVector micro, NumericVector h, SEXP th) {
     float threshold=as<float>(th);
     shared_ptr<HValuesN3> values = shared_ptr<HValuesN3>(new HValuesN3(convertToMicroModel(micro),convertToHierarchy(h)));
     HQualities qualities = HQualities(values);
@@ -97,19 +102,24 @@ src <- '
     HPartitioner partitioner = HPartitioner(qualities);
     partitioner.computeBestPartitions(threshold);
     list< tuple<float, int, int> > partitionsTuples=partitioner.getPartitionsTuples();
-    NumericMatrix matrixResults(partitionsTuples.size(),3);
+    NumericVector parameters(partitionsTuples.size());
+    IntegerVector node(partitionsTuples.size());
+    IntegerVector size(partitionsTuples.size());
     int i=0;
     for (tuple<float, int, int> line: partitionsTuples){
-      matrixResults(i, 0)=get<0>(line);
-      matrixResults(i, 1)=get<1>(line)+1;
-      matrixResults(i, 2)=get<2>(line);
+      parameters[i]=get<0>(line);
+      node[i]=get<1>(line)+1;
+      size[i]=get<2>(line);
       i++;
     }
-    return matrixResults;
+    DataFrame results = DataFrame::create(Named("Parameter")=parameters,
+				                                  Named("Node")=node,
+				                                  Named("Size")=size);
+    return results;
   }
 
   // [[Rcpp::export]]
-  NumericMatrix daggregate(NumericVector micro, NumericVector h, SEXP th) {
+  DataFrame daggregate(NumericVector micro, NumericVector h, SEXP th) {
     float threshold=as<float>(th);
     shared_ptr<DValuesN3> values = shared_ptr<DValuesN3>(new DValuesN3(convertToMicroModel(micro),convertToHierarchy(h)));
     DQualities qualities = DQualities(values);
@@ -118,17 +128,26 @@ src <- '
     DPartitioner partitioner = DPartitioner(qualities);
     partitioner.computeBestPartitions(threshold);
     list< tuple<float, int, int, int, int> > partitionsTuples=partitioner.getPartitionsTuples();
-    NumericMatrix matrixResults(partitionsTuples.size(),5);
+    NumericVector parameters(partitionsTuples.size());
+    IntegerVector node(partitionsTuples.size());
+    IntegerVector size(partitionsTuples.size());
+    IntegerVector start(partitionsTuples.size());
+    IntegerVector end(partitionsTuples.size());
     int i=0;
     for (tuple<float, int, int, int, int> line: partitionsTuples){
-      matrixResults(i, 0)=get<0>(line);
-      matrixResults(i, 1)=get<1>(line)+1;
-      matrixResults(i, 2)=get<2>(line);
-      matrixResults(i, 3)=get<3>(line)+1;
-      matrixResults(i, 4)=get<4>(line)+1;
+      parameters[i]=get<0>(line);
+      node[i]=get<1>(line)+1;
+      size[i]=get<2>(line);
+      start[i]=get<3>(line)+1;
+      end[i]=get<4>(line)+1;
       i++;
     }
-    return matrixResults;
+    DataFrame results = DataFrame::create(Named("Parameter")=parameters,
+                                          Named("Node")=node,
+				                                  Named("Size")=size,
+				                                  Named("Start")=start,
+				                                  Named("End")=end);
+    return results;
   }
 '
 
@@ -163,12 +182,12 @@ haggregate(testArray, h, th)
 daggregate(testArray, h, th)
 
 #Real trace example
-micro=parsePJDump("Alya.x.pjdump",10)
+micro=parsePJDump("nemo.exe.128tasks.chop1.clustered.pjdump",10)
 
 #Show the micromodel
 #dataCube
 
 #Temporal aggregation
-oaggregate(micro$data, th)
-haggregate(micro$data, micro$hierarchy, th)
-daggregate(micro$data, micro$hierarchy, th)
+odf<-oaggregate(micro$data, th)
+hdf<-haggregate(micro$data, micro$hierarchy, th)
+ddf<-daggregate(micro$data, micro$hierarchy, th)

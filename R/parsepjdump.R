@@ -75,18 +75,22 @@ parsePJDump <- function (file, timeSliceNumber){
   value <- unique(df$Value)
   value <- value[order(value)]
   
-  space <- unique(df$ResourceId)
-  space <- space[order(space)]
-  
   parents <- unique(resources$ParentId)
   parents<-parents[order(parents)]
   parents<-rev(parents)
+  
+  #remove parents from df
+  df <- df[!(df$ResourceId %in% parents),]
+  
+  space <- unique(df$ResourceId)
+  space <- space[order(space)]
   
   hierarchy <- factor(c(as.character(space),as.character(parents)))
   hierarchy<-unique(hierarchy)
   hierarchy.name=as.character(hierarchy)
   resources$ParentIndex=-1
-  vhierarchy <- rep(-1,nrow(resources))
+  vhierarchy <- rep(-1,length(hierarchy))
+  vhierarchy.name=as.character(hierarchy)
   
   for (i in 1:length(vhierarchy)){
     resources[resources$ResourceId %in% hierarchy[i],"ParentIndex"]=match(resources[resources$ResourceId %in% hierarchy[i],"ParentId"],hierarchy)[1]
