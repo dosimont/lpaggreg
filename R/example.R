@@ -36,7 +36,7 @@ trace=parsepjdump("nemo.exe.128tasks.chop1.clustered.pjdump")
 
 micro=pjdump2microstate(trace,20)
 
-#Temporal aggregation
+#Aggregations
 odf<-oaggregate(micro$data, th)
 hdf<-haggregate(micro$data, micro$hierarchy, th)
 #ddf<-daggregate(micro$data, micro$hierarchy, th)
