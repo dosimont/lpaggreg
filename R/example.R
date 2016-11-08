@@ -72,7 +72,7 @@ hdf
 #Generating a plot for a randomly chosen parameter
 oplot(omacro(odf, micro, unique(odf$Parameter)[2]), color_generator_Clusters)
 
-hplot(hmacro(hdf, micro, unique(hdf$Parameter)[9]), color_generator_Clusters)
+hplot(hmacro(hdf, micro, unique(hdf$Parameter)[8]), color_generator_Clusters)
 
 #Without hierarchy
 trace=parsepjdump("cholesky_11520_960_starpu_25_3_dmda_1_idcin-2.grenoble.grid5000.fr_2016-08-21_20-49-12_pjdump.csv")
