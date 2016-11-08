@@ -1,6 +1,6 @@
 #include "dpartition.h"
 
-lpaggreg::DPart::DPart(int h, int hsize, int start, int end):h(h), hsize(hsize), start(start), end(end)
+lpaggreg::DPart::DPart(int h, int hsize, int start, int end, shared_ptr<Quality> quality):h(h), hsize(hsize), start(start), end(end), quality(quality)
 {
 
 }
@@ -40,6 +40,11 @@ int lpaggreg::DPart::getEnd() const
     return end;
 }
 
+shared_ptr<lpaggreg::Quality> lpaggreg::DPart::getQuality() const
+{
+    return quality;
+}
+
 int lpaggreg::DPart::getSize()
 {
     return hsize*getOSize();
@@ -69,7 +74,7 @@ void lpaggreg::DPartition::computeSubPart(int h, int i, int j){
             computeSubPart(child, i, j);
         }
     }else{
-        parts.push_back(DPart(h, (metaData.getSize())[h], i, cut));
+        parts.push_back(DPart(h, (metaData.getSize())[h], i, cut, (*(*qualities)[h])(i, cut)));
         if (cut<j){
             computeSubPart(h, cut+1, j);
         }
@@ -81,7 +86,7 @@ void lpaggreg::DPartition::computeQuality()
 {
     quality=shared_ptr<Quality>(new Quality());
     for (DPart it: parts){
-        *quality+=*(*(*qualities)[it.getH()])(it.getStart(), it.getEnd());
+        *quality+=*(it.getQuality());
     }
 }
 

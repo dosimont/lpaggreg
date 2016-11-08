@@ -40,17 +40,16 @@ color_generator_Clusters <- function(stringlist, aggString=c("")){
   colors["Cluster 4"]="darkgreen"
   colors["Cluster 5"]="deeppink"
   colors["Cluster 6"]="darkviolet"
-  colors["Cluster 7"]="darkkhaki"
+  colors["Cluster 7"]="navajowhite1"
   colors["Cluster 8"]="orange"
   colors["Cluster 9"]="cyan"
-  colors["Cluster 10"]="darkolivegreen"
-  colors["Cluster 11"]="orchid"
+  colors["Cluster 10"]="darkolivegreen2"
+  colors["Cluster 11"]="peru"
   colors["Duration Filtered"]="black"
   colors["Noise"]="grey"
   names(colors)=stringlist
   colors
 }
-
 
 #Real trace example
 trace=parsepjdump("nemo.exe.128tasks.chop1.clustered.pjdump")

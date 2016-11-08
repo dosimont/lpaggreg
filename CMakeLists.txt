@@ -18,7 +18,7 @@ set(LPAGGREG_VERSION "${LPAGGREG_VERSION_MAJOR}.${LPAGGREG_VERSION_MINOR}.${LPAG
 set (CMAKE_CXX_STANDARD 11)
 
 if ( CMAKE_COMPILER_IS_GNUCC )
-  add_definitions ("-Wall")
+#  add_definitions ("-Wall")
 endif ( CMAKE_COMPILER_IS_GNUCC )
 
 

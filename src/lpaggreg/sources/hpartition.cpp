@@ -1,7 +1,7 @@
 #include "hpartition.h"
 
 
-lpaggreg::HPart::HPart(int h, int size):h(h), size(size)
+lpaggreg::HPart::HPart(int h, int size, shared_ptr<Quality> quality):h(h), size(size), quality(quality)
 {
 
 }
@@ -14,6 +14,11 @@ int lpaggreg::HPart::getH() const
 int lpaggreg::HPart::getSize() const
 {
     return size;
+}
+
+shared_ptr<lpaggreg::Quality> lpaggreg::HPart::getQuality() const
+{
+    return quality;
 }
 
 bool lpaggreg::operator==(lpaggreg::HPart &hpart1, lpaggreg::HPart &hpart2)
@@ -72,7 +77,7 @@ void lpaggreg::HPartition::computeParts()
 
 void lpaggreg::HPartition::computeSubPart(int h){
     if(aggregated[h]){
-        parts.push_back(HPart(h,(metaData.getSize())[h]));
+        parts.push_back(HPart(h,(metaData.getSize())[h],(*qualities)[h]));
     }else{
         for (int i=0; i<metaData.getChildren().operator [](h).size(); i++){
             int child=metaData.getChildren().operator [](h).operator [](i);
@@ -86,7 +91,7 @@ void lpaggreg::HPartition::computeQuality()
 {
     quality=shared_ptr<Quality>(new Quality());
     for (HPart it: parts){
-        *quality+=*((*qualities)[it.getH()]);
+        *quality+=*(it.getQuality());
     }
 }
 

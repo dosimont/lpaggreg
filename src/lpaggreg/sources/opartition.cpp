@@ -1,7 +1,7 @@
 #include "opartition.h"
 
 
-lpaggreg::OPart::OPart(int start, int end):start(start), end(end)
+lpaggreg::OPart::OPart(int start, int end, shared_ptr<Quality> quality):start(start), end(end), quality(quality)
 {
 
 }
@@ -19,6 +19,11 @@ int lpaggreg::OPart::getEnd() const
 int lpaggreg::OPart::getSize()
 {
     return end-start+1;
+}
+
+shared_ptr<lpaggreg::Quality> lpaggreg::OPart::getQuality() const
+{
+    return quality;
 }
 
 
@@ -45,7 +50,7 @@ void lpaggreg::OPartition::computeParts()
 {
     parts.clear();
     for (int i=0; i<cuts.size();i=cuts[i]+1){
-        parts.push_back(OPart(i, cuts[i]));
+        parts.push_back(OPart(i, cuts[i], qualities->operator ()(i,cuts[i])));
     }
 }
 
@@ -54,7 +59,7 @@ void lpaggreg::OPartition::computeQuality()
 {
     quality=shared_ptr<Quality>(new Quality());
     for (OPart it: parts){
-        *quality+=*(qualities->operator ()(it.getStart(),it.getEnd()));
+        *quality+=*(it.getQuality());
     }
 }
 

@@ -5,6 +5,12 @@
 
 #define LP_PRECISION 0.0000000000001
 
+//P values
+
+#define P_MIN 0
+#define P_MAX 1
+#define P_OPT 2
+
 //#define PARTITION_COMPARE_QUALITY
 
 typedef long double lp_quality_type;

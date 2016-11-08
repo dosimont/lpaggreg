@@ -16,6 +16,7 @@ void lpaggreg::HPartitioner::computeBestPartitions(float threshold, float min, f
     pList.clear();
     partitions.clear();
     partitionsTuples.clear();
+    qualityList.clear();
     shared_ptr<HPartition> bestPartitionMin;
     shared_ptr<HPartition> bestPartitionMax;
     bestPartitionMin=computeBestPartition(min);
@@ -37,6 +38,7 @@ void lpaggreg::HPartitioner::computeBestPartitions(float threshold, float min, f
             tuple<float, int, int> t(it.first, it2.getH(), it2.getSize());
             partitionsTuples.push_back(t);
         }
+        qualityList[it.first]=it.second->getQuality();
     }
 }
 
