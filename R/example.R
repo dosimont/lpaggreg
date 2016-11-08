@@ -15,21 +15,18 @@ print(testArray)
 th=0.001
 
 #Temporal aggregation
-#Output: a 2D matrix (n,3) with the list of time parts for each parameter
-#Columns: parameter p, start timeslice, end timeslice
-oaggregate(testArray, th)
+r=oaggregate(testArray, th)
+qualplot(r)
 
 #Spatial aggregation
 #define hierarchy: vector[index]= index's father index; vector[index]0 means index=root
 h=c(3,3,0)
-#Output: a 2D matrix (n,3) with the list of aggregate nodes
-#Columns: parameter p, node, size
-haggregate(testArray, h, th)
+r=haggregate(testArray, h, th)
+qualplot(r)
 
 #Spatiotemporal aggregation
-#Output: a 2D matrix (n,5) with the list of aggregate nodes/time parts
-#Columns: parameter p, node, size, start, end
-daggregate(testArray, h, th)
+r=daggregate(testArray, h, th)
+qualplot(r)
 
 color_generator_Clusters <- function(stringlist, aggString=c("")){
   colors=rep("black", length(stringlist))
@@ -56,7 +53,7 @@ trace=parsepjdump("nemo.exe.128tasks.chop1.clustered.pjdump")
 
 trace$data<-trace$data[!(trace$data$Value %in% c('Duration Filtered','Noise')),]
 
-micro=pjdump2microstate(trace,20)
+micro=pjdump2microstate(trace,100)
 
 #Aggregations
 odf<-oaggregate(micro$data, th)
@@ -69,9 +66,10 @@ hdf
 #head(ddf)
 
 #Generating a plot for a randomly chosen parameter
-oplot(omacro(odf, micro, unique(odf$Parameter)[2]), color_generator_Clusters)
-
-hplot(hmacro(hdf, micro, unique(hdf$Parameter)[8]), color_generator_Clusters)
+qualplot(odf)
+oplot(omacro(odf$Partitions, micro, odf$POpt), color_generator_Clusters)
+qualplot(hdf)
+hplot(hmacro(hdf$Partitions, micro, hdf$POpt), color_generator_Clusters)
 
 #Without hierarchy
 trace=parsepjdump("cholesky_11520_960_starpu_25_3_dmda_1_idcin-2.grenoble.grid5000.fr_2016-08-21_20-49-12_pjdump.csv")
@@ -85,5 +83,5 @@ micro=pjdump2microstate(trace,50,FALSE)
 odf<-oaggregate(micro$data, th)
 
 odf
-
-oplot(omacro(odf, micro, unique(odf$Parameter)[4]))
+qualplot(odf)
+oplot(omacro(odf$Partitions, micro, odf$POpt))

@@ -25,7 +25,7 @@ int main()
     hqualities.normalize();
     cout<<"Instantiating HPartitioner"<<endl;
     HPartitioner hpartitioner = HPartitioner(hqualities);
-    float p=P;
+    float p=hpartitioner.getP(P_OPT);
     cout<<"Computing Best Partition for "<<p<<endl;
     shared_ptr<HPartition> partition=hpartitioner.computeBestPartition(p);
     //cout<<"Quality:"<<partition->getQuality()->getGain()<<endl;

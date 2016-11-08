@@ -221,6 +221,21 @@ hmacro <- function(df, micro, p){
   agg
 }
 
+qualplot <- function(results){
+  qualities<-results$Qualities
+  popt<-results$POpt
+  opt<-qualities[(qualities$Parameter %in% popt),]
+  xlabel<- "Information Loss"
+  ylabel<- "Complexity Reduction"
+  plot<-ggplot()
+  plot<-plot + geom_line(data=qualities,aes(x=Loss,y=Gain), color="black")
+  plot<-plot + geom_point(data=qualities,aes(x=Loss,y=Gain), color="black")
+  plot<-plot + geom_point(data=opt,aes(x=Loss,y=Gain), color="red")
+  plot<-plot + theme_bw()
+  plot<-plot + labs(x=xlabel,y=ylabel)
+  plot
+}
+
 oplot <-function(agg, FUN=color_generator){
   agg <- aggregate(value ~ Type+Start+End, data = agg, FUN = mean)
   agg$Duration<-agg$End-agg$Start+1
@@ -299,7 +314,7 @@ vector<int > convertToHierarchy(NumericVector h){
 }
 
 // [[Rcpp::export]]
-DataFrame oaggregate(NumericVector micro, SEXP th) {
+List oaggregate(NumericVector micro, SEXP th) {
   float threshold=as<float>(th);
   shared_ptr<OValuesN3> values = shared_ptr<OValuesN3>(new OValuesN3(convertToMicroModel(micro)));
   OQualities qualities = OQualities(values);
@@ -307,25 +322,47 @@ DataFrame oaggregate(NumericVector micro, SEXP th) {
   qualities.normalize();
   OPartitioner partitioner = OPartitioner(qualities);
   partitioner.computeBestPartitions(threshold);
-  list< tuple<float, int, int> > partitionsTuples=partitioner.getPartitionsTuples();
+  list< tuple<float, int, int, lp_quality_type, lp_quality_type> > partitionsTuples=partitioner.getPartitionsTuples();
   NumericVector parameters(partitionsTuples.size());
   IntegerVector start(partitionsTuples.size());
   IntegerVector end(partitionsTuples.size());
+  NumericVector gain(partitionsTuples.size());
+  NumericVector loss(partitionsTuples.size());
   int i=0;
-  for (tuple<float, int, int> line: partitionsTuples){
+  for (tuple<float, int, int, lp_quality_type, lp_quality_type> line: partitionsTuples){
     parameters[i]=get<0>(line);
     start[i]=get<1>(line)+1;
     end[i]=get<2>(line)+1;
+    gain[i]=get<3>(line);
+    loss[i]=get<4>(line);
     i++;
   }
   DataFrame results = DataFrame::create(Named("Parameter")=parameters,
   Named("Start")=start,
-  Named("End")=end);
-  return results;
+  Named("End")=end,
+  Named("Gain")=gain,
+  Named("Loss")=loss);
+  map<float, shared_ptr<Quality> > qualities2=partitioner.getQualityList();
+  NumericVector parameters2(qualities2.size());
+  NumericVector gain2(qualities2.size());
+  NumericVector loss2(qualities2.size());
+  i=0;
+  for(auto it: qualities2){
+    parameters2[i]=it.first;
+    gain2[i]=it.second->getGain();
+    loss2[i]=it.second->getLoss();
+    i++;
+  }
+  DataFrame qualitydf = DataFrame::create(Named("Parameter")=parameters2,
+  Named("Gain")=gain2,
+  Named("Loss")=loss2);
+  float popt=partitioner.getP(P_OPT);
+  float auc=partitioner.computeAUC();
+  return Rcpp::List::create(Named("Partitions") = results, Named("Qualities")= qualitydf, Named("POpt") = popt, Named("AUC") = auc);
 }
 
 // [[Rcpp::export]]
-  DataFrame haggregate(NumericVector micro, NumericVector h, SEXP th) {
+List haggregate(NumericVector micro, NumericVector h, SEXP th) {
   float threshold=as<float>(th);
   shared_ptr<HValuesN3> values = shared_ptr<HValuesN3>(new HValuesN3(convertToMicroModel(micro),convertToHierarchy(h)));
   HQualities qualities = HQualities(values);
@@ -333,25 +370,47 @@ DataFrame oaggregate(NumericVector micro, SEXP th) {
   qualities.normalize();
   HPartitioner partitioner = HPartitioner(qualities);
   partitioner.computeBestPartitions(threshold);
-  list< tuple<float, int, int> > partitionsTuples=partitioner.getPartitionsTuples();
+  list< tuple<float, int, int, lp_quality_type, lp_quality_type> > partitionsTuples=partitioner.getPartitionsTuples();
   NumericVector parameters(partitionsTuples.size());
   IntegerVector node(partitionsTuples.size());
   IntegerVector size(partitionsTuples.size());
+  NumericVector gain(partitionsTuples.size());
+  NumericVector loss(partitionsTuples.size());
   int i=0;
-  for (tuple<float, int, int> line: partitionsTuples){
+  for (tuple<float, int, int, lp_quality_type, lp_quality_type> line: partitionsTuples){
     parameters[i]=get<0>(line);
     node[i]=get<1>(line)+1;
     size[i]=get<2>(line);
+    gain[i]=get<3>(line);
+    loss[i]=get<4>(line);
     i++;
   }
   DataFrame results = DataFrame::create(Named("Parameter")=parameters,
   Named("Node")=node,
-  Named("Size")=size);
-  return results;
+  Named("Size")=size,
+  Named("Gain")=gain,
+  Named("Loss")=loss);
+  map<float, shared_ptr<Quality> > qualities2=partitioner.getQualityList();
+  NumericVector parameters2(qualities2.size());
+  NumericVector gain2(qualities2.size());
+  NumericVector loss2(qualities2.size());
+  i=0;
+  for(auto it: qualities2){
+    parameters2[i]=it.first;
+    gain2[i]=it.second->getGain();
+    loss2[i]=it.second->getLoss();
+    i++;
+  }
+  DataFrame qualitydf = DataFrame::create(Named("Parameter")=parameters2,
+  Named("Gain")=gain2,
+  Named("Loss")=loss2);
+  float popt=partitioner.getP(P_OPT);
+  float auc=partitioner.computeAUC();
+  return Rcpp::List::create(Named("Partitions") = results, Named("Qualities")= qualitydf, Named("POpt") = popt, Named("AUC") = auc);
 }
 
 // [[Rcpp::export]]
-  DataFrame daggregate(NumericVector micro, NumericVector h, SEXP th) {
+List daggregate(NumericVector micro, NumericVector h, SEXP th) {
   float threshold=as<float>(th);
   shared_ptr<DValuesN3> values = shared_ptr<DValuesN3>(new DValuesN3(convertToMicroModel(micro),convertToHierarchy(h)));
   DQualities qualities = DQualities(values);
@@ -359,27 +418,49 @@ DataFrame oaggregate(NumericVector micro, SEXP th) {
   qualities.normalize();
   DPartitioner partitioner = DPartitioner(qualities);
   partitioner.computeBestPartitions(threshold);
-  list< tuple<float, int, int, int, int> > partitionsTuples=partitioner.getPartitionsTuples();
+  list< tuple<float, int, int, int, int, lp_quality_type, lp_quality_type> > partitionsTuples=partitioner.getPartitionsTuples();
   NumericVector parameters(partitionsTuples.size());
   IntegerVector node(partitionsTuples.size());
   IntegerVector size(partitionsTuples.size());
   IntegerVector start(partitionsTuples.size());
   IntegerVector end(partitionsTuples.size());
+  NumericVector gain(partitionsTuples.size());
+  NumericVector loss(partitionsTuples.size());
   int i=0;
-  for (tuple<float, int, int, int, int> line: partitionsTuples){
+  for (tuple<float, int, int, int, int, lp_quality_type, lp_quality_type> line: partitionsTuples){
     parameters[i]=get<0>(line);
     node[i]=get<1>(line)+1;
     size[i]=get<2>(line);
     start[i]=get<3>(line)+1;
     end[i]=get<4>(line)+1;
+    gain[i]=get<5>(line);
+    loss[i]=get<6>(line);
     i++;
   }
   DataFrame results = DataFrame::create(Named("Parameter")=parameters,
   Named("Node")=node,
   Named("Size")=size,
   Named("Start")=start,
-  Named("End")=end);
-  return results;
+  Named("End")=end,
+  Named("Gain")=gain,
+  Named("Loss")=loss);
+  map<float, shared_ptr<Quality> > qualities2=partitioner.getQualityList();
+  NumericVector parameters2(qualities2.size());
+  NumericVector gain2(qualities2.size());
+  NumericVector loss2(qualities2.size());
+  i=0;
+  for(auto it: qualities2){
+    parameters2[i]=it.first;
+    gain2[i]=it.second->getGain();
+    loss2[i]=it.second->getLoss();
+    i++;
+  }
+  DataFrame qualitydf = DataFrame::create(Named("Parameter")=parameters2,
+  Named("Gain")=gain2,
+  Named("Loss")=loss2);
+  float popt=partitioner.getP(P_OPT);
+  float auc=partitioner.computeAUC();
+  return Rcpp::List::create(Named("Partitions") = results, Named("Qualities")= qualitydf, Named("POpt") = popt, Named("AUC") = auc);
 }
 '
 

@@ -20,6 +20,7 @@ float lpaggreg::Partitioner::getP(int strategy)
     case P_OPT:
         return computePOpt();
     }
+    return 0;
 }
 
 float lpaggreg::Partitioner::computeAUC()
@@ -29,6 +30,11 @@ float lpaggreg::Partitioner::computeAUC()
         auc+=((qualityList[pList[i+1]])->getGain()-(qualityList[pList[i]])->getGain())*((qualityList[pList[i+1]])->getLoss()+(qualityList[pList[i]])->getLoss())/2;
     }
     return 1.0-auc;
+}
+
+map<float, shared_ptr<lpaggreg::Quality> > lpaggreg::Partitioner::getQualityList() const
+{
+    return qualityList;
 }
 
 float lpaggreg::Partitioner::computePOpt()
