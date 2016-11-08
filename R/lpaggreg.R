@@ -5,8 +5,47 @@ library(sqldf)
 library(dplyr)
 library(ggplot2)
 library(reshape2)
+library(RColorBrewer)
+library(digest)
+library(treemap)
+library(gplots)
 
-vspace=0.1
+hspace=0.1
+
+string2colorRandom<- function(string){
+  digested=digest(as.character(string), serialize=FALSE)
+  r=substr(digested,1,10)
+  r=digest(as.character(r), serialize=FALSE)
+  g=substr(digested,11,20)
+  g=digest(as.character(g), serialize=FALSE)
+  b=substr(digested,21,30)
+  b=digest(as.character(b), serialize=FALSE)
+  r=substr(r,1,2)
+  g=substr(g,1,2)
+  b=substr(b,1,2)
+  h<-paste(r,g,b,sep="")
+  if ((r>230&g>230&b>230)|(r<30&g<30&b<30)){
+    h = string2colorRandom(paste(string,":-o",string,sep=""))
+  }
+  h
+}
+
+color_generator <- function(stringlist, aggString=c("")){
+  sorted<-sort(stringlist)
+  hashcoded<-rep(0, length(stringlist))
+  for (i in 1:length(sorted)){
+    if (sorted[i]==aggString){
+      hashcoded[i]=0
+    }
+    else{
+      hashcoded[i]=string2colorRandom(sorted[i])
+    }
+  }
+  hexed<-format(as.hexmode(hashcoded),width=6)
+  color=paste("#",hexed,sep="")
+  names(color)=sorted
+  color
+}
 
 factor2numeric <- function(f)
 {
@@ -46,7 +85,7 @@ slicer <- function (trace, timeSliceNumber)
 parsepjdump <- function (file){
   
   names <- c("Nature", "ResourceId", "Type", "Start", "End", "Duration", "Depth", "Value", "a", "b", "c", "d", "e", "f", "g")
-  trace <- read.table(file, sep=",", fill=TRUE, header=FALSE, col.names=names)
+  trace <- read.table(file, sep=",", fill=TRUE, header=FALSE, strip.white=TRUE, col.names=names)
   
   trace$a <- NULL
   trace$b <- NULL
@@ -55,16 +94,30 @@ parsepjdump <- function (file){
   trace$e <- NULL
   trace$f <- NULL
   trace$g <- NULL
- 
-  trace
+  
+  resources <- trace[trace$Nature %in% "Container",]
+  resources$Nature <- NULL
+  resources$Type <- NULL
+  resources$Start <- NULL
+  resources$End <- NULL
+  resources$Duration <- NULL
+  resources$Value <- NULL
+  resources$ParentId <- resources$ResourceId
+  resources$ResourceId <- resources$Depth
+  resources$Depth <- NULL
+  
+  trace <- trace[!(trace$Nature %in% "Container"),]
+  ret<-list("data"=trace,"resources"=resources)
+  ret
 }
   
 pjdump2microstate <- function(trace, timeSliceNumber, enable_hierarchy=TRUE){
   
-  subtrace <- trace[trace$Nature %in% "State",]
+  data <- trace$data
+  data <- data[data$Nature %in% "State",]
   
   #carefull, for spatial, only leaves should produce values!
-  df <- slicer(subtrace, timeSliceNumber)
+  df <- slicer(data, timeSliceNumber)
   
   time <- unique(df$SliceId)
   time <- time[order(time)]
@@ -73,19 +126,7 @@ pjdump2microstate <- function(trace, timeSliceNumber, enable_hierarchy=TRUE){
   value <- value[order(value)]
   
   if (enable_hierarchy){
-    resources <- trace[trace$Nature %in% "Container",]
-    resources$Nature <- NULL
-    resources$Type <- NULL
-    resources$Start <- NULL
-    resources$End <- NULL
-    resources$Duration <- NULL
-    resources$Value <- NULL
-    resources$ParentId <- resources$ResourceId
-    resources$ResourceId <- resources$Depth
-    resources$Depth <- NULL
-    
-    #does not work, why???
-    resources <- resources[!(resources$ResourceId %in% '0'),]
+    resources <- trace$resources
     
     parents <- unique(resources$ParentId)
     parents<-parents[order(parents)]
@@ -137,14 +178,15 @@ getpath<-function(vhierarchy, leavesize){
     path[h]=h
   }
   i=leavesize+1;
-  h=0;
-  while(vhierarchy[path[h]]!=0){
-    if (!(vhierarchy[path[h]] %in% path[i])){
+  h=1;
+  while(i<=length(vhierarchy)){
+    if (!(vhierarchy[path[h]] %in% path)){
       path[i]=vhierarchy[path[h]]
       i=i+1
     }
     h=h+1
   }
+  path
 }
 
 omacro <- function(df, micro, p){
@@ -162,29 +204,40 @@ omacro <- function(df, micro, p){
 
 hmacro <- function(df, micro, p){
   df <- df[df$Parameter %in% p,]
-  df$Space<-"Unknown"
   dfdata <- melt(micro$data)
-  leavesize= length(unique(dfdata$Space))
   vhierarchy <- micro$hierarchy
-  for (h in getpath(vhierarchy,leavesize)){
-    df[df$Node %in% vhierarchy[h],"Space"]<-names(vhierarchy)[h]
-    dfdata2<-dfdata[dfdata$ResourceId %in% names(vhierarchy)[h]]
-    dfdata2$Space<-names(vhierarchy)[vhierarchy[h]]
-    rbind(dfdata,dfdata2)
+  leavesize= length(unique(dfdata$Space))
+  for (r in 1:nrow(df)) {
+    df[r,"Space"]<-names(vhierarchy)[df[r,"Node"]]
   }
-  agg <- aggregate(value ~ Space+Type, data = dfdata, FUN = mean)
+  path=getpath(vhierarchy,leavesize)
+  for (h in 1:(length(path)-1)){
+    dfdata2<-dfdata[dfdata$Space %in% names(vhierarchy)[path[h]],]
+    dfdata2$Space<-names(vhierarchy)[vhierarchy[path[h]]]
+    dfdata=rbind(dfdata,dfdata2)
+  }
+  agg <- dfdata[dfdata$Space %in% df$Space,]
+  agg <- aggregate(value ~ Space+Type+Time, data = agg, FUN = sum)
   agg
 }
 
-oplot <-function(agg){
+oplot <-function(agg, FUN=color_generator){
   agg <- aggregate(value ~ Type+Start+End, data = agg, FUN = mean)
   agg$Duration<-agg$End-agg$Start+1
-  print(agg)
-  p<-ggplot(agg, aes(x=Start+((End-Start)/2)+0.5, fill = Type, y=value, width=Duration))
+  vcolors=FUN(unique(agg$Type))
+  p<-ggplot(agg, aes(x=Start+((End-Start)/2)+0.5-(hspace/2), y=value, width=Duration-hspace, fill=Type))
+  p<-p + scale_fill_manual(values = vcolors, breaks = names(vcolors), labels = names(vcolors))
   p<-p + geom_bar(stat="identity")
   p<-p + theme_bw()
   p<-p + labs(x="Time slices",y="Normalized value")
   p
+}
+
+hplot <-function(agg, FUN=color_generator){
+  agg <- aggregate(value ~ Space+Type, data = agg, FUN = mean)
+  vcolors=FUN(unique(agg$Type))
+  agg$Color=vcolors[agg$Type]
+  treemap(agg, index=c("Space", "Type"), vSize="value", vColor="Color", type="color", algorithm="squarified", border.col="white", bg.labels="grey", title="")
 }
 
 cxxflags=paste("-I",lpaggreg_location,"/include/ -std=c++11", sep="");
