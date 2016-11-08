@@ -16,7 +16,7 @@ namespace lpaggreg{
     class OPart
     {
     public:
-        OPart(int start, int end);
+        OPart(int start, int end, shared_ptr<Quality> quality);
         int getStart() const;
         int getEnd() const;
         int getSize();
@@ -24,9 +24,12 @@ namespace lpaggreg{
         friend bool operator==(OPart &opart1, OPart &opart2);
         friend bool operator!=(OPart &opart1, OPart &opart2);
 
+        shared_ptr<Quality> getQuality() const;
+
     private:
         int start;
         int end;
+        shared_ptr<Quality> quality;
     };
 
     class OPartition: public Partition

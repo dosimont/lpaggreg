@@ -18,7 +18,7 @@ namespace lpaggreg{
     class HPart
     {
     public:
-        HPart(int h, int size);
+        HPart(int h, int size, shared_ptr<Quality> quality);
 
         friend bool operator==(HPart &hpart1, HPart &hpart2);
         friend bool operator!=(HPart &hpart1, HPart &hpart2);
@@ -26,9 +26,12 @@ namespace lpaggreg{
         int getH() const;
         int getSize() const;
 
+        shared_ptr<Quality> getQuality() const;
+
     private:
         int h;
         int size;
+        shared_ptr<Quality> quality;
     };
 
     class HPartition: public Partition
