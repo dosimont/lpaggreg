@@ -27,13 +27,13 @@ namespace lpaggreg{
 
         map<float, shared_ptr<DPartition> > getPartitions() const;
 
-        list<tuple<float, int, int, int, int> > getPartitionsTuples() const;
+        list<tuple<float, int, int, int, int, lp_quality_type, lp_quality_type> > getPartitionsTuples() const;
 
     private:
         void addBestQualities(float threshold, shared_ptr<DPartition> bestPartitionMin, shared_ptr<DPartition> bestPartitionMax);
         dqualities qualities;
         map<float, shared_ptr<DPartition> > partitions;
-        list< tuple<float, int, int, int, int> > partitionsTuples;
+        list< tuple<float, int, int, int, int, lp_quality_type, lp_quality_type> > partitionsTuples;
         HValuesMetaData metaData;
     };
 }

@@ -35,7 +35,7 @@ void lpaggreg::HPartitioner::computeBestPartitions(float threshold, float min, f
     }
     for (auto it : partitions){
         for (auto it2 : it.second->getParts()){
-            tuple<float, int, int> t(it.first, it2.getH(), it2.getSize());
+            tuple<float, int, int, lp_quality_type, lp_quality_type> t(it.first, it2.getH(), it2.getSize(), it2.getQuality()->getGain(), it2.getQuality()->getLoss());
             partitionsTuples.push_back(t);
         }
         qualityList[it.first]=it.second->getQuality();
@@ -76,7 +76,7 @@ shared_ptr<lpaggreg::HPartition> lpaggreg::HPartitioner::computeBestPartition(fl
     return partition;
 }
 
-list<tuple<float, int, int> > lpaggreg::HPartitioner::getPartitionsTuples() const
+list<tuple<float, int, int, lp_quality_type, lp_quality_type> > lpaggreg::HPartitioner::getPartitionsTuples() const
 {
     return partitionsTuples;
 }
