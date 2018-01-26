@@ -2,8 +2,8 @@
 #define DAGGREGATION_H
 
 #include <memory>
-#include <dvaluesn.h>
-#include <dpartition.h>
+#include "dvaluesn.h"
+#include "dpartition.h"
 
 using namespace std;
 

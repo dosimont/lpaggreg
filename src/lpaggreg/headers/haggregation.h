@@ -2,8 +2,8 @@
 #define HAGGREGATION_H
 
 #include <memory>
-#include <hvaluesn.h>
-#include <hpartition.h>
+#include "hvaluesn.h"
+#include "hpartition.h"
 
 using namespace std;
 
