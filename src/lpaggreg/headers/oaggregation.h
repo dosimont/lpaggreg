@@ -2,8 +2,8 @@
 #define OAGGREGATION_H
 
 #include <memory>
-#include <ovaluesn.h>
-#include <opartition.h>
+#include "ovaluesn.h"
+#include "opartition.h"
 
 using namespace std;
 
