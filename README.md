@@ -9,7 +9,7 @@ hierarchy (NLP), or both (DLP).
 
 (C) Copyright (February 28th 2013) Damien Dosimont. All rights reserved.
 
-Damien Dosimont <damien.dosimont@bsc.es>
+Damien Dosimont <damien.dosimont@gmail.com>
 
 This library is free software; you can redistribute it and/or modify it
 under the terms of the GNU Lesser General Public License as published by
